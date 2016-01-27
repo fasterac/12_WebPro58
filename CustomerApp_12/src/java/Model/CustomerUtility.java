@@ -25,38 +25,41 @@ public class CustomerUtility {
     }
     
     public int insertData(String firstName, String lastName, String mobile, String email, String addr){
-        System.out.println("insert into CustomerMVC values('" + firstName + 
-               "','" + lastName + 
-               "','" + mobile + 
-               "','" + email + 
-               "'," + addr + ")");
-        String sqlCmd = 
-               "insert into CustomerMVC values('" + firstName + 
-               "','" + lastName + 
-               "','" + mobile + 
-               "','" + email + 
-               "'," + addr + ")";
-       
-        int num = 0;
+        String sql = "INSERT INTO CustomerMVC VALUES(0, ?, ?, ?, ?, ? ,?)";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1, firstName);
+        preparedStatement.setString(2, lastName);
+        preparedStatement.setString(3, company);
+        preparedStatement.setString(4, mobile);
+        preparedStatement.setString(5, email);
+        preparedStatement.setString(6, addr);
+
+        preparedStatement.executeUpdate(); // execute the sql script (update)
+        preparedStatement.close(); // close statement (optional for security)
+
+
+        ResultSet resultSet = preparedStatement.executeQuery(); // execute the sql script (query - search)
+        resultSet.last(); // set cursor to the last row of result
+
+        return resultSet.getInt("id");
+    }
+    
+    
+    
+    public ResultSet getData(){
+        String username = null;
+        String sql = "SELECT * FROM CustomerMVC";
+        ResultSet rs = null;
+        
         try {
-            num = stmt.executeUpdate(sqlCmd);
+            
+            pstmt = conn.prepareStatement(sql);
+            rs =  pstmt.executeQuery();
+                       
         } catch (SQLException ex) {
             Logger.getLogger(CustomerUtility.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return num;
+         return rs;
+        
     }
-    
-    /*public void getData(){
-        try {
-            String sql = "SELECT * FROM CustomerMVC WHERE firstname = ? AND lastname = ?";
-            PreparedStatement stmt = Database.getInstance().getConnection().prepareStatement(sql);
-            stmt.setString(1, firstname);
-            stmt.setString(2, lastname);
-
-            return queryCustomer(stmt);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
 }
