@@ -1,18 +1,27 @@
 package Servlets;
 
+import Model.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CustomerUtility;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = {"/CustomerServlet"})
 public class CustomerServlet extends HttpServlet {
     
+    public static PreparedStatement pstmt;
+    public static Connection conn;
+    public static Statement stmt;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
 
@@ -26,38 +35,46 @@ public class CustomerServlet extends HttpServlet {
             out.println("<h1>Servlet CustomerServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             
-            /*System.out.println("......");
+            String firstname = request.getParameter("firstName");
+            String lastname = request.getParameter("lastname");
+            String company = request.getParameter("company");
+            String mobile = request.getParameter("mobile");
+            String email = request.getParameter("email");
+            String addr = request.getParameter("addr");
             
-            Customer cus = new Customer(firstname, lastname, email, mobile, email, addr);
+            Customer cus = new Customer(firstname, lastname, company, mobile, email, addr);
             CustomerUtility cusutil = new CustomerUtility();
             cusutil.init();
             
-            int numOfEffectedRec = cusutil.insertData(firstname, lastname, mobile, email, addr);
+            int numOfEffectedRec = cusutil.insertData(cus.getFirstName(), cus.getLastName(),
+            cus.getCompany(), cus.getMobile(), cus.getEmail(), cus.getAddr());
             if(numOfEffectedRec == 1){
             System.out.println("Insert Successfully");
             }
             else{
                 System.out.println("Cannot insert");
             }
-            */       
             
-            
-            String firstname = request.getParameter("firstName");
-            String lastname = request.getParameter("lastname");
-            String mobile = request.getParameter("mobile");
-            String email = request.getParameter("email");
-            String addr = request.getParameter("addr");
-            
-            out.print("<h1>Customer Information</h1>");
-            out.print("<b>First Name:</b> "+ firstname + "<br>");
-            out.print("<b>Last Name: </b>"+ lastname + "<br>");
-            out.print("<b>Mobile: </b>"+ mobile + "<br>");
-            out.print("<b>E-mail: </b>"+ email + "<br>");
-            out.print("<b>Address: </b>"+ addr + "<br>");
-            
-            out.println("</html>");
+            ResultSet rs;        
+            try {
+                pstmt = conn.prepareStatement("SELECT * FROM CustomerMVC");
+                rs =  pstmt.executeQuery();
+                
+                while(rs.next()){
+                    out.print("<h1>Customer Information</h1>");
+                    out.print("<b>First Name:</b> "+ rs.getString("firstName") + "<br>");
+                    out.print("<b>Last Name: </b>"+ rs.getString("lastName") + "<br>");
+                    out.print("<b>Mobile: </b>"+ rs.getString("mobile") + "<br>");
+                    out.print("<b>E-mail: </b>"+ rs.getString("email") + "<br>");
+                    out.print("<b>Address: </b>"+ rs.getString("addr") + "<br>");
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomerUtility.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
-        //System.out.println("proreq");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +89,11 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -86,7 +107,11 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
