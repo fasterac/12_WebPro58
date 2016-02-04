@@ -1,6 +1,5 @@
 package Servlets;
 
-import Model.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
@@ -11,7 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.CustomerUtility;
+import Model.Customer;
+import Model.CustomerUtility;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = {"/CustomerServlet"})
 public class CustomerServlet extends HttpServlet {
@@ -43,11 +43,18 @@ public class CustomerServlet extends HttpServlet {
             String addr = request.getParameter("addr");
             
             Customer cus = new Customer(firstname, lastname, company, mobile, email, addr);
+            
+            /*out.print("<h1>Customer Information</h1>");
+            out.print("<b>First Name:</b> "+ cus.getFirstName() + "<br>");
+            out.print("<b>Last Name: </b>"+ cus.getLastName() + "<br>");
+            out.print("<b>Mobile: </b>"+ cus.getMobile() + "<br>");
+            out.print("<b>E-mail: </b>"+ cus.getEmail() + "<br>");
+            out.print("<b>Address: </b>"+ cus.getAddr() + "<br>");*/
+            
             CustomerUtility cusutil = new CustomerUtility();
             cusutil.init();
             
-            int numOfEffectedRec = cusutil.insertData(cus.getFirstName(), cus.getLastName(),
-            cus.getCompany(), cus.getMobile(), cus.getEmail(), cus.getAddr());
+            int numOfEffectedRec = cusutil.insertData(cus);
             if(numOfEffectedRec == 1){
             System.out.println("Insert Successfully");
             }
@@ -72,6 +79,8 @@ public class CustomerServlet extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(CustomerUtility.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            
 
         }
         
