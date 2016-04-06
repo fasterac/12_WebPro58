@@ -7,23 +7,41 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Utility.DataConnector;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 
 
-@WebServlet(name = "CheckLogin.do", urlPatterns = {"/CheckLogin"})
+@WebServlet(name = "/CheckLogin.do", urlPatterns = {"/CheckLogin.do"})
 public class LoginProcessServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        DataConnector connector = new DataConnector();
+        
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
+        String role = connector.execute(("SELECT * FROM account WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
+        
+        if (role.equals("admin")) {
+            RequestDispatcher dispatch = request.getRequestDispatcher("AdminMainPage.jsp");
+            dispatch.forward(request, response);
+        }
+        else if(role.equals("user")){
+            RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
+            dispatch.forward(request, response);
+        }
+        
         
         try (PrintWriter out = response.getWriter()) {
-            
-            
-        }
+            out.print("loginprocess.do");
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

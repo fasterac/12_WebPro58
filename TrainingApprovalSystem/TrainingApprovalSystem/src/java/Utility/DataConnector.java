@@ -4,17 +4,28 @@ package Utility;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
+
+import javax.sql.DataSource;
 
 
 public class DataConnector {
     Statement stmt;
     Connection conn;
+    ServletContext ctx;
     
     public DataConnector(){
-        ServletContext ctx = getServletContext();
-        Connection conn = (Connection) ctx.getAttribute("connection");
+        try {
+            this.conn = getDB12().getConnection();
+        } catch (NamingException ex) {
+            Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     public int update(String sql){        
@@ -56,10 +67,16 @@ public class DataConnector {
         try {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
+            rs.next();
             returnerValue = rs.getString(colName);
         } catch (SQLException ex) {
             Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
         }        
         return returnerValue;
+    }
+
+    private DataSource getDB12() throws NamingException {
+        Context c = new InitialContext();
+        return (DataSource) c.lookup("java:comp/env/DB12");
     }
 }
