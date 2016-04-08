@@ -7,45 +7,32 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Utility.DataConnector;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 
-
-@WebServlet(name = "/CheckLogin.do", urlPatterns = {"/CheckLogin.do"})
-public class LoginProcessServlet extends HttpServlet {
+@WebServlet(name = "UserProcess.do", urlPatterns = {"/UserProcessServlet"})
+public class UserProcessServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        DataConnector connector = new DataConnector();
+        String forwarder = request.getParameter("forwarder");
         
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        String role = connector.execute(("SELECT * FROM account WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
-        
-        if (role.equals("admin")) {
-            RequestDispatcher dispatch = request.getRequestDispatcher("AdminMainPage.jsp");
-            dispatch.forward(request, response);
+        if(forwarder.equals("CreateForm")){
+            response.sendRedirect("ApprovalForm.jsp");
         }
-        else if(role.equals("user")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
-            dispatch.forward(request, response);
-        }
-        else{
-            RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
-            dispatch.forward(request, response);
-        }
-        
         
         try (PrintWriter out = response.getWriter()) {
-            out.print("loginprocess.do");
-        } 
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet UserProcessServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet UserProcessServlet at " + forwarder + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
