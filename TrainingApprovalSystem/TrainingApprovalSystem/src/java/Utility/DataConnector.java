@@ -74,6 +74,17 @@ public class DataConnector {
         }        
         return returnerValue;
     }
+    
+    public void closeConnection(Connection connection) {
+        if(connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
 
     private DataSource getDB12() throws NamingException {
         Context c = new InitialContext();

@@ -1,58 +1,58 @@
 package Controller;
 
+import Utility.DataConnector;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Utility.DataConnector;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 
+@WebServlet(name = "GodServlet", urlPatterns = {"/GodServlet"})
+public class GodServlet extends HttpServlet {
 
-@WebServlet(name = "/CheckLogin.do", urlPatterns = {"/CheckLogin.do"})
-public class LoginProcessServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
         DataConnector connector = new DataConnector();
+        int updateResult = 999;
+        ResultSet rs = null;
         
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        /***************/
-        if((request.getParameter("god mode")).equals("GOD MODE!")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
-            dispatch.forward(request, response);
+        if(request.getParameter("exec").equals("executeUpdate(Stringsql)")){
+            updateResult = connector.update(request.getParameter("sqlexec"));
         }
-        
-        String role = connector.execute(("SELECT * FROM account WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
-        
-        if (role.equals("admin")) {
-            RequestDispatcher dispatch = request.getRequestDispatcher("AdminMainPage.jsp");
-            dispatch.forward(request, response);
+        else if(request.getParameter("exec").equals("executeQuery(Stringsql)")){
+            rs = connector.execute(request.getParameter("sqlexec"));
         }
-        else if(role.equals("user")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
-            dispatch.forward(request, response);
-        }
-        else{
-            RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
-            dispatch.forward(request, response);
-        }
-        
-        
         try (PrintWriter out = response.getWriter()) {
-            out.print("loginprocess.do");
-            out.print((request.getParameter("god mode")).equals("GOD MODE!"));
-        } 
+            /* TODO output your page here. You may use following sample code. */
+            out.println(request.getParameter("sqlexec") + "<br>");
+            if(updateResult == 1){
+                out.println("Update Seccessful <br> Click back for anothrer sql command");
+            }
+            else if(updateResult == 0){
+                out.print("Error : see error at output>log <br> Click back for type new sql command");
+            }
+            
+            if(rs != null){
+                try {
+
+                    while (rs.next()) {
+                        out.print(rs.getRow());
+                    
+                    }   
+                } catch (SQLException ex) {
+                    Logger.getLogger(GodServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
