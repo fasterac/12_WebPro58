@@ -4,7 +4,7 @@
  *
  * @author arm19
  */
-class phpclass {
+class connector {
     private $servername = "localhost";
     private $username = "root";
     private $password = "";
@@ -25,9 +25,14 @@ class phpclass {
             die("Connection failed: " . $this->conn->connect_error);
         }
         else{
-            echo "passworld True";
+            echo " DB Connected ";
         }
     }
+    
+    public function executeUpdate($sqlcmd){
+        return($this->conn->query($sqlcmd));
+    }
+    
     public function createtable(){
         // sql to create table
         //$this->connectDB();
@@ -73,6 +78,8 @@ class phpclass {
         }
         $this->conn->close();
     }
+    
+    
            
             
         
