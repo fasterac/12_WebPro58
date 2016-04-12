@@ -9,8 +9,9 @@ include_once './modelUser.php';
     }
     elseif ($_POST['subbutton'] === 'Register') {
         echo 'Register';
-        $newUser = new modelUser(06, $_POST['name'], $_POST['lastname'], $_POST['email'], 
-                $_POST['username'], $_POST['password'], 'student');
+        $newUser = new modelUser();
+        $newUser->createNewUser('NULL', $_POST['name'], $_POST['lastname'], $_POST['email']
+                ,$_POST['username'], $_POST['password'], 'student');
         $newUser->insertNewUser();
     }
 

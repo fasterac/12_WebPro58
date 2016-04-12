@@ -12,7 +12,10 @@ class modelUser {
     private $user_type;
     private $connect;
     
-    function __construct($user_id, $name, $surname, $email, $username, $password, $user_type) {
+    function __construct() { 
+    }
+    
+    public function createNewUser($user_id, $name, $surname, $email, $username, $password, $user_type){
         $this->user_id = $user_id;
         $this->name = $name;
         $this->surname = $surname;
@@ -20,21 +23,39 @@ class modelUser {
         $this->username = $username;
         $this->password = $password;
         $this->user_type = $user_type;
-        $this->connect = new connector();
-    }
-    
-    public function getUsername() {
-        return $this->username;
     }
 
-    public function getPassword() {
-        return $this->password;
+    public function getPassword($username) {
+        $this->connect = new connector();
+        $returner = 'null';
+        $result = $this->connect->executeQuery('SELECT password FROM user WHERE username = \''. $username .'\'');
+        if ($result->num_rows > 0) {
+            $returner = $result->fetch_assoc()["password"];
+        }
+        $this->connect->close();
+        return $returner."";
     }
-    
+        
+    function getUser_type($username) {
+        $this->connect = new connector();
+        $result = $this->connect->executeQuery('SELECT user_type FROM user WHERE username = \''. $username .'\'');
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $returnaer = $row["user_type"].'';
+            }
+        }        
+        $this->connect->close();
+        return $returnaer;
+    }
+
+        
     public function insertNewUser(){
-        $this->connect->executeUpdate('insert into user values('. $this->user_id .',\''
+        $this->connect = new connector();
+        $this->connect->executeUpdate('INSERT INTO user (user_id, firstname, lastname, email, username, password, user_type)'
+                . ' VALUES (' . $this->user_id . ',\''
                 . $this->name .'\',\''. $this->surname .'\',\''. $this->email. '\',\''.
-                $this->username.'\',\''. $this->password .'\',\''. $this->user_type . ')') or die("insert error");
+                $this->username.'\',\''. $this->password .'\',\''. $this->user_type . '\')');
+        $this->connect->close();
     }
 
 
