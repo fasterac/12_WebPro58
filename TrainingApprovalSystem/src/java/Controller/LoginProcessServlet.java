@@ -27,13 +27,9 @@ public class LoginProcessServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        /***************/
-        if((request.getParameter("god mode")).equals("GOD MODE!")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
-            dispatch.forward(request, response);
-        }
-        
         String role = connector.execute(("SELECT * FROM account WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
+        
+        
         
         if (role.equals("admin")) {
             RequestDispatcher dispatch = request.getRequestDispatcher("AdminMainPage.jsp");
@@ -41,6 +37,10 @@ public class LoginProcessServlet extends HttpServlet {
         }
         else if(role.equals("user")){
             RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
+            dispatch.forward(request, response);
+        }
+        else if((request.getParameter("god mode")).equals("GOD MODE!")){
+            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
             dispatch.forward(request, response);
         }
         else{
