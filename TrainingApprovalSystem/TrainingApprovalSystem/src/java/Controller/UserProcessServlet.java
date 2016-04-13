@@ -18,6 +18,7 @@ public class UserProcessServlet extends HttpServlet {
         String forwarder = request.getParameter("forwarder");
         
         if(forwarder.equals("CreateForm")){
+            
             response.sendRedirect("ApprovalForm.jsp");
         }
         

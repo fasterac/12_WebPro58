@@ -38,13 +38,14 @@ public class GodServlet extends HttpServlet {
                 out.println("Update Seccessful <br> Click back for anothrer sql command");
             }
             else if(updateResult == 0){
-                out.print("Error : see error at output>log <br> Click back for type new sql command");
+                out.print("Error : see error at output log <br> Click back for type new sql command");
             }
             
             if(rs != null){
                 try {
 
                     while (rs.next()) {
+                        out.print("...");
                         out.print(rs.getRow());
                     
                     }   

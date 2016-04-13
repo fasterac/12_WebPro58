@@ -12,7 +12,7 @@ class connector {
     private $conn;
     
             
-    function __construct() {    
+    function __construct() {
         $this->connectDB();
         //$this->createtable();
     }
@@ -26,13 +26,13 @@ class connector {
             die("Connection failed: " . $this->conn->connect_error);
         }
         else{
-            echo " DB Connected ";
+            echo " <h6>DB Connected </h6>";
         }
     }
     
     public function executeUpdate($sqlcmd){
         if ($this->conn->query($sqlcmd) === TRUE) {
-            echo " Execute Update successfully";
+            echo " <h6>Execute Update successfully</h6>";
         } else {
             echo " Error : " . $this->conn->error;
         }

@@ -1,5 +1,6 @@
 <?php
 require_once './modelUser.php';
+session_start();
 
     echo 'controllerlogin';
 
@@ -12,8 +13,10 @@ require_once './modelUser.php';
         $password = $_POST['password'];
         $checkpass = $user->getPassword($username);
         if ($checkpass === $password){
+            $userid = $user->getUser_id($username);
             $role = $user->getUser_type($username);
-            if($role === 'student') {
+            $_SESSION['userid'] = $userid;
+            if($role === 'student') {                
                 header("Location: ./home.php");
             }
             elseif ($role === 'instructor') {

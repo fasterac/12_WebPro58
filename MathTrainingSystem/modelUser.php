@@ -57,6 +57,19 @@ class modelUser {
                 $this->username.'\',\''. $this->password .'\',\''. $this->user_type . '\')');
         $this->connect->close();
     }
+    
+    
+    function getUser_id($username) {
+        $this->connect = new connector();
+        $result = $this->connect->executeQuery('SELECT user_id FROM user WHERE username = \''. $username .'\'');
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $returnaer = $row["user_id"].'';
+            }
+        }        
+        $this->connect->close();
+        return $returnaer;
+    }
 
 
 

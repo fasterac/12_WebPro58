@@ -30,79 +30,73 @@
                     
                     <fieldset>
                         <legend>รายละเอียด</legend>
-                        ชื่อ :<br><input class="textsmall" type="text" value="dr. SomeVar" > <br><br>
-                        นามสกุล :<br><input class="textsmall" type="text" value="$DollarSign$"> <br><br>
-                        ตำแหน่ง :<br><input class="textsmall" type="text"> <br><br>
-                        มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<br><input class="textbox" type="text"><br><br>
-                        จัดโดย :<br><input class="textsmall" type="text"> <br><br>
-                        สถานที่จัด :<br><input class="textsmall" type="text"><br><br>
-                        วันที่ :<br><input class="textsmall" type="text"> <br><br>
-                        รวมวัน : <input class="textmini" type="text"> วัน<br><br>
+                        ชื่อ :<input class="textsmall" type="text" value="first_name" > 
+                        นามสกุล :<input class="textsmall" type="text" value="last_name"> 
+                        ตำแหน่ง :<input class="textsmall" type="text" value="position"> <br><br>
+                        มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<input class="textbox" type="text" size="70" name="course"><br><br>
+                        จัดโดย :<input class="textsmall" type="text" name="organizer"> 
+                        สถานที่จัด :<input class="textsmall" type="text" name="loation"><br><br>
+                        วันที่เริ่ม :<input class="textsmall" type="text" name="start_date"> 
+                        วันที่สิ้นสุด :<input class="textsmall" type="text" name="end_date"> 
+                        <input type="submit" value="รวมวัน" name="cal" /> : <input class="textmini" type="text" disabled="disabled" value="sum_date"> วัน<br><br>
                     </fieldset><br><br>
                      
                     <fieldset>
                         <legend>ขออนุมัติสนับสนุนค่าใช้จ่าย</legend>
-                        1.ค่าลงทะเบียน :<br><input class="textsmall" type="text"> บาท<br><br>
-                        2.ค่าใช้จ่ายในการเข้าร่วมอบรม/สัมมนา <br>(กรณีสถานที่จัดอยู่ต่างจังหวัด/ต่างประเทศ)<br><br>รวมเป็นเงิน:<br><input class="textsmall" type="text"> บาท<br><br>
-                        2.1 ค่าที่พัก :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="textmini" type="text"> คืน <br><br>คืนละ : &nbsp;&nbsp;<input class="textmini" type="text"> บาท<br><br>
-                        เป็นเงิน : <input class="textmini" type="text"> บาท<br><br>
-                        2.2 ค่าเบี้ยเลี้ยง :&nbsp;&nbsp;<input class="textmini" type="text"> วัน<br><br> วันละ : &nbsp;&nbsp;&nbsp;<input class="textmini" type="text"> บาท<br><br>
-                        เป็นเงิน : <input class="textmini" type="text"> บาท<br><br>
-                        2.3 ค่าพาหนะ <br><br>
-                        เป็นเงิน : <input class="textmini" type="text"> บาท<br><br>
+                        1.ค่าลงทะเบียน :<input class="textsmall" type="text" name=""> บาท<br><br>
+                        2.ค่าใช้จ่ายในการเข้าร่วมอบรม/สัมมนา <input type="checkbox" name="inter" value="ON" />(กรณีสถานที่จัดอยู่ต่างจังหวัด/ต่างประเทศ) รวมเป็นเงิน:<input class="textsmall" type="text" size="4" name=""> บาท<br><br>
+                        &nbsp;&nbsp;&nbsp;2.1 ค่าที่พัก :<input class="textmini" type="text" size="4" name=""> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;คืน คืนละ : <input class="textmini" type="text" size="4" name=""> 
+                        บาท เป็นเงิน : <input class="textmini" type="text" size="4" name=""> บาท <input type="submit" value="คิดค่าที่พัก" name="cal" /><br><br>
+                        &nbsp;&nbsp;&nbsp;2.2 ค่าเบี้ยเลี้ยง :<input class="textmini" type="text" size="4" name=""> วัน วันละ : <input class="textmini" type="text" size="4" name=""> 
+                        บาท เป็นเงิน : <input class="textmini" type="text" size="4"> บาท <input type="submit" value="คิดค่าเบี้ยเลี้ยง" name="cal" /><br><br>
+                        &nbsp;&nbsp;&nbsp;2.3 ค่าพาหนะ เป็นเงิน : <input class="textmini" type="text" size="4" name=""> บาท<br><br>
                     </fieldset><br><br>
                     
                     <fieldset>
                         <legend>การเข้าร่วมอบรม/สัมมนา</legend>
-                        ในปีงบประมาณ : <br><input class="textmini" type="text"><br><br>
+                        ในปีงบประมาณ : <input class="textmini" type="text" size="10" value="YEAR 2559" name=""><br><br>
                         
 <!--..............................................Table...............................................-->
                             
-<div id="myform">
-
-<table>
-    <tr>
-        <td>หลักสูตร:</td>
-        <td><input class="textsmall" type="text" id="หลักสูตร"><br><br></td>
-    </tr>
-    <tr>
-        <td>วันที่:</td>
-        <td><input class="textsmall" type="text" id="วันที่"><br><br></td>
-    </tr>
-    <tr>
-        <td>ค่าใช้จ่าย:</td>
-        <td><input class="textsmall" type="text" id="ค่าใช้จ่าย"><br><br></td>
-    </tr>
-    <tr>
-        <td>วันที่ส่งรายงานสรุป:</td>
-        <td><input class="textsmall" type="text" id="วันส่งรายงานสรุป"><br><br></td>
-    </tr>
-    <tr>
-        <td>วันที่จัดบรรยาย(กรณีรับการสนับสนุนค่าใช้จ่ายเกิน 20,000 บาท):</td>
-        <td><input class="textsmall" type="text" id="วันจัดบรรยาย">
-        <input type="button" id="add" value="Add" onclick="Javascript:addRow()"></td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-</table>
-</div>
-<div id="mydata"> 
-    
-ตารางแสดงผล<br><br>
 <table id="myTableData"  border="1" cellpadding="2">
-    <tr>
-        <td>&nbsp;</td>
-        <td><b>&nbsp;หลักสูตร&nbsp;</b></td>
-        <td><b>&nbsp;วันที่&nbsp;</b></td>
-        <td><b>&nbsp;ค่าใช้จ่าย&nbsp;</b></td>
-        <td><b>&nbsp;วันที่ส่งรายงานสรุป&nbsp;</b></td>
-        <td><b>&nbsp;วันที่จัดบรรยาย&nbsp;</b></td>
-    </tr>
+    <thead>
+        <tr>
+            <th><b>&nbsp;num&nbsp;</b></th>
+            <th><b>&nbsp;course&nbsp;</b></th>
+            <th><b>&nbsp;start_date&nbsp;</b></th>
+            <th><b>&nbsp;sum_expense&nbsp;</b></th>
+            <th><b>&nbsp;report_date&nbsp;</b></th>
+            <th><b>&nbsp;lecture_date&nbsp;</b></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
 </table>
-&nbsp;<br/>
-</div>
+
     
 
 <!--..............................................Table...............................................-->
@@ -112,12 +106,12 @@
                     <fieldset>
                         <legend>การปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม </legend>
                         3. การนำความรู้ที่ได้จากการเข้าร่วมอบรม/สัมมนา มาใช้ในการปรับปรุงการทำงาน <br><br>
-                        3.1 ปรับปรุงการเรียนการสอน/ปรับปรุงการทำงาน/สร้างสรรค์งาน/สร้างนวัตกรรม : <br><br>
-                        <textarea class="textarea" style="resize:none"></textarea><br><br>
-                        3.2 ระยะเวลาที่ใช้ในการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม ภายหลังเข้าร่วมอบรม/สัมมนา <br>(ไม่เกิน 1 ปี): <br><br>
-                        <input class="textbox" type="text"style="size: 100"><br><br>
-                        3.3 ระยะเวลาการส่งเอกสารหลักฐานอ้างอิงการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม <br>(ไม่เกิน 1 ปี): <br><br>
-                        <input class="textbox" type="text" size="100" ><br><br><br><br>
+                        &nbsp;&nbsp;&nbsp;3.1 ปรับปรุงการเรียนการสอน/ปรับปรุงการทำงาน/สร้างสรรค์งาน/สร้างนวัตกรรม : <br>
+                        <textarea name="improvement" rows="4" cols="100"></textarea></textarea><br><br>
+                        &nbsp;&nbsp;&nbsp;3.2 ระยะเวลาที่ใช้ในการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม ภายหลังเข้าร่วมอบรม/สัมมนา (ไม่เกิน 1 ปี): <br>
+                        <textarea name="improvement_period" rows="4" cols="100"></textarea><br><br>
+                        &nbsp;&nbsp;&nbsp;3.3 ระยะเวลาการส่งเอกสารหลักฐานอ้างอิงการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม (ไม่เกิน 1 ปี): <br>
+                        <textarea name="improvement_evident_period" rows="4" cols="100"></textarea><br><br><br><br>
                        <small>
                        หมายเหตุ* เอกสารหลักฐานอ้างอิง ตามข้อ 3.3 <br>
                        &nbsp;&nbsp;&nbsp;&nbsp;ส่วนวิชาการ เช่น เอกสารรายงานการปรับปรุงแผนการสอน/ปรับปรุงเนื้อหาการสอน/ปรับปรุงเอกสารการสอน <br>เนื้อหารายวิชาหรือหลักสูตรอบรมใหม่ที่เปิดผลมาจากการอบรม ฯลฯ<br>
