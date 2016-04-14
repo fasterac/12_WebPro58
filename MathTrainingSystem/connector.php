@@ -5,10 +5,10 @@
  * @author arm19
  */
 class connector {
-    private $servername = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $dbname = "isad";
+    private $servername = "mysql.hostinger.in.th";
+    private $username = "u709201636_data";
+    private $password = "project123";
+    private $dbname = "u709201636_data";
     private $conn;
     
             
