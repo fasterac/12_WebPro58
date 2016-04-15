@@ -6,16 +6,17 @@ import Utility.DataConnector;
 
 public class Expense {
 
-    private double reg_expense, inter_expense, acc_night, acc_each, acc_sum, allo_day, allo_each, allo_sum, traveling, sum_expense;
+    private double reg_expense = 0, inter_expense = 0,  acc_each = 0, acc_sum = 0, 
+             allo_each = 0, allo_sum = 0, traveling = 0, sum_expense = 0;
+    private int allo_day = 0, acc_night = 0;
     private int expense_id, form_id;
-    private DataConnector connector;
 
     public Expense() {
     }
 
-    public void createExpense(int expense_id, int form_id, double reg_expense, double inter_expense,
-            double acc_night, double acc_each, double acc_sun,
-            double allo_day, double allo_each, double allo_sum, double traveling, double sum_expense) {
+    public void createExpense(int form_id, double reg_expense, double inter_expense,
+            int acc_night, double acc_each, double acc_sun,
+            int allo_day, double allo_each, double allo_sum, double traveling) {
         this.reg_expense = reg_expense;
         this.inter_expense = inter_expense;
         this.acc_night = acc_night;
@@ -31,31 +32,34 @@ public class Expense {
     }
 
     public void insertExpense() {
-        String sql = "INSERT INTO form VALUES("
-                + (getLastExpenseId()+ 1) +"," + this.form_id + ",'" + this.reg_expense + "','" + this.inter_expense
+        DataConnector connector = new DataConnector();
+        String sql =  "INSERT INTO expense (form_id, reg_expense, inter_expense, "
+                        + "acc_night, acc_each, acc_sum, allo_day, allo_each, allo_sum, travelling, sum_expense) VALUES('"
+                + this.form_id + "','" + this.reg_expense + "','" + this.inter_expense
                 + "','" + this.acc_night + "','" + this.acc_each + "','" + this.acc_sum
-                + "','" + this.allo_day + "','" + this.allo_each + "'," + this.allo_sum
-                + "','" + this.traveling + "','" + this.sum_expense + "';";
+                + "','" + this.allo_day + "','" + this.allo_each + "','" + this.allo_sum
+                + "','" + this.traveling + "','" + this.sum_expense + "');";
         if(connector.update(sql) == 0) {
             System.out.println("insert sussecc");
         }
-
+        connector.closeConnection();
     }
 
     public void callExpense(int form_id) {
+        DataConnector connector = new DataConnector();
         ResultSet rs = null;
         try {
-            String sql = "SELECT * FROM form WHERE form_id = '" + form_id + "';";
+            String sql = "SELECT * FROM expense WHERE form_id = '" + form_id + "';";
             rs = connector.execute(sql);
             rs.next();
             this.form_id = form_id;
             this.expense_id = rs.getInt("expense_id");
             this.reg_expense = rs.getInt("reg_expense");
             this.inter_expense = rs.getInt("inter_expense");
-            this.acc_night = rs.getDouble("acc_night");
+            this.acc_night = rs.getInt("acc_night");
             this.acc_each = rs.getDouble("acc_each");
             this.acc_sum = rs.getDouble("acc_sun");
-            this.allo_day = rs.getDouble("allo_day");
+            this.allo_day = rs.getInt("allo_day");
             this.allo_each = rs.getDouble("allo_each");
             this.allo_sum = rs.getDouble("allo_sum");
             this.traveling = rs.getDouble("traveling");            
@@ -63,6 +67,7 @@ public class Expense {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        connector.closeConnection();
     }
 
     private double calculateSumExpense() {
@@ -70,9 +75,10 @@ public class Expense {
     }
     
     public int getLastExpenseId(){
+        DataConnector connector = new DataConnector();
         int lastID = 0;
         try{
-            String sql = "SELECT form_id FROM form";
+            String sql = "SELECT expense_id FROM expense";
             ResultSet rs = connector.execute(sql);
             while(rs.next()){
                 lastID = rs.getInt(1);
@@ -80,6 +86,7 @@ public class Expense {
         }catch(SQLException ex){
             ex.printStackTrace();
         }
+        connector.closeConnection();
         return lastID;
     }
 

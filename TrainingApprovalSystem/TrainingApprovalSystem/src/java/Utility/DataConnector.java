@@ -75,10 +75,10 @@ public class DataConnector {
         return returnerValue;
     }
     
-    public void closeConnection(Connection connection) {
-        if(connection != null) {
+    public void closeConnection() {
+        if(this.conn != null) {
             try {
-                connection.close();
+                this.conn.close();
             } catch (SQLException ex) {
                 Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
             }

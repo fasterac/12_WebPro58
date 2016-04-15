@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Model.*;
+import javax.servlet.RequestDispatcher;
 
 @WebServlet(name = "UserProcess.do", urlPatterns = {"/UserProcessServlet"})
 public class UserProcessServlet extends HttpServlet {
@@ -16,10 +18,15 @@ public class UserProcessServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         String forwarder = request.getParameter("forwarder");
+        User user = new User();
         
         if(forwarder.equals("CreateForm")){
             
-            response.sendRedirect("ApprovalForm.jsp");
+//            user = (User) request.getAttribute("reqUser");
+//            request.setAttribute("reqUser", user);
+            RequestDispatcher dispatch = request.getRequestDispatcher("ApprovalForm.jsp");
+            dispatch.forward(request, response);
+            //response.sendRedirect("");
         }
         
         try (PrintWriter out = response.getWriter()) {

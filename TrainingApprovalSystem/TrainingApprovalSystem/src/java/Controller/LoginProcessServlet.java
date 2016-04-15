@@ -8,11 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Utility.DataConnector;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import Model.*;
+import javax.servlet.http.HttpSession;
 
 
 @WebServlet(name = "/CheckLogin.do", urlPatterns = {"/CheckLogin.do"})
@@ -21,13 +19,17 @@ public class LoginProcessServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+
+
         
         DataConnector connector = new DataConnector();
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        String role = connector.execute(("SELECT * FROM account WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
+        String role = "";
+        role = connector.execute(("SELECT * FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
         
         
         
@@ -36,13 +38,16 @@ public class LoginProcessServlet extends HttpServlet {
             dispatch.forward(request, response);
         }
         else if(role.equals("user")){
+            User user = new User();
+            user.callUser(username);
+            session.setAttribute("reqUser", user);
             RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
             dispatch.forward(request, response);
         }
-        else if((request.getParameter("god mode")).equals("GOD MODE!")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
-            dispatch.forward(request, response);
-        }
+//        else if((request.getParameter("god mode")).equals("GOD MODE!")){
+//            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
+//            dispatch.forward(request, response);
+//        }
         else{
             RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
             dispatch.forward(request, response);
@@ -50,8 +55,7 @@ public class LoginProcessServlet extends HttpServlet {
         
         
         try (PrintWriter out = response.getWriter()) {
-            out.print("loginprocess.do");
-            out.print((request.getParameter("god mode")).equals("GOD MODE!"));
+            
         } 
     }
 

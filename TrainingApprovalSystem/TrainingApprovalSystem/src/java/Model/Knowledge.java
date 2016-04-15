@@ -7,38 +7,34 @@ import Utility.DataConnector;
 public class Knowledge {
     private String improvement, imperiod, imevi;
     private int knowledge_id, form_id;
-    private DataConnector connector;
 
     public Knowledge() {
+    }
+    
+    public void createKnowledge(int form_id, String improvement, String imperiod, String imevi){
         this.improvement = improvement;
         this.imperiod = imperiod;
         this.imevi = imevi;
-        this.knowledge_id = knowledge_id;
+        this.knowledge_id = (getLastKnowledgeId()+ 1);
         this.form_id = form_id;
     }
     
-    public void createKnowledge(int knowledge_id, int form_id, String improvement, String imperiod, String imevi){
-        this.improvement = improvement;
-        this.imperiod = imperiod;
-        this.imevi = imevi;
-        this.knowledge_id = knowledge_id;
-        this.form_id = getLastKnowledgeId();
-    }
-    
     public void insertKnowledge() {
-        String sql = "INSERT INTO form VALUES("
-                + (getLastKnowledgeId()+ 1) + "," + this.form_id + ",'" 
-                + "','" + this.improvement + "','" + this.imperiod + "','" + this.imevi + "';";
+        DataConnector connector = new DataConnector();
+        String sql = "INSERT INTO knowledge (form_id, improvement, improvement_period, "
+                        + "improvement_evident_period) VALUES('"
+                + this.form_id + "','" + this.improvement + "','" + this.imperiod + "','" + this.imevi + "');";
         if(connector.update(sql) == 0) {
-            System.out.println("insert sussecc");
+            System.out.println("Knowledge insert sussecc");
         }
-
+        connector.closeConnection();
     }
     
     public void callKnowledge(int form_id) {
+        DataConnector connector = new DataConnector();
         ResultSet rs = null;
         try {
-            String sql = "SELECT * FROM form WHERE form_id = '" + form_id + "';";
+            String sql = "SELECT * FROM knowledge WHERE form_id = '" + form_id + "';";
             rs = connector.execute(sql);
             rs.next();
             this.form_id = form_id;
@@ -49,9 +45,11 @@ public class Knowledge {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        connector.closeConnection();
     }
     
     public int getLastKnowledgeId(){
+        DataConnector connector = new DataConnector();
         int lastID = 0;
         try{
             String sql = "SELECT knowledge_id FROM knowledge";
@@ -62,6 +60,7 @@ public class Knowledge {
         }catch(SQLException ex){
             ex.printStackTrace();
         }
+        connector.closeConnection();
         return lastID;
     }
     
