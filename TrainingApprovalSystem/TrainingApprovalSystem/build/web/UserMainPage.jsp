@@ -14,7 +14,7 @@
             <% user = (User) session.getAttribute("reqUser"); %>
             <%-- request.setAttribute("reqUser", user); --%>
             <h2>Welcome <%= user.getFirstname()%> <%= user.getLastname() %></h2>
-            <input type="submit" value="Logout" name="logout" /> <br>
+            <input type="submit" value="Logout" name="forwarder" /> <br>
             <input type="submit" value="CreateForm" name="forwarder" /> 
             <input type="submit" value="TrackApproval" name="forwarder" /> 
         </form>

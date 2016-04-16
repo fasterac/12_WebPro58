@@ -58,6 +58,18 @@ body :-ms-input-placeholder {
   -webkit-transform: translateY(85px);
           transform: translateY(85px);
 }
+.check{
+height: 20px;
+width: 20px;
+padding-left: 15px;
+padding-top: 15px;
+border: 1px solid #B9BDC1;
+color: #FF6666;
+font-size: 20px;
+text-align: left;
+
+}
+
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -146,6 +158,15 @@ legend {
     font-size: 20px;
     text-align: left;
 }
+
+.textfile {
+    height: 60px;
+    width: 400px;
+    padding-left: 15px;
+    color: #FF6666;
+  
+}
+
  .textsmall {
     height: 40px;
     width: 400px;

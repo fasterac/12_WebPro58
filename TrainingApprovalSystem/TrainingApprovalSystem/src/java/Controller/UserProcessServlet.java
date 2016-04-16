@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.*;
 import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
+import sun.security.pkcs11.wrapper.Functions;
 
 @WebServlet(name = "UserProcess.do", urlPatterns = {"/UserProcessServlet"})
 public class UserProcessServlet extends HttpServlet {
@@ -17,17 +20,35 @@ public class UserProcessServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        String forwarder = request.getParameter("forwarder");
+        String forwarder = ".";
+        String loggouter = ".";
+        
+        forwarder = request.getParameter("forwarder");
+        
         User user = new User();
+        History history = new History();
+        ArrayList<String> his = new ArrayList<>();
+        HttpSession session = request.getSession();
+        user = (User) session.getAttribute("reqUser");
         
         if(forwarder.equals("CreateForm")){
+            his = history.getHistory(user.getUsername(), "2016-04-17");
+            for (String word : his) {
+                System.out.println(word);
+            }
+            System.out.println(his.size());
             
-//            user = (User) request.getAttribute("reqUser");
-//            request.setAttribute("reqUser", user);
+            
+            session.setAttribute("sesHistoryUser", his);
+
             RequestDispatcher dispatch = request.getRequestDispatcher("ApprovalForm.jsp");
             dispatch.forward(request, response);
-            //response.sendRedirect("");
         }
+        
+        if(forwarder.equals("Logout")){
+            RequestDispatcher dispatch = request.getRequestDispatcher("index.html");
+            dispatch.forward(request, response);
+        
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -42,6 +63,7 @@ public class UserProcessServlet extends HttpServlet {
             out.println("</html>");
         }
     }
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

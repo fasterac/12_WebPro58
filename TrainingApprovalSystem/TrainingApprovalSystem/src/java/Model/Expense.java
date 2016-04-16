@@ -34,7 +34,7 @@ public class Expense {
     public void insertExpense() {
         DataConnector connector = new DataConnector();
         String sql =  "INSERT INTO expense (form_id, reg_expense, inter_expense, "
-                        + "acc_night, acc_each, acc_sum, allo_day, allo_each, allo_sum, travelling, sum_expense) VALUES('"
+                        + "acc_night, acc_each, acc_sum, allo_day, allo_each, allo_sum, traveling, sum_expense) VALUES('"
                 + this.form_id + "','" + this.reg_expense + "','" + this.inter_expense
                 + "','" + this.acc_night + "','" + this.acc_each + "','" + this.acc_sum
                 + "','" + this.allo_day + "','" + this.allo_each + "','" + this.allo_sum
@@ -58,12 +58,12 @@ public class Expense {
             this.inter_expense = rs.getInt("inter_expense");
             this.acc_night = rs.getInt("acc_night");
             this.acc_each = rs.getDouble("acc_each");
-            this.acc_sum = rs.getDouble("acc_sun");
+            this.acc_sum = rs.getDouble("acc_sum");
             this.allo_day = rs.getInt("allo_day");
             this.allo_each = rs.getDouble("allo_each");
             this.allo_sum = rs.getDouble("allo_sum");
             this.traveling = rs.getDouble("traveling");            
-            this.sum_expense = rs.getDouble("inter_id");
+            this.sum_expense = rs.getDouble("sum_expense");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -89,5 +89,11 @@ public class Expense {
         connector.closeConnection();
         return lastID;
     }
+
+    public double getSum_expense() {
+        return sum_expense;
+    }
+    
+    
 
 }

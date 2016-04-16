@@ -11,6 +11,7 @@ import Model.*;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.servlet.RequestDispatcher;
 
 
 @WebServlet(name = "UserFormServlet.do", urlPatterns = {"/UserFormServlet"})
@@ -48,6 +49,15 @@ public class UserFormServlet extends HttpServlet {
         form.insertForm();
         expense.insertExpense();
         knowledge.insertKnowledge();
+        report.insertBlankReport((form.getForm_id()));
+        
+        if (request.getParameter("knowsub") != null && !request.getParameter("knowsub").isEmpty()) {
+            if(request.getParameter("knowsub").equals("knowsub")){
+                RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
+                dispatch.forward(request, response);
+            }
+        }
+
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -58,9 +68,10 @@ public class UserFormServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UserFormServlet at " + request.getContextPath() + "</h1>");
-            out.println(request.getParameter("inter"));
-            out.println(request.getParameter("start_date"));
-            out.println(request.getParameter("end_date"));
+            out.println("<h2>Create Form Successful</h2>");
+            out.println("<form action=\"UserFormServlet\" method=\"POST\">"
+                    + "<button name=\"knowsub\" values=\"knowsub\" type=\"submit\"></button>"
+                    + "</form>");
             out.println("</body>");
             out.println("</html>");
         }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 
 public class Report {
-    private String report_date, lecture_date, file;
+    private String report_date= "-", lecture_date= "-", file;
     private int report_id, form_id;
 
     public Report() {        
@@ -19,6 +19,15 @@ public class Report {
         this.file = file;
         this.report_id = getLastReportId() + 1;
         this.form_id = form_id;
+    }
+    
+    public void insertBlankReport(int form_id) {
+        DataConnector connector = new DataConnector();
+        String sql = "INSERT INTO report (form_id) VALUES('" + this.form_id + "');";
+        if(connector.update(sql) == 0) {
+            System.out.println("insert sussecc");
+        }
+        connector.closeConnection();
     }
     
     public void insertReport() {
@@ -43,7 +52,7 @@ public class Report {
             this.report_id = rs.getInt("report_id");
             this.report_date = rs.getString("report_date");
             this.lecture_date = rs.getString("lecture_date");
-            this.file = rs.getString("file");
+            this.file = rs.getString("file_path");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -65,5 +74,15 @@ public class Report {
         connector.closeConnection();
         return lastID;
     }
+
+    public String getReport_date() {
+        return report_date;
+    }
+
+    public String getLecture_date() {
+        return lecture_date;
+    }
+    
+    
 }
 

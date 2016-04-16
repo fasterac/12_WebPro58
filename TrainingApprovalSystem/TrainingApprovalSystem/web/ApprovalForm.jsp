@@ -1,6 +1,8 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.*" %> 
 <%@page import="javax.servlet.http.HttpServletRequest" %> 
+<%@page import="java.util.ArrayList" %> 
 <!DOCTYPE html>
 <html >
   <head>
@@ -10,20 +12,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <-script type="text/javascript" src="java/javascript.js"></script>
-    <-link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="java/javascript.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     
     
   </head>
 
   <body onload="load()">
-      <form class="form" action="UserFormServlet" method="POST">
+      <form action="UserFormServlet" method="POST">
    <div class="wrapper">
 	
 		 
                 <div class="box">
                     <%! User user = new User() ; %> 
                     <% user = (User) session.getAttribute("reqUser"); %>
+                    <%! ArrayList<String> history = new ArrayList<>() ; %> 
+                    <% history = (ArrayList<String>) session.getAttribute("sesHistoryUser"); %>
                 	
 		
 <!--................................. CONTENT  FORM...................................................................-->  
@@ -35,7 +39,7 @@
                     <fieldset>
                         <legend>รายละเอียด</legend>
                         ชื่อ :<input class="textsmall" type="text" value="<%= user.getFirstname() %>" > 
-                        นามสกุล :<input class="textsmall" type="text" value="<%= user.getLastname()%>"> 
+                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.reqUser.getLastname()}"> 
                         ตำแหน่ง :<input class="textsmall" type="text" value="position"> <br><br>
                         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<input class="textbox" type="text" size="70" name="course"><br><br>
                         จัดโดย :<input class="textsmall" type="text" name="organizer"> 
@@ -48,7 +52,7 @@
                     <fieldset>
                         <legend>ขออนุมัติสนับสนุนค่าใช้จ่าย</legend>
                         1.ค่าลงทะเบียน :<input class="textsmall" type="text" name="reg_expense"> บาท<br><br>
-                        2.ค่าใช้จ่ายในการเข้าร่วมอบรม/สัมมนา <input class="button" type="checkbox" name="inter" value="ON" />(กรณีสถานที่จัดอยู่ต่างจังหวัด/ต่างประเทศ) รวมเป็นเงิน:<input class="textsmall" type="text" size="4" name="inter_expense"> บาท<br><br>
+                        2.ค่าใช้จ่ายในการเข้าร่วมอบรม/สัมมนา <input class="check" type="checkbox" name="inter" value="ON" />(กรณีสถานที่จัดอยู่ต่างจังหวัด/ต่างประเทศ) รวมเป็นเงิน:<input class="textsmall" type="text" size="4" name="inter_expense"> บาท<br><br>
                         &nbsp;&nbsp;&nbsp;2.1 ค่าที่พัก :<input class="textmini" type="text" size="4" name="acc_night"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;คืน คืนละ : <input class="textmini" type="text" size="4" name="acc_each"> 
                         บาท เป็นเงิน : <input class="textmini" type="text" size="4" name="acc_sum"> บาท <input type="submit" value="คิดค่าที่พัก" name="cal" /><br><br>
                         &nbsp;&nbsp;&nbsp;2.2 ค่าเบี้ยเลี้ยง :<input class="textmini" type="text" size="4" name="allo_day"> วัน วันละ : <input class="textmini" type="text" size="4" name="allo_each"> 
@@ -61,8 +65,10 @@
                         ในปีงบประมาณ : <input class="textmini" type="text" size="10" value="YEAR 2559" name=""><br><br>
                         
 <!--..............................................Table...............................................-->
-                            
-<table id="myTableData"  border="1" cellpadding="2">
+<%!int count = 0; %>
+ 
+
+            <table id="myTableData"  border="1" width="800">
     <thead>
         <tr>
             <th><b>&nbsp;num&nbsp;</b></th>
@@ -73,23 +79,23 @@
             <th><b>&nbsp;lecture_date&nbsp;</b></th>
         </tr>
     </thead>
+    
     <tbody>
+
+    
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+
+            <c:forEach var="word" items="${sessionScope.sesHistoryUser}">
+                <td>${word}</td>
+                <% count = count + 1; %>
+                <% if(count == history.size()){ %> 
+                </tr>
+                <% } else if (count % 6 == 0 ) {%>
+                </tr> <tr>
+                <% } %>
+            </c:forEach>
+
+
         <tr>
             <td></td>
             <td></td>
@@ -143,7 +149,7 @@
        
 	
 	
-    <-script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'><-/script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
         <script src="js/index.js"></script>
 
