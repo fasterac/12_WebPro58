@@ -26,6 +26,8 @@
                   </tr>';
             }
         }
+        $connect->close();
+        
 
         echo '</tbody></table><br>';
         

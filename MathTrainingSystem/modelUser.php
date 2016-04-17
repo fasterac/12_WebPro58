@@ -24,6 +24,21 @@ class modelUser {
         $this->password = $password;
         $this->user_type = $user_type;
     }
+    
+    function callUser($user_id){
+        $this->connect = new connector();
+        $result = $this->connect->executeQuery('SELECT * FROM course WHERE course_id = \''. course_id .'\';');
+        if ($result->num_rows > 0){
+            $this->user_id = user_id;
+            $this->name = $result->fetch_assoc()['name'];
+            $this->surname = $result->fetch_assoc()['surname'];
+            $this->email = $result->fetch_assoc()['email'];
+            $this->username = $result->fetch_assoc()['username'];
+            $this->password = $result->fetch_assoc()['password'];
+            $this->user_type = $result->fetch_assoc()['user_type'];
+
+        }
+    }
 
     public function getPassword($username) {
         $this->connect = new connector();
@@ -52,7 +67,7 @@ class modelUser {
     public function insertNewUser(){
         $this->connect = new connector();
         $this->connect->executeUpdate('INSERT INTO user (user_id, firstname, lastname, email, username, password, user_type)'
-                . ' VALUES (' . $this->user_id . ',\''
+                . ' VALUES ( NULL, \''
                 . $this->name .'\',\''. $this->surname .'\',\''. $this->email. '\',\''.
                 $this->username.'\',\''. $this->password .'\',\''. $this->user_type . '\')');
         $this->connect->close();
@@ -70,7 +85,4 @@ class modelUser {
         $this->connect->close();
         return $returnaer;
     }
-
-
-
 }
