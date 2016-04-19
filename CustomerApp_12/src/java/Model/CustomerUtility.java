@@ -1,8 +1,14 @@
-package model;
+package Model;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Model.Customer;
 
 public class CustomerUtility {
     
@@ -12,30 +18,23 @@ public class CustomerUtility {
     public void init() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://database.it.kmitl.ac.th:3306/it_12";
-            String user = "it_12";
-            String pwd = "ust4Ht3Q";
-            conn = DriverManager.getConnection(url,user,pwd);
+            conn = DriverManager.getConnection("jdbc:mysql://database.it.kmitl.ac.th:3306/it_12", "it_12", "ust4Ht3Q");
             stmt = conn.createStatement();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CustomerUtility.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            Logger.getLogger(CustomerUtility.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(CustomerUtility.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public int insertData(String firstName, String lastName, String mobile, String email, String addr){
-        System.out.println("insert into CustomerMVC values('" + firstName + 
-               "','" + lastName + 
-               "','" + mobile + 
-               "','" + email + 
-               "'," + addr + ")");
+    public int insertData(Customer cus){
         String sqlCmd = 
-               "insert into CustomerMVC values('" + firstName + 
-               "','" + lastName + 
-               "','" + mobile + 
-               "','" + email + 
-               "'," + addr + ")";
+               "insert into mvccustomer values('" + cus.getFirstName() + 
+               "','" + cus.getLastName() + 
+                "','" + cus.getCompany()+ 
+               "','" + cus.getMobile() + 
+               "','" + cus.getEmail() + 
+               "'," + cus.getAddr() + "');";
        
         int num = 0;
         try {
