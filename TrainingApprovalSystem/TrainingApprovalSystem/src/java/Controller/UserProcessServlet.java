@@ -32,7 +32,7 @@ public class UserProcessServlet extends HttpServlet {
         user = (User) session.getAttribute("reqUser");
         
         if(forwarder.equals("CreateForm")){
-            his = history.getHistory(user.getUsername(), "2016-04-17");
+            his = history.getHistory(user.getUsername(), "2016-10-01");
             for (String word : his) {
                 System.out.println(word);
             }

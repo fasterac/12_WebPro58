@@ -38,14 +38,14 @@
                     
                     <fieldset>
                         <legend>รายละเอียด</legend>
-                        ชื่อ :<input class="textsmall" type="text" value="<%= user.getFirstname() %>" > 
-                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.reqUser.getLastname()}"> 
-                        ตำแหน่ง :<input class="textsmall" type="text" value="position"> <br><br>
+                        ชื่อ :<input class="textsmall" type="text" value="<%= user.getFirstname() %>" > <br>
+                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.reqUser.getLastname()}"> <br>
+                        ตำแหน่ง :<input class="textsmall" type="text" value="${sessionScope.reqUser.getType()}"> <br><br>
                         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<input class="textbox" type="text" size="70" name="course"><br><br>
-                        จัดโดย :<input class="textsmall" type="text" name="organizer"> 
+                        จัดโดย :<input class="textsmall" type="text" name="organizer"> <br>
                         สถานที่จัด :<input class="textsmall" type="text" name="location"><br><br>
-                        วันที่เริ่ม :<input class="textsmall" type="date" name="start_date"> 
-                        วันที่สิ้นสุด :<input class="textsmall" type="date" name="end_date"> 
+                        วันที่เริ่ม :<input class="textsmall" type="date" name="start_date"> <br>
+                        วันที่สิ้นสุด :<input class="textsmall" type="date" name="end_date"> <br>
                         <input type="submit" value="รวมวัน" name="cal" /> : <input class="textmini" type="text"  value="0"> วัน<br><br>
                     </fieldset><br><br>
                      

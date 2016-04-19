@@ -59,6 +59,15 @@ public class User {
     public String getLastname() {
         return lastname;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getType() {
+        return type;
+    }
+    
     
     
 }

@@ -1,5 +1,8 @@
+<%@page import="org.apache.catalina.connector.Connector"%>
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.*" %> 
+<%@page import="Utility.DataConnector" %>
+<%@page import="java.sql.ResultSet" %>
 <!DOCTYPE html>
 <html >
   <head>
@@ -26,15 +29,22 @@
                 	
 		
 <!--................................. CONTENT  FORM...................................................................-->  
+                     <%! User user = new User() ; %> 
+                    <% user = (User) session.getAttribute("reqUser"); %>
+                    <h1>Admin Page</h1> 
+                    <h2>Welcome ${sessionScope.reqUser.getFirstname()} ${sessionScope.reqUser.getLastname()}</h2>
+                    <!--<input class="button" type="submit" value="Logout" name="logout" />--> <br>
+                    <button type="submit" value="Logout" name="logout" id="login-button">Log Out</button><br><br>
+        
                     
-                    <h2>✎รายชื่อแบบฟอร์มสำหรับอนุมัติ<br><br></h2>
                     
                     <fieldset>
-            <%! User user = new User() ; %> 
-            <% user = (User) session.getAttribute("reqUser"); %>
-        <h1>Admin Page</h1> 
-        <h2>Welcome ${sessionScope.reqUser.getFirstname()} ${sessionScope.reqUser.getLastname()}</h2>
-        <input class="button" type="submit" value="Logout" name="logout" /> <br>
+                        <h2>✎รายชื่อแบบฟอร์มสำหรับอนุมัติ<br><br></h2>
+        
+        <%! DataConnector connect = new DataConnector(); %>
+        <%! ResultSet rs = connect.execute("SELECT * FROM form"); %>
+        <%! Expense expense = new Expense(); %>
+        <%! int triger = 0; %>
         
         <table border="1" width="850">
             <thead>
@@ -51,44 +61,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td>${sessionScope.reqUser.getFirstname()} ${sessionScope.reqUser.getLastname()}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><select name="status" >
-                            <option>pending</option>
+                <% while(rs.next()) { %>
+                <tr>                    
+                    <% expense.callExpense(rs.getInt("form_id")); %>
+                    <td><%= rs.getString("form_id") %></td>
+                    <td><%= user.getFirstname() %></td>
+                    <td><%= rs.getString("course") %></td>
+                    <td><%= rs.getString("start_date") %></td>
+                    <td><%= rs.getString("organizer") %></td>
+                    <td><%= rs.getString("location") %></td>
+                    <td><%= expense.getSum_expense() %></td>
+                    <%-- rs.getInt("status_id"); --%>
+                    <td><select name="status"  >
+                            <option selected="selected">pending</option>
                             <option>approved</option>
                             <option>reject</option>
-                            <option>cancle</option>
-                        </select></td>
-                    <td><input type="submit" value="confirm change" name="confirm" /></td>
+                            <option>cancle</option>                            
+                        </select></td>                        
+                    <td><button_mini type="submit" value="<%= rs.getInt("form_id")%>" name="confirm" id="login-button">Confirm</button_mini><!--<input type="submit" value="confirm change" name="confirm" />-->
+                    </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <% } %>
+                
             </tbody>
         </table>
         
@@ -111,4 +105,3 @@
     </form>
   </body>
 </html>
-

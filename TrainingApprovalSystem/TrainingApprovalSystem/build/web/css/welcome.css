@@ -93,7 +93,7 @@ Logo And Menu Styles Start
 .menu ul li {
 	float:left;
 	display:block;
-	width:90px;
+	width:130px;
 	height:44px;
 	line-height:44px;
 	text-align:center;
@@ -472,4 +472,24 @@ Copyrights Styles Start
 	background:url(../images/h-dots.png) repeat-x; 
 	height:2px; 
 	margin-top:-5px;
+}
+input[type=submit] {
+    -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: 0;
+  background-color: #666666;
+  border: 0;
+  padding: 10px 15px;
+  color: white;
+  border-radius: 3px;
+  width: 120px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-transition-duration: 0.25s;
+          transition-duration: 0.25s;
+}
+         
+input[type=submit]:hover {
+  background-color: #FF6666;
 }
