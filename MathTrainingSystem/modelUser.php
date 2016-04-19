@@ -27,7 +27,7 @@ class modelUser {
     
     function callUser($user_id){
         $this->connect = new connector();
-        $result = $this->connect->executeQuery('SELECT * FROM course WHERE course_id = \''. course_id .'\';');
+        $result = $this->connect->executeQuery('SELECT * FROM course WHERE course_id = \''. $user_id .'\';');
         if ($result->num_rows > 0){
             $this->user_id = user_id;
             $this->name = $result->fetch_assoc()['name'];

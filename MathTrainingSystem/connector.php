@@ -5,10 +5,10 @@
  * @author arm19
  */
 class connector {
-    private $servername = "127.0.0.1";
-    private $username = "admin_sys2";
-    private $password = "cmPxGOci4L";
-    private $dbname = "sys2";
+    private $servername = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $dbname = "isad";
     private $conn;
     
             

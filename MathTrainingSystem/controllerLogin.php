@@ -22,6 +22,9 @@ session_start();
             elseif ($role === 'instructor') {
                 header("Location: ./homeInstructor.php");
             }
+            elseif ($role === 'admin') {
+                header("Location: ./homeAdmin.php");
+            }
         }
         else{
             echo 'Wrong password' . $checkpass;

@@ -21,13 +21,13 @@ class modelCourse {
         $this->connect->executeUpdate('INSERT INTO course (course_id, course_name, course_description, course_created, instructor_id)'
                 . ' VALUES (NULL, \''
                 . $this->course_name .'\',\''. $this->course_description .
-                '\', CURRENT_TIMESTAMP ,'. $this->instructor_id . ')');
+                '\', CURRENT_TIMESTAMP ,\''. $this->instructor_id . '\')');
         $this->connect->close();
     }
     
     function callCourse($course_id){
         $this->connect = new connector();
-        $result = $this->connect->executeQuery('SELECT * FROM course WHERE course_id = \''. course_id .'\';');
+        $result = $this->connect->executeQuery('SELECT * FROM course WHERE course_id = \''. $course_id .'\';');
         if ($result->num_rows > 0){
             $this->course_id = $course_id;
             $this->course_name = $result->fetch_assoc()['course_name'];
@@ -35,6 +35,7 @@ class modelCourse {
             $this->course_created = $result->fetch_assoc()['course_created'];
             $this->instructor_id = $result->fetch_assoc()['instructor_id'];
         }
+        $this->connect->close();
     }
     
     function queryter($selector, $wherer){
