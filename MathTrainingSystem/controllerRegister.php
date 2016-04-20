@@ -13,12 +13,8 @@ include_once './modelUser.php';
         $newUser->createNewUser('NULL', $_POST['name'], $_POST['lastname'], $_POST['email']
                 ,$_POST['username'], $_POST['password'], 'student');
         $newUser->insertNewUser();
+        header("Location: ./registerSuccessful.php");
     }
-
-//    function echoer($word){
-//        return $word.'5555';
-//    }
-
-
-
-
+    elseif($_POST['subbutton'] === 'Back to login page'){
+        header("Location: ./login.php");
+    }

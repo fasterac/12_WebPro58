@@ -8,10 +8,10 @@
     <body>
         <h1> User Instructor Home Page  </h1>
         <?php
+        include_once './modelUser.php';
         include_once './modelCourse.php';
         include_once './connector.php';
         session_start();
-        $userid = $_SESSION['userid'];
         echo '<form action="controllerHomeIns.php" method="POST">';
         echo '<input type="submit" value="Create new course" name="subbut" /><br>';
         

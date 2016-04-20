@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/xampp/htdocs/test/MathTrainingSystem/homeAdmin.php</file>
+            <file>file:/C:/xampp/xampp/htdocs/test/MathTrainingSystem/selectCourse.php</file>
+            <file>file:/C:/xampp/xampp/htdocs/test/MathTrainingSystem/home.php</file>
+            <file>file:/C:/xampp/xampp/htdocs/test/MathTrainingSystem/controllerLogin.php</file>
+            <file>file:/C:/xampp/xampp/htdocs/test/MathTrainingSystem/controllerSelectCourse.php</file>
             <file>file:/C:/xampp/xampp/htdocs/test/MathTrainingSystem/login.php</file>
         </group>
     </open-files>

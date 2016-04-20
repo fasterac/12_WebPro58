@@ -1,16 +1,19 @@
 <?php
 include_once './modelCourse.php';
+include_once './modelUser.php';
 include_once './connector.php';
 session_start();
-$userid = $_SESSION['userid'];
+$user = new modelUser();
+$user = $_SESSION['sesuser'];
 
     if($_POST['subbut'] === 'Logout'){
+        session_destroy();
         header("Location: ./login.php");
     }
     else if($_POST['subbut'] === 'Create course'){
         //insert to db
         $course = new modelCourse();
-        $course->createNewCourse('NULL', $_POST['coursename'], $_POST['description'], NULL, $userid);
+        $course->createNewCourse($_POST['coursename'], $_POST['description'], $user->getUser_id());
         $course->insertNewCourse();
         echo '<form action="controllerHomeIns.php" method="POST">'
         . 'Create course sussessful<br>';
@@ -18,17 +21,15 @@ $userid = $_SESSION['userid'];
     
     }
     else if($_POST['subbut'] === 'Create new course'){
-        $_SESSION['userid'] = $userid;
+        $_SESSION['sesuser'] = $user;
         header("Location: ./newCourse.php");
     }
     
     else if($_POST['subbut'] === 'Back to home'){
-        $_SESSION['userid'] = $userid;
         header("Location: ./homeInstructor.php");
     }
     
     else if($_POST['subbut'] === 'all course'){
-        $_SESSION['userid'] = $userid;
         countcouse();
         
         //header("Location: ./homeInstructor.php");
@@ -44,4 +45,5 @@ $userid = $_SESSION['userid'];
                 echo $row['course_name'] . '<br>';
             }
         }
+        $connect->close();
     }

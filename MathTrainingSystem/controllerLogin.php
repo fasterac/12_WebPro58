@@ -11,11 +11,13 @@ session_start();
         $user = new modelUser();
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $checkpass = $user->getPassword($username);
+        $checkpass = $user->checkPassword($username);
         if ($checkpass === $password){
-            $userid = $user->getUser_id($username);
-            $role = $user->getUser_type($username);
-            $_SESSION['userid'] = $userid;
+            $userid = $user->checkUser_id($username);
+            echo $userid;
+            $user->callUser($userid);
+            $_SESSION['sesuser'] = $user;
+            $role = $user->getUser_type();
             if($role === 'student') {                
                 header("Location: ./home.php");
             }
