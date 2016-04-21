@@ -18,3 +18,11 @@ include_once './modelUser.php';
     elseif($_POST['subbutton'] === 'Back to login page'){
         header("Location: ./login.php");
     }
+
+//    function echoer($word){
+//        return $word.'5555';
+//    }
+
+
+
+

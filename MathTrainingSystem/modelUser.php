@@ -85,9 +85,6 @@ class modelUser {
         return $returnaer;
     }
     
-    function getUser_id2() {
-        return $this->user_id;
-    }
     
     function getName() {
         return $this->name;

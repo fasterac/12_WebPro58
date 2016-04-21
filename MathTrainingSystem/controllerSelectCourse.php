@@ -17,6 +17,9 @@ $parti = new modelParticipant();
     elseif($_POST['subbut'] === 'Confirm Selection'){
         header("Location: ./home.php");
     }
+    elseif($_POST['subbut'] === 'Back to Home'){
+        header("Location: ./home.php");
+    }
     
 $connect = new connector();
 $result = $connect->executeQuery("SELECT * FROM course;");
