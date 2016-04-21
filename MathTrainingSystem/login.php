@@ -20,7 +20,7 @@
             font-family: 'Cordia New';
         }
 
-        body.container {
+        div.container {
             padding-top: 70px;
         }
     </style>
