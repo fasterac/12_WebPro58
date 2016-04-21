@@ -22,9 +22,9 @@
             <!-- add action="controllerLogin.php" from original login form -> login.php -->
 			<form action="controllerLogin.php" class="form-horizontal" role="form" method="POST">
 				<div class="form-group">
-					 <!-- input email-->
+					 <!-- input username-->
 					<label for="inputEmail3" class="col-sm-4 control-label">
-						Email
+						Username
 					</label>
 					<div class="col-sm-5">
 						<!-- add name="username" for $_POST["username"] matching in controllerLogin.php from original login form -->
