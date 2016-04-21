@@ -1,9 +1,10 @@
 <?php
 
 class modelExamSet {
-    private $exset_id, $exset_sum, $ex_timer, $lanch_time, $stop_time, $course_id;
+    private $exset_id, $exset_name, $exset_sum, $ex_timer, $lanch_time, $stop_time, $course_id;
     
-    function createNewExamSet($exset_sum, $ex_timer, $lanch_time, $stop_time, $course_id) {
+    function createNewExamSet($exset_name, $exset_sum, $ex_timer, $lanch_time, $stop_time, $course_id) {
+        $this->exset_name = $exset_name;
         $this->exset_sum = $exset_sum;
         $this->ex_timer = $ex_timer;
         $this->lanch_time = $lanch_time;
@@ -13,8 +14,8 @@ class modelExamSet {
     
     function insertNewExamSet(){
         $this->connect = new connector();
-        $this->connect->executeUpdate('INSERT INTO examset (exset_sum, ex_timer, lanch_time, stop_time, course_id)'
-                . ' VALUES (\'' . $this->exset_sum .'\',\''
+        $this->connect->executeUpdate('INSERT INTO examset (exset_name, exset_sum, ex_timer, lanch_time, stop_time, course_id)'
+                . ' VALUES (\'' . $this->exset_name .'\',\'' . $this->exset_sum .'\',\''
                 . $this->ex_timer .'\',\'CURRENT_TIMESTAMP \',\''. $this->stop_time .
                 '\',\'' .$this->course_id .'\')');
         $this->connect->close();
@@ -26,6 +27,7 @@ class modelExamSet {
         if ($result->num_rows > 0){
             $row = $result->fetch_assoc();
                 $this->exset_id = $exset_id;
+                $this->exset_name = $row["exset_name"];
                 $this->exset_sum = $row["exset_sum"];
                 $this->ex_timer = $row['ex_timer'];
                 $this->lanch_time = $row['lanch_time'];
@@ -36,8 +38,9 @@ class modelExamSet {
         $this->connect->close();
     }
     
-    function createFullExamSet($exset_id, $exset_sum, $ex_timer, $lanch_time, $stop_time, $course_id) {
+    function createFullExamSet($exset_id, $exset_name, $exset_sum, $ex_timer, $lanch_time, $stop_time, $course_id) {
         $this->exset_id = $exset_id;
+        $this->exset_name = $exset_name;
         $this->exset_sum = $exset_sum;
         $this->ex_timer = $ex_timer;
         $this->lanch_time = $lanch_time;

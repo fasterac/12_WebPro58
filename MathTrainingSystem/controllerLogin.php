@@ -29,7 +29,7 @@ session_start();
             }
         }
         else{
-            echo 'Wrong password' . $checkpass;
-        
+            session_destroy();
+            header("Location: ./login.php");
         }
     }

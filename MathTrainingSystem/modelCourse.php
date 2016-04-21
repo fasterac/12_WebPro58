@@ -47,5 +47,23 @@ class modelCourse {
         $connect->close();
         return $returner."";
     }
+    
+    
+    function getCourse_id() {
+        return $this->course_id;
+    }
+
+    function getCourse_name() {
+        return $this->course_name;
+    }
+
+    function getCourse_description() {
+        return $this->course_description;
+    }
+
+    function getInstructor_id() {
+        return $this->instructor_id;
+    }
+
 
 }

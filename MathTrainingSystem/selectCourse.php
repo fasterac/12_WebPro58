@@ -9,15 +9,16 @@
         
         <?php
         include_once './modelUser.php';
+        include_once './modelCourse.php';
+        include_once './connector.php';
         session_start();
         $user = new modelUser();
         $user = $_SESSION['sesuser'];
         
-        include_once './modelCourse.php';
-        include_once './connector.php';
         
         echo '<form action="controllerSelectCourse.php" method="POST">';
-        echo $user->getName(). $user->getSurname().'<input type="submit" value="Logout" name="subbut" /><br>';
+        echo 'Welcome'.$user->getName().' '. $user->getSurname().'<input type="submit" value="Logout" name="subbut" /><br>'
+                . '<input type="submit" value="Back to Home" name="subbut" /><br><br>';
         
         $connect = new connector();
         $result = $connect->executeQuery("SELECT * FROM course;");
@@ -29,9 +30,10 @@
             }
         }
         $connect->close();
-        echo '<input type="submit" value="Confirm Selection" name="subbut" />'
+        echo '<br><input type="submit" value="Confirm Selection" name="subbut" />'
         . '</form>';
         
+        //chece is user has been in this course
         function inCourse($course_id, $user_id){
             $connect = new connector();
             $rs = $connect->executeQuery("SELECT course_id FROM participant where student_id = '". $user_id .'\';');

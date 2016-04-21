@@ -5,11 +5,11 @@
  * @author arm19
  */
 class connector {
-	private $servername = "127.0.0.1";
-	private $username = "admin_sys2";
-	private $password = "cmPxGOci4L";
-	private $dbname = "sys2";
-	private $conn;
+    private $servername = "127.0.0.1";
+    private $username = "admin_sys2";
+    private $password = "cmPxGOci4L";
+    private $dbname = "sys2";
+    private $conn;
     
             
     function __construct() {

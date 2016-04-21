@@ -6,26 +6,23 @@ class modelContent {
     
     
     
-    function createNewContent($content_id, $content_name, $content_file, $content_created, $course_id) {
-        $this->content_id = $content_id;
+    function createNewContent($content_name, $content_file, $course_id) {
         $this->content_name = $content_name;
         $this->content_file = $content_file;
-        $this->content_created = $content_created;
         $this->course_id = $course_id;
     }
     
     function insertNewContent(){
         $connect = new connector();
-        $connect->executeUpdate('INSERT INTO course (content_id, content_name, content_file, content_created, course_id)'
-                . ' VALUES (NULL, \''
-                . $this->content_name .'\',\''. $this->content_file .
-                '\', CURRENT_TIMESTAMP ,'. $this->course_id . ')');
+        $connect->executeUpdate('INSERT INTO content ( content_name, content_file, course_id)'
+                . ' VALUES (\'' . $this->content_name .'\',\''. $this->content_file 
+                . '\',\''. $this->course_id . '\');');
         $connect->close();
     }
     
     function callContent($content_id){
         $connect = new connector();
-        $result = $connect->executeQuery('SELECT * FROM course WHERE content_id = \''. $content_id .'\';');
+        $result = $connect->executeQuery('SELECT * FROM content WHERE content_id = \''. $content_id .'\';');
         if ($result->num_rows > 0){
             $this->course_id = $content_id;
             $this->content_name = $result->fetch_assoc()['content_name'];
@@ -33,5 +30,13 @@ class modelContent {
             $this->content_created = $result->fetch_assoc()['content_created'];
             $this->course_id = $result->fetch_assoc()['course_id'];
         }
+    }
+    
+    function createFullContent($content_id, $content_name, $content_file, $content_created, $course_id) {
+        $this->content_id = $content_id;
+        $this->content_name = $content_name;
+        $this->content_file = $content_file;
+        $this->content_created = $content_created;
+        $this->course_id = $course_id;
     }
 }

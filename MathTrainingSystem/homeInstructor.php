@@ -12,27 +12,46 @@
         include_once './modelCourse.php';
         include_once './connector.php';
         session_start();
+        
+        $user = new modelUser();
+        $user = $_SESSION['sesuser'];
+        
+//        psudofilter
+//        if($_SESSION === null or $user == NULL or $user->getUser_type()==NULL){
+//            session_destroy();
+//            header("Location: ./login.php");
+//        }
+        
         echo '<form action="controllerHomeIns.php" method="POST">';
+        echo 'Welcome'.$user->getName().' '. $user->getSurname().'<input type="submit" value="Logout" name="subbut" /><br>';
         echo '<input type="submit" value="Create new course" name="subbut" /><br>';
         
-        //echo all course
+        echo '-----------------your course---------------------<br>';
+        //-~up course that this teacher created
         $connect = new connector();
-        $result = $connect->executeQuery("SELECT * FROM course");
-        echo '<table><tbody>';
+        $result = $connect->executeQuery('SELECT * FROM course WHERE instructor_id =\''. $user->getUser_id(). '\';');        
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {                
-                echo '<tr>
-                        <td><input type="submit" value="'.$row['course_name'] .'" /><br></td>
-                  </tr>';
+                echo '<input type="submit" name="courseInstructor" value="'.$row['course_name'] .'" /><br>';
             }
         }
         $connect->close();
         
-
-        echo '</tbody></table><br>';
+        echo '-----------------other course---------------------<br>';
+        //echo all course
+        $connect = new connector();
+        $result = $connect->executeQuery('SELECT * FROM course WHERE instructor_id !=\''. $user->getUser_id(). '\';');
+        
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {                
+                echo '<input type="submit" name="course" value="'.$row['course_name'] .'" /><br>';
+            }
+        }
+        
+$connect->close();
+        echo '<br></form>';
         
         
-        echo '<input type="submit" value="Logout" name="subbut" />';
         ?>
     </body>
 </html>

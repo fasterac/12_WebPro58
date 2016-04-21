@@ -15,8 +15,11 @@
         
         $user = new modelUser();
         $user = $_SESSION['sesuser'];
+        $course = new modelCourse();
+        
+        //header
         echo '<form action="controllerHome.php" method="POST">';
-        echo  $user->getName(). $user->getSurname().'<input type="submit" value="Logout" name="subbut" />'
+        echo 'Welcome '.$user->getName().' '. $user->getSurname().'<input type="submit" value="Logout" name="subbut" /><br>'
                 . '<br><input type="submit" value="Select new course" name="subbut" /><br>';
         
         
@@ -24,12 +27,12 @@
         //call all parti course
         $connect = new connector();
         $result = $connect->executeQuery("SELECT course_id FROM participant where student_id = '". $user->getUser_id() .'\';');
-        echo '<table><tbody>';
         if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {                
-                echo '<tr>
-                        <td><input type="submit" value="'.$row['course_id'] .'" /><br></td>
-                  </tr>';
+            while($row = $result->fetch_assoc()) {
+                $course->callCourse($row['course_id']);
+                echo '<input type="submit" name="course" value="'.$row['course_id'] .'" >'.$course->getCourse_name().'</input><br>
+                            '.$course->getCourse_description().'<br>'
+                        . '&nbsp; Teacher: '. $course->getInstructor_id().'<br><br>';
             }
         }
         $connect->close();
