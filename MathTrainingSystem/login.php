@@ -7,35 +7,17 @@
 
     <title>E-learning Mathematics</title>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
-
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
   </head>
 
-    <style>
-        body {
-            font-family: 'TH SarabunPSK';
-        }
-
-        div.container {
-            padding-top: 70px;
-        }
-    </style>
-
-
   <body>
-
   	<div class="container">
 	<div class="row">
 		<div class="col-md-12">
 		<!--Login-->
 			<center>
-			<h1>
-				>> Login
-			</h1>
+                <h1>>> Login</h1>
 			</center>
             <!-- add action="controllerLogin.php" from original login form -> login.php -->
 			<form action="controllerLogin.php" class="form-horizontal" role="form" method="POST">
@@ -70,14 +52,14 @@
 				<div class="form-group">
 					<div class="col-sm-offset-4 col-sm-5">
                         <!-- add name="subbutton", value="login" for $_POST["subbutton"] matching in controller.php from original login form -->
-						<button type="submit" class="btn btn-default">
+						<button type="submit" name="subbutton" value="Login" class="btn btn-default">
 							Login
 						</button>
                         <!--
                             add additional button for register
                             name="subbutton", value="register" for $_POST["subbutton"] matching in controller.php from original login form
                         -->
-                        <button type="submit" class="btn btn-default">
+                        <button type="submit" name="subbutton" value="Register" class="btn btn-default">
                             Register
                         </button>
 					</div>
@@ -87,24 +69,32 @@
 
 			<!--Bar-->
 			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-				<div class="navbar-header">
-					 
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-					</button> <a class="navbar-brand" href="#"> สัญลักษณ์ IT ระบบฝึกทักษะทางคณิตศาสตร์</a>
-				</div>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-5">
-					<ul class="nav navbar-nav navbar-right">
-						<li class="active">
-							<a href="#">home</a>
-						</li>
-						<li>
-							<a href="#">login</a>
-						</li>
-					</ul>
+				<div class="container-fluid">
 
-				</div>
-				
+                    <!-- navbar header -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#"> สัญลักษณ์ IT ระบบฝึกทักษะทางคณิตศาสตร์</a>
+                    </div> <!-- end navbar header -->
+
+                    <!-- navbar menu -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="active">
+                                <a href="#">home</a>
+                            </li>
+                            <li>
+                                <a href="#">login</a>
+                            </li>
+                        </ul>
+                    </div> <!-- end navbar menu -->
+
+                </div>
 			</nav>
 		</div>
 	</div>
