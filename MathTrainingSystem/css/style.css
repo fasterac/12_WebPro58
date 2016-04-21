@@ -1,0 +1,9 @@
+@import url('../fonts/thsarabunnew.css');
+
+body {
+    font-family: 'THSarabunNew', sans-serif;
+}
+
+body > div.container {
+    padding-top: 70px;
+}
