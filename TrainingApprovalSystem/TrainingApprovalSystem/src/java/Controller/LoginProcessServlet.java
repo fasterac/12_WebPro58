@@ -30,7 +30,7 @@ public class LoginProcessServlet extends HttpServlet {
         
         String role = "";
         role = connector.execute(("SELECT * FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
-        
+        connector.closeConnection();
         
         
         if (role.equals("admin")) {

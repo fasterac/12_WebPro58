@@ -31,6 +31,7 @@ public class GodServlet extends HttpServlet {
         else if(request.getParameter("exec").equals("executeQuery(Stringsql)")){
             rs = connector.execute(request.getParameter("sqlexec"));
         }
+        ;
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println(request.getParameter("sqlexec") + "<br>");
@@ -54,6 +55,7 @@ public class GodServlet extends HttpServlet {
                 }
             }
         }
+        connector.closeConnection();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -40,11 +40,13 @@ public class User {
         }catch(SQLException ex){
             ex.printStackTrace();
         }
+        connector.closeConnection();
     }
     
     public String getPosition(){
         DataConnector connector = new DataConnector();
         String posi = connector.execute("SELECT position FROM it_12.teacher WHERE teacher_id = '"+ this.user_id + "';", "position");
+        connector.closeConnection();
         return posi;
     }
 

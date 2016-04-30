@@ -1,4 +1,3 @@
-<%@page import="org.apache.catalina.connector.Connector"%>
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.*" %> 
 <%@page import="Utility.DataConnector" %>
@@ -101,7 +100,7 @@
         <script src="js/index.js"></script>
 
     
-    
+    <% connect.closeConnection(); %>
     </form>
   </body>
 </html>
