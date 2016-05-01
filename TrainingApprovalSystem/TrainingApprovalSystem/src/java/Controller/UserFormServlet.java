@@ -35,7 +35,17 @@ public class UserFormServlet extends HttpServlet {
         HttpSession session = request.getSession();
         user = (User) session.getAttribute("reqUser");
         
-        if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {inter = 1;}
+        if(request.getParameter("course") != null || request.getParameter("organizer") != null || request.getParameter("location") != null || 
+                request.getParameter("start_date") != null || request.getParameter("end_date") != null || 
+                request.getParameter("reg_expense") != null || request.getParameter("inter_expense") != null || request.getParameter("acc_night") != null || 
+                request.getParameter("acc_each") != null || request.getParameter("acc_sum") != null || request.getParameter("allo_day") != null || 
+                request.getParameter("allo_each") != null || request.getParameter("allo_sum") != null || request.getParameter("traveling") != null || 
+                request.getParameter("improvement") != null || request.getParameter("improvement_period") != null || request.getParameter("improvement_evident_period") != null  ){
+            RequestDispatcher dispatch = request.getRequestDispatcher("ApprovalForm.jsp");
+            dispatch.forward(request, response);
+        }
+        
+        else if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {inter = 1;}
         form.createForm(user.getUsername(), request.getParameter("course"), request.getParameter("organizer"), 
                 request.getParameter("location"), request.getParameter("start_date"), request.getParameter("end_date"), 0, inter);
         
