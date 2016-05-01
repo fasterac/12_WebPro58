@@ -162,6 +162,27 @@
             $("#cal_eat_cost").click(function() {
                 $("#eat_total").val($("#eat_day").val() * $("#eat_cost").val());
             });
+            
+            $("form").submit(function(e) {
+                var event = e;
+                var flag = false;
+                $("form input").each(function() {
+                    if($(this).val().trim() == "") {
+                        flag = true;
+                        return;
+                    }
+                });
+                $("form textarea").each(function() {
+                    if($(this).val().trim() == "") {
+                        flag = true;
+                        return;
+                    }
+                });
+                if(flag) {
+                    event.preventDefault();
+                    alert("กรุณากรอกฟอร์มให้ครบ");
+                }
+            });
         });
     </script>
 
