@@ -17,8 +17,8 @@ public class AdminProcessServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         if(request.getParameter("logout").equals("Logout")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("index.html");            
-            dispatch.forward(request, response);
+            response.sendRedirect("index.html");
+
             
         try (PrintWriter out = response.getWriter()) {
             

@@ -38,7 +38,7 @@
                         <legend>รายละเอียด</legend>
                         ชื่อ :<input class="textsmall" type="text" value="<%= user.getFirstname()%>" > <br>
                         นามสกุล :<input class="textsmall" type="text" value="${sessionScope.reqUser.getLastname()}"> <br>
-                        ตำแหน่ง :<input class="textsmall" type="text" value="${sessionScope.reqUser.getType()}"> <br><br>
+                        ตำแหน่ง :<input class="textsmall" type="text" value=""> <br><br>
                         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<input class="textbox" type="text" size="70" name="course"><br><br>
                         จัดโดย :<input class="textsmall" type="text" name="organizer"> <br>
                         สถานที่จัด :<input class="textsmall" type="text" name="location"><br><br>
@@ -62,7 +62,7 @@
 
                     <fieldset>
                         <legend>การเข้าร่วมอบรม/สัมมนา</legend>
-                        ในปีงบประมาณ : <input class="textmini" type="text" size="10" value="YEAR 2559" name=""><br><br>
+                        ในปีงบประมาณ : <input class="textmini" type="text" size="10" value="2559" name="" disabled="disabled"><br><br>
 
                         <!--..............................................Table...............................................-->
                         <%!int count = 0;%>

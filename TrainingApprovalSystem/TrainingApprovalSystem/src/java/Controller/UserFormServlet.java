@@ -41,8 +41,7 @@ public class UserFormServlet extends HttpServlet {
                 request.getParameter("acc_each") != null || request.getParameter("acc_sum") != null || request.getParameter("allo_day") != null || 
                 request.getParameter("allo_each") != null || request.getParameter("allo_sum") != null || request.getParameter("traveling") != null || 
                 request.getParameter("improvement") != null || request.getParameter("improvement_period") != null || request.getParameter("improvement_evident_period") != null  ){
-            RequestDispatcher dispatch = request.getRequestDispatcher("ApprovalForm.jsp");
-            dispatch.forward(request, response);
+            response.sendRedirect("ApprovalForm.jsp");
         }
         
         else if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {inter = 1;}
@@ -63,8 +62,7 @@ public class UserFormServlet extends HttpServlet {
         
         if (request.getParameter("knowsub") != null && !request.getParameter("knowsub").isEmpty()) {
             if(request.getParameter("knowsub").equals("knowsub")){
-                RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
-                dispatch.forward(request, response);
+                response.sendRedirect("UserMainPage.jsp");
             }
         }
 

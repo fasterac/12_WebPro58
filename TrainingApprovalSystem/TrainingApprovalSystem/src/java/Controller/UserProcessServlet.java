@@ -40,14 +40,12 @@ public class UserProcessServlet extends HttpServlet {
             
             
             session.setAttribute("sesHistoryUser", his);
-
-            RequestDispatcher dispatch = request.getRequestDispatcher("ApprovalForm.jsp");
-            dispatch.forward(request, response);
+            
+            response.sendRedirect("ApprovalForm.jsp");
         }
         
         if(forwarder.equals("Logout")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("index.html");
-            dispatch.forward(request, response);
+            response.sendRedirect("index.html");
         
         
         try (PrintWriter out = response.getWriter()) {

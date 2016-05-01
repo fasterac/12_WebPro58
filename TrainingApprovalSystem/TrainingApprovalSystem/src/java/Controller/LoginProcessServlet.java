@@ -37,23 +37,20 @@ public class LoginProcessServlet extends HttpServlet {
             User user = new User();
             user.callUser(username);
             session.setAttribute("reqUser", user);
-            RequestDispatcher dispatch = request.getRequestDispatcher("AdminMainPage.jsp");
-            dispatch.forward(request, response);
+            response.sendRedirect("AdminMainPage.jsp");
         }
         else if(role.equals("user")){
             User user = new User();
             user.callUser(username);
             session.setAttribute("reqUser", user);
-            RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
-            dispatch.forward(request, response);
+            response.sendRedirect("UserMainPage.jsp");
         }
 //        else if((request.getParameter("god mode")).equals("GOD MODE!")){
 //            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
 //            dispatch.forward(request, response);
 //        }
         else{
-            RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
-            dispatch.forward(request, response);
+            response.sendRedirect("index.jsp");
         }
         
         
