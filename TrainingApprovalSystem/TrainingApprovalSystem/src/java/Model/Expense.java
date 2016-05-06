@@ -93,6 +93,50 @@ public class Expense {
     public double getSum_expense() {
         return sum_expense;
     }
+
+    public double getReg_expense() {
+        return reg_expense;
+    }
+
+    public double getInter_expense() {
+        return inter_expense;
+    }
+
+    public double getAcc_each() {
+        return acc_each;
+    }
+
+    public double getAcc_sum() {
+        return acc_sum;
+    }
+
+    public double getAllo_each() {
+        return allo_each;
+    }
+
+    public double getAllo_sum() {
+        return allo_sum;
+    }
+
+    public double getTraveling() {
+        return traveling;
+    }
+
+    public int getAllo_day() {
+        return allo_day;
+    }
+
+    public int getAcc_night() {
+        return acc_night;
+    }
+
+    public int getExpense_id() {
+        return expense_id;
+    }
+
+    public int getForm_id() {
+        return form_id;
+    }
     
     
 

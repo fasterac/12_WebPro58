@@ -63,5 +63,27 @@ public class Knowledge {
         connector.closeConnection();
         return lastID;
     }
+
+    public String getImprovement() {
+        return improvement;
+    }
+
+    public String getImperiod() {
+        return imperiod;
+    }
+
+    public String getImevi() {
+        return imevi;
+    }
+
+    public int getKnowledge_id() {
+        return knowledge_id;
+    }
+
+    public int getForm_id() {
+        return form_id;
+    }
+    
+    
     
 }

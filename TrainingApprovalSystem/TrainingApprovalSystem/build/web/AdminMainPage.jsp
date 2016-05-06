@@ -28,10 +28,10 @@
                 	
 		
 <!--................................. CONTENT  FORM...................................................................-->  
-                     <%! User user = new User() ; %> 
-                    <% user = (User) session.getAttribute("reqUser"); %>
+                    <%! User user = new User() ; %> 
+                    <% user = (User) session.getAttribute("sesUser"); %>
                     <h1>Admin Page</h1> 
-                    <h2>Welcome ${sessionScope.reqUser.getFirstname()} ${sessionScope.reqUser.getLastname()}</h2>
+                    <h2>Welcome ${sessionScope.sesUser.getFirstname()} ${sessionScope.sesUser.getLastname()}</h2>
                     <!--<input class="button" type="submit" value="Logout" name="logout" />--> <br>
                     <button type="submit" value="Logout" name="logout" id="login-button">Log Out</button><br><br>
         
@@ -40,10 +40,7 @@
                     <fieldset>
                         <h2>✎รายชื่อแบบฟอร์มสำหรับอนุมัติ<br><br></h2>
         
-        <%! DataConnector connect = new DataConnector(); %>
-        <%! ResultSet rs = connect.execute("SELECT * FROM form"); %>
-        <%! Expense expense = new Expense(); %>
-        <%! int triger = 0; %>
+        
         
         <table border="1" width="850">
             <thead>
@@ -59,12 +56,18 @@
                     <th>confirm</th>
                 </tr>
             </thead>
+            <%-- error rs.next has close conn
+            must get rid callexpanse and use join in query--%>
+            <%! DataConnector connect = new DataConnector(); %>
+            <%! ResultSet rs = connect.execute("SELECT * FROM form"); %>
+            <%! Expense expense = new Expense(); %>
+            <%! int triger = 0; %>
             <tbody>
                 <% while(rs.next()) { %>
                 <tr>                    
                     <% expense.callExpense(rs.getInt("form_id")); %>
-                    <td><%= rs.getString("form_id") %></td>
-                    <td><%= user.getFirstname() %></td>
+                    <td><button type="submit" value="<%= rs.getString("form_id") %>" name="seeform"><%= rs.getString("form_id") %></button</td>
+                    <td> call and getFirstname</td>
                     <td><%= rs.getString("course") %></td>
                     <td><%= rs.getString("start_date") %></td>
                     <td><%= rs.getString("organizer") %></td>
@@ -74,10 +77,10 @@
                     <td><select name="status"  >
                             <option selected="selected">pending</option>
                             <option>approved</option>
-                            <option>reject</option>
-                            <option>cancle</option>                            
+                            <option>rejected</option>
+                            <option>cancled</option>                            
                         </select></td>                        
-                    <td><button_mini type="submit" value="<%= rs.getInt("form_id")%>" name="confirm" id="login-button">Confirm</button_mini><!--<input type="submit" value="confirm change" name="confirm" />-->
+                    <td><button type="submit" value="<%= rs.getInt("form_id")%>" name="confirm" id="login-button">Confirm</button><!--<input type="submit" value="confirm change" name="confirm" />-->
                     </td>
                 </tr>
                 <% } %>

@@ -21,10 +21,6 @@ public class UserFormServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-//        ArrayList paralist = new ArrayList();
-//        paralist.addAll(Arrays.asList("course", "location", "start_date", "end_date", "sum_date", 
-//                "", "", "", "", "", "", "", "", "", 
-//                "", "", "", ));
         User user = new User();
         Form form = new Form();
         Expense expense = new Expense();
@@ -33,7 +29,7 @@ public class UserFormServlet extends HttpServlet {
         int inter = 0;
         
         HttpSession session = request.getSession();
-        user = (User) session.getAttribute("reqUser");
+        user = (User) session.getAttribute("sesUser");
         
         if(request.getParameter("course") != null || request.getParameter("organizer") != null || request.getParameter("location") != null || 
                 request.getParameter("start_date") != null || request.getParameter("end_date") != null || 

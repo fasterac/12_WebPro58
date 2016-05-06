@@ -105,6 +105,45 @@ public class Form {
         return start_date;
     }
 
+    public int getStatus_id() {
+        return status_id;
+    }
+
+    public int getInter_id() {
+        return inter_id;
+    }
+
+    public int getSum_date() {
+        return sum_date;
+    }
+
+    public String getForm_date() {
+        return form_date;
+    }
+
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    //for admin use
+    public void setStatus_id_FromName(String status_name) {
+        DataConnector connector = new DataConnector();
+        String statusId = connector.execute(("SELECT status_id FROM status WHERE status_name = '"+ status_name +  "';"), "status_id");
+        String sql = "UPDATE form SET status_id='"+ statusId +"' WHERE form_id='" + this.form_id + "';";
+        if(connector.update(sql) == 0) {
+            System.out.println("update Status successful");
+        }
+        connector.closeConnection();
+    }
+
     
     
     

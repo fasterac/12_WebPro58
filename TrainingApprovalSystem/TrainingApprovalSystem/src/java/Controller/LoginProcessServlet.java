@@ -36,20 +36,18 @@ public class LoginProcessServlet extends HttpServlet {
         if (role.equals("admin")) {
             User user = new User();
             user.callUser(username);
-            session.setAttribute("reqUser", user);
+            session.setAttribute("sesUser", user);
             response.sendRedirect("AdminMainPage.jsp");
         }
         else if(role.equals("user")){
             User user = new User();
             user.callUser(username);
-            session.setAttribute("reqUser", user);
+            session.setAttribute("sesUser", user);
             response.sendRedirect("UserMainPage.jsp");
         }
-//        else if((request.getParameter("god mode")).equals("GOD MODE!")){
-//            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
-//            dispatch.forward(request, response);
-//        }
         else{
+            String loginErrorMassage = "Wrong Username or Password";
+            session.setAttribute("sesLoginMassage", loginErrorMassage);
             response.sendRedirect("index.jsp");
         }
         

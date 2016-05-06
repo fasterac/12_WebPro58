@@ -18,12 +18,15 @@
 
     <body onload="load()">
         <form action="UserFormServlet" method="POST">
+            
             <div class="wrapper">
-
+                <jsp:include page="Header.jsp"></jsp:include>
+                
+                
 
                 <div class="box">
                     <%! User user = new User(); %> 
-                    <% user = (User) session.getAttribute("reqUser"); %>
+                    <% user = (User) session.getAttribute("sesUser"); %>
                     <%! ArrayList<String> history = new ArrayList<>(); %> 
                     <% history = (ArrayList<String>) session.getAttribute("sesHistoryUser");%>
 
@@ -37,7 +40,7 @@
                     <fieldset>
                         <legend>รายละเอียด</legend>
                         ชื่อ :<input class="textsmall" type="text" value="<%= user.getFirstname()%>" > <br>
-                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.reqUser.getLastname()}"> <br>
+                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.sesUser.getLastname()}"> <br>
                         ตำแหน่ง :<input class="textsmall" type="text" value=""> <br><br>
                         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<input class="textbox" type="text" size="70" name="course"><br><br>
                         จัดโดย :<input class="textsmall" type="text" name="organizer"> <br>
@@ -81,10 +84,7 @@
                             </thead>
 
                             <tbody>
-
-
                                 <tr>
-
                                     <c:forEach var="word" items="${sessionScope.sesHistoryUser}">
                                         <td>${word}</td>
                                         <% count = count + 1; %>
@@ -94,16 +94,6 @@
                                 </tr> <tr>
                                 <% }%>
                             </c:forEach>
-
-
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
                     </tbody>
                 </table>
 
@@ -121,7 +111,7 @@
                 &nbsp;&nbsp;&nbsp;3.2 ระยะเวลาที่ใช้ในการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม ภายหลังเข้าร่วมอบรม/สัมมนา (ไม่เกิน 1 ปี): <br>
                 <textarea name="improvement_period" rows="4" cols="100"></textarea><br><br>
                 &nbsp;&nbsp;&nbsp;3.3 ระยะเวลาการส่งเอกสารหลักฐานอ้างอิงการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม (ไม่เกิน 1 ปี): <br>
-                <textarea name="improvement_evident_period" rows="4" cols="100"></textarea><br><br><br><br>
+                <textarea name="improvement_evident_period" rows="4" cols="100"></textarea><br><br><br>
                 <small>
                     หมายเหตุ* เอกสารหลักฐานอ้างอิง ตามข้อ 3.3 <br>
                     &nbsp;&nbsp;&nbsp;&nbsp;ส่วนวิชาการ เช่น เอกสารรายงานการปรับปรุงแผนการสอน/ปรับปรุงเนื้อหาการสอน/ปรับปรุงเอกสารการสอน <br>เนื้อหารายวิชาหรือหลักสูตรอบรมใหม่ที่เปิดผลมาจากการอบรม ฯลฯ<br>
@@ -129,18 +119,14 @@
                     ผู้ช่วยคณบดี/รองคณบดี เป็นต้น
 
                 </small>
-            </fieldset><br><br>
-
-
-
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="submit">Submit</button><br><br>
+            <br><br><button type="submit">Submit</button><br><br>.
 
-
+            </fieldset><br><br>
             <!--................................. CONTENT  FORM...................................................................-->   
-
+<br><br>.
 
         </div>
 
