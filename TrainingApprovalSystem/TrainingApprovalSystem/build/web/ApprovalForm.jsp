@@ -18,12 +18,15 @@
 
     <body onload="load()">
         <form action="UserFormServlet" method="POST">
+            
             <div class="wrapper">
-
+                <jsp:include page="Header.jsp"></jsp:include>
+                
+                
 
                 <div class="box">
                     <%! User user = new User(); %> 
-                    <% user = (User) session.getAttribute("reqUser"); %>
+                    <% user = (User) session.getAttribute("sesUser"); %>
                     <%! ArrayList<String> history = new ArrayList<>(); %> 
                     <% history = (ArrayList<String>) session.getAttribute("sesHistoryUser");%>
 
@@ -37,8 +40,8 @@
                     <fieldset>
                         <legend>รายละเอียด</legend>
                         ชื่อ :<input class="textsmall" type="text" value="<%= user.getFirstname()%>" > <br>
-                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.reqUser.getLastname()}"> <br>
-                        ตำแหน่ง :<input class="textsmall" type="text" value="${sessionScope.reqUser.getType()}"> <br><br>
+                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.sesUser.getLastname()}"> <br>
+                        ตำแหน่ง :<input class="textsmall" type="text" value=""> <br><br>
                         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<input class="textbox" type="text" size="70" name="course"><br><br>
                         จัดโดย :<input class="textsmall" type="text" name="organizer"> <br>
                         สถานที่จัด :<input class="textsmall" type="text" name="location"><br><br>
@@ -49,20 +52,26 @@
 
                     <fieldset>
                         <legend>ขออนุมัติสนับสนุนค่าใช้จ่าย</legend>
-                        1.ค่าลงทะเบียน :<input class="textsmall" type="text" name="reg_expense"> บาท<br><br>
-                        2.ค่าใช้จ่ายในการเข้าร่วมอบรม/สัมมนา <input class="check" type="checkbox" name="inter" value="ON" />(กรณีสถานที่จัดอยู่ต่างจังหวัด/ต่างประเทศ) รวมเป็นเงิน:<input class="textsmall" type="text" size="4" name="inter_expense"> บาท<br><br>
+                        1.ค่าลงทะเบียน :<input class="textsmall" type="text" value="0" name="reg_expense"> บาท<br><br>
+                        2.ค่าใช้จ่ายในการเข้าร่วมอบรม/สัมมนา <input class="check" type="checkbox" name="inter" value="ON" />
+                        (กรณีสถานที่จัดอยู่ต่างจังหวัด/ต่างประเทศ) รวมเป็นเงิน:<input class="textsmall" type="text" size="4" value="0" name="inter_expense"> บาท<br><br>
                         
-                        2.1 ที่พัก :<input class="textmini" id="room_night" type="text" size="4" name="acc_night"> คืน คืนละ : <input class="textmini" id="room_cost" type="text" size="4" name="acc_each"> บาท <input type="button" id="cal_room_cost" value="คิดค่าที่พัก" name="cal" /><br>
-                        เป็นเงิน : <input class="textmini" id="room_total" type="text" size="4" name="acc_sum"> บาท <br><br>
-                        2.2 เบี้ยเลี้ยง :<input class="textmini" id="eat_day" type="text" size="4" name="allo_day"> วัน วันละ : <input class="textmini" id="eat_cost" type="text" size="4" name="allo_each"> บาท <input type="button" id="cal_eat_cost" value="คิดค่าเบี้ยเลี้ยง" name="cal" /><br>
-                        เป็นเงิน : <input class="textmini" id="eat_total" type="text" size="4" name="allo_sum"> บาท <br><br>
+                        2.1 ที่พัก :<input class="textmini" id="room_night" type="text" size="4" value="0" name="acc_night"> 
+                        คืน คืนละ : <input class="textmini" id="room_cost" type="text" size="4" value="0" name="acc_each"> 
+                        บาท <input type="button" id="cal_room_cost" value="คิดค่าที่พัก" value="0" name="cal" /><br>
+                        เป็นเงิน : <input class="textmini" id="room_total" type="text" size="4" value="0" name="acc_sum"> บาท <br><br>
+                        2.2 เบี้ยเลี้ยง :<input class="textmini" id="eat_day" type="text" size="4" value="0" name="allo_day"> 
+                        วัน วันละ : <input class="textmini" id="eat_cost" type="text" size="4" value="0" name="allo_each"> 
+                        บาท <input type="button" id="cal_eat_cost" value="คิดค่าเบี้ยเลี้ยง" value="0" name="cal" /><br>
+                        เป็นเงิน : <input class="textmini" id="eat_total" type="text" size="4" value="0" name="allo_sum"> บาท <br><br>
                         
-                        2.3 ค่าพาหนะ เป็นเงิน : <input class="textmini" type="text" size="4" name="traveling"> บาท<br><br>
+                        2.3 ค่าพาหนะ เป็นเงิน : <input class="textmini" type="text" size="4" value="0" name="travelling"> บาท<br><br>
                     </fieldset><br><br>
 
                     <fieldset>
                         <legend>การเข้าร่วมอบรม/สัมมนา</legend>
-                        ในปีงบประมาณ : <input class="textmini" type="text" size="10" value="YEAR 2559" name=""><br><br>
+                        <!-- get datetime at value below -->
+                        ในปีงบประมาณ : <input class="textmini" type="text" size="10" value="2559" name="" disabled="disabled"><br><br>
 
                         <!--..............................................Table...............................................-->
                         <%!int count = 0;%>
@@ -81,10 +90,7 @@
                             </thead>
 
                             <tbody>
-
-
                                 <tr>
-
                                     <c:forEach var="word" items="${sessionScope.sesHistoryUser}">
                                         <td>${word}</td>
                                         <% count = count + 1; %>
@@ -94,16 +100,6 @@
                                 </tr> <tr>
                                 <% }%>
                             </c:forEach>
-
-
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
                     </tbody>
                 </table>
 
@@ -121,26 +117,24 @@
                 &nbsp;&nbsp;&nbsp;3.2 ระยะเวลาที่ใช้ในการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม ภายหลังเข้าร่วมอบรม/สัมมนา (ไม่เกิน 1 ปี): <br>
                 <textarea name="improvement_period" rows="4" cols="100"></textarea><br><br>
                 &nbsp;&nbsp;&nbsp;3.3 ระยะเวลาการส่งเอกสารหลักฐานอ้างอิงการปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม (ไม่เกิน 1 ปี): <br>
-                <textarea name="improvement_evident_period" rows="4" cols="100"></textarea><br><br><br><br>
+                <textarea name="improvement_evident_period" rows="4" cols="100"></textarea><br><br><br>
                 <small>
                     หมายเหตุ* เอกสารหลักฐานอ้างอิง ตามข้อ 3.3 <br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;ส่วนวิชาการ เช่น เอกสารรายงานการปรับปรุงแผนการสอน/ปรับปรุงเนื้อหาการสอน/ปรับปรุงเอกสารการสอน <br>เนื้อหารายวิชาหรือหลักสูตรอบรมใหม่ที่เปิดผลมาจากการอบรม ฯลฯ<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;ส่วนสนับสนุนวิชาการ เช่น เอกสารรายงานการปรับปรุงกระบวนการทำงาน การประเมินผลสัมฤทธิ์ของการ<br>ทำงานภายหลัง เข้ารับการอบรม/สัมมนาโดยหัวหน้างาน/ผู้อำนวยการส่วนสนับสนุนวิชาการ/
+                    &nbsp;&nbsp;&nbsp;&nbsp;ส่วนวิชาการ เช่น เอกสารรายงานการปรับปรุงแผนการสอน/ปรับปรุงเนื้อหาการสอน/ปรับปรุงเอกสารการสอน <br>
+                    เนื้อหารายวิชาหรือหลักสูตรอบรมใหม่ที่เปิดผลมาจากการอบรม ฯลฯ<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;ส่วนสนับสนุนวิชาการ เช่น เอกสารรายงานการปรับปรุงกระบวนการทำงาน การประเมินผลสัมฤทธิ์ของการ<br>
+                    ทำงานภายหลัง เข้ารับการอบรม/สัมมนาโดยหัวหน้างาน/ผู้อำนวยการส่วนสนับสนุนวิชาการ/
                     ผู้ช่วยคณบดี/รองคณบดี เป็นต้น
 
                 </small>
-            </fieldset><br><br>
-
-
-
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="submit">Submit</button><br><br>
+            <br><br><button type="submit" name="submit" value="submit">Submit</button><br><br>.
 
-
+            </fieldset><br><br>
             <!--................................. CONTENT  FORM...................................................................-->   
-
+<br><br>.
 
         </div>
 

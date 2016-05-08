@@ -29,7 +29,7 @@ public class UserProcessServlet extends HttpServlet {
         History history = new History();
         ArrayList<String> his = new ArrayList<>();
         HttpSession session = request.getSession();
-        user = (User) session.getAttribute("reqUser");
+        user = (User) session.getAttribute("sesUser");
         
         if(forwarder.equals("CreateForm")){
             his = history.getHistory(user.getUsername(), "2016-10-01");
@@ -40,14 +40,14 @@ public class UserProcessServlet extends HttpServlet {
             
             
             session.setAttribute("sesHistoryUser", his);
-
-            RequestDispatcher dispatch = request.getRequestDispatcher("ApprovalForm.jsp");
-            dispatch.forward(request, response);
+            
+            response.sendRedirect("ApprovalForm.jsp");
         }
         
         if(forwarder.equals("Logout")){
-            RequestDispatcher dispatch = request.getRequestDispatcher("index.html");
-            dispatch.forward(request, response);
+            String loginErrorMassage = "You have been logout successfully.";
+            session.setAttribute("sesLoginMassage", loginErrorMassage);
+            response.sendRedirect("index.jsp");
         
         
         try (PrintWriter out = response.getWriter()) {

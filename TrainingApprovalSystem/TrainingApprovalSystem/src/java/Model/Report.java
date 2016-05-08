@@ -20,24 +20,33 @@ public class Report {
         this.form_id = form_id;
     }
     
-    public void insertBlankReport(int form_id) {
+    
+    //INSERT INTO `it_12`.`report` (`form_id`, `report_date`, `lecture_date`) VALUES ('0', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+    public Boolean insertBlankReport(int form_id) {
+        Boolean updateResult = false;
         DataConnector connector = new DataConnector();
-        String sql = "INSERT INTO report (form_id) VALUES('" + this.form_id + "');";
-        if(connector.update(sql) == 0) {
-            System.out.println("insert sussecc");
+        String sql = "INSERT INTO report (form_id, report_date, lecture_date) VALUES ('" + form_id 
+                + "', '0000-00-00 00:00:00', '0000-00-00 00:00:00');";
+        if(connector.update(sql) == 1) {
+            System.out.println("insert blankreport sussecc");
+            updateResult = true;
         }
         connector.closeConnection();
+        return updateResult;
     }
     
-    public void insertReport() {
+    public Boolean insertReport() {
+        Boolean updateResult = false;
         DataConnector connector = new DataConnector();
         String sql = "INSERT INTO report (form_id, report_date, file_path)  VALUES("
                 + this.form_id + ",'" 
                 + "','" + this.report_date + "','" + this.lecture_date + "','" + this.file + "');";
         if(connector.update(sql) == 0) {
             System.out.println("insert sussecc");
+            updateResult = true;
         }
         connector.closeConnection();
+        return updateResult;
     }
     
     public void callReport(int form_id) {
@@ -52,6 +61,7 @@ public class Report {
             this.report_date = rs.getString("report_date");
             this.lecture_date = rs.getString("lecture_date");
             this.file = rs.getString("file_path");
+            rs.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -67,6 +77,7 @@ public class Report {
             while(rs.next()){
                 lastID = rs.getInt(1);
             }
+            rs.close();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
@@ -80,6 +91,10 @@ public class Report {
 
     public String getLecture_date() {
         return lecture_date;
+    }
+
+    public void setForm_id(int form_id) {
+        this.form_id = form_id;
     }
     
     

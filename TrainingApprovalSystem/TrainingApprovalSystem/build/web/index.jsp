@@ -1,4 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
 <html >
@@ -19,7 +20,15 @@
             Password: <input type="password" name="password" /> <br> <br>
             <!--<input type="submit" value="Submit" name="submit" />-->
             <button type="submit" value="Submit" name="submit" id="login-button">Submit</button>
-            <h3 style="color: darkred"> Wrong username or password! </h3>
+            
+            <c:if test="${sessionScope.loginErrorMassage} == null">
+                printtest
+            </c:if>
+                
+            <% String errorMassage = (String) session.getAttribute("sesLoginMassage"); %>
+            <% if(errorMassage == null) {errorMassage = "";} %>
+            
+            <br><h3 style="color: #340e21"> <%= errorMassage %> </h3>
         </form>
                 </div>
 <ul class="bg-bubbles">

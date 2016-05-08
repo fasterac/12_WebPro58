@@ -29,31 +29,25 @@ public class LoginProcessServlet extends HttpServlet {
         String password = request.getParameter("password");
         
         String role = "";
-        role = connector.execute(("SELECT * FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
+        role = connector.executeString(("SELECT role FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
         connector.closeConnection();
-        
         
         if (role.equals("admin")) {
             User user = new User();
-            user.callUser(username);
-            session.setAttribute("reqUser", user);
-            RequestDispatcher dispatch = request.getRequestDispatcher("AdminMainPage.jsp");
-            dispatch.forward(request, response);
+            user.callUserFromUsername(username);
+            session.setAttribute("sesUser", user);
+            response.sendRedirect("AdminMainPage.jsp");
         }
         else if(role.equals("user")){
             User user = new User();
-            user.callUser(username);
-            session.setAttribute("reqUser", user);
-            RequestDispatcher dispatch = request.getRequestDispatcher("UserMainPage.jsp");
-            dispatch.forward(request, response);
+            user.callUserFromUsername(username);
+            session.setAttribute("sesUser", user);
+            response.sendRedirect("UserMainPage.jsp");
         }
-//        else if((request.getParameter("god mode")).equals("GOD MODE!")){
-//            RequestDispatcher dispatch = request.getRequestDispatcher("GodModeJSP.jsp");
-//            dispatch.forward(request, response);
-//        }
         else{
-            RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
-            dispatch.forward(request, response);
+            String loginErrorMassage = "Wrong Username or Password";
+            session.setAttribute("sesLoginMassage", loginErrorMassage);
+            response.sendRedirect("index.jsp");
         }
         
         

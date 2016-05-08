@@ -37,6 +37,28 @@ public class User {
             this.password = rs.getString("password");
             this.role = rs.getString("role");
             this.type = rs.getString("type");
+            rs.close();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        connector.closeConnection();
+    }
+    
+    public void callUserFromUsername(String username){ //used in login process servlet
+        DataConnector connector = new DataConnector();
+        ResultSet rs = null;
+        try{
+            String sql = "SELECT * FROM user WHERE username = '"+ username + "';";
+            rs = connector.execute(sql);
+            rs.next();
+            this.user_id = rs.getInt("user_id");
+            this.firstname = rs.getString("firstname");
+            this.lastname = rs.getString("lastname");
+            this.username = rs.getString("username");
+            this.password = rs.getString("password");
+            this.role = rs.getString("role");
+            this.type = rs.getString("type");
+            rs.close();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
@@ -45,7 +67,7 @@ public class User {
     
     public String getPosition(){
         DataConnector connector = new DataConnector();
-        String posi = connector.execute("SELECT position FROM it_12.teacher WHERE teacher_id = '"+ this.user_id + "';", "position");
+        String posi = connector.executeString("SELECT position FROM it_12.teacher WHERE teacher_id = '"+ this.user_id + "';", "position");
         connector.closeConnection();
         return posi;
     }

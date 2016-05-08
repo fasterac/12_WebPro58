@@ -13,20 +13,10 @@
 <body>
     <form action="UserProcessServlet" method="POST">
       <%! User user = new User() ; %> 
-      <% user = (User) session.getAttribute("reqUser"); %>
+      <% user = (User) session.getAttribute("sesUser"); %>
 <div class="wrapper">
-  <div class="logo-menu-container">
-       
-    <div class="logo">ระบบขอไปอบรมและนำเสนอผลงาน</div>
-    <div class="menu">
-        <ul>
-            <li><input type="submit" value="Home" name="forwarder" /></li>
-            <li><input type="submit" value="Logout" name="forwarder" /> </li>
-            <li><input type="submit" value="CreateForm" name="forwarder" /></li>
-            <li><input type="submit" value="TrackApproval" name="forwarder" /></li>
-      </ul>
-    </div>
-  </div>
+  
+    <jsp:include page="Header.jsp"></jsp:include>
   
   <div class="clear"></div>
   <div class="page">
