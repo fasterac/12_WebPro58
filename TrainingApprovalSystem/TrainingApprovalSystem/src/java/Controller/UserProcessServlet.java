@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.*;
+import java.sql.Connection;
 import javax.servlet.RequestDispatcher;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import sun.security.pkcs11.wrapper.Functions;
+import Utility.DataConnector;
 
 @WebServlet(name = "UserProcess.do", urlPatterns = {"/UserProcessServlet"})
 public class UserProcessServlet extends HttpServlet {
@@ -21,11 +23,13 @@ public class UserProcessServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        Connection connection = DataConnector.getDBConnection(request);
+        
         String forwarder = request.getParameter("forwarder");
         String loggouter = ".";
         
         User user = new User();
-        HistoryUtility history = new HistoryUtility();
+        HistoryUtility history = new HistoryUtility(connection);
         ArrayList<String> his = new ArrayList<>();
         HttpSession session = request.getSession();
         user = (User) session.getAttribute("sesUser");

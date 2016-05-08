@@ -1,7 +1,7 @@
 package Model;
 
 import Utility.HistoryUtility;
-import utility.DataConnector;
+import Utility.DataConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

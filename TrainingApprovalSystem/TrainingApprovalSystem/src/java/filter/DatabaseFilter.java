@@ -5,7 +5,7 @@
  */
 package filter;
 
-import utility.DataConnector;
+import Utility.DataConnector;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 public class DatabaseFilter implements Filter {
 
     private DataConnector dataConnector;
-    
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         dataConnector = new DataConnector();
@@ -33,21 +33,21 @@ public class DatabaseFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
-        
+
         Connection connection = dataConnector.getConnection();
-        DataConnector.setDBConenction(req, connection);
-        
+        DataConnector.setDBConenction(req, connection);;
+
         Throwable t = null;
         try {
             chain.doFilter(request, response);
         } catch (Exception ex) {
             t = ex;
         }
-                
+
         try {
             if(connection != null) connection.close();
         } catch (SQLException ex) { }
-        
+
         if(t != null) {
             try {
                 throw t;
@@ -59,7 +59,7 @@ public class DatabaseFilter implements Filter {
 
     @Override
     public void destroy() {
-        
-    } 
-    
+
+    }
+
 }

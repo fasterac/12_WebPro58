@@ -2,7 +2,7 @@ package Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import utility.DataConnector;
+import Utility.DataConnector;
 
 
 public class User {

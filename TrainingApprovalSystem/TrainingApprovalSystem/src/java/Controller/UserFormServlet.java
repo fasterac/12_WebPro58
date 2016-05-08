@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.*;
-import utility.DataConnector;
+import Utility.DataConnector;
 import factory.ExpenseFactory;
 import factory.FormFactory;
 import java.sql.Connection;

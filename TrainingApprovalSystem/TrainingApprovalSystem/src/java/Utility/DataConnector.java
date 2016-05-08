@@ -1,12 +1,11 @@
 
-package utility;
+package Utility;
 
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +22,7 @@ public class DataConnector {
     public DataConnector(){
         try {
             Context c = new InitialContext();
-            dataSource = (DataSource) c.lookup("java:comp/env/DB12");
+            dataSource = (DataSource) c.lookup("java:/comp/env/DB12");
             conn = getConnection();
         } catch (Exception ex) {
             Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);

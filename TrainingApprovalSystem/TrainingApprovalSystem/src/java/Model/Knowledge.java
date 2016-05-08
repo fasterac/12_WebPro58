@@ -2,7 +2,7 @@ package Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import utility.DataConnector;
+import Utility.DataConnector;
 import javax.swing.text.StyledEditorKit;
 
 public class Knowledge {
