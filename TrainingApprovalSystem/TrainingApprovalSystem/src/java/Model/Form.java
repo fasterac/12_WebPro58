@@ -8,18 +8,18 @@ import java.util.logging.Logger;
 
 public class Form {
     private int form_id, status_id, inter_id, sum_date = 0;
-    private String username, form_date, course, organizer = "", location = "", start_date = "CURRENT_TIMESTAMP", end_date = "";
+    private String user_id, form_date, course, organizer = "", location = "", start_date = "CURRENT_TIMESTAMP", end_date = "";
     private Connection conn;
 
     public Form() {
         
     }
     
-    public void createForm( String username, String course, String organizer, String location,
+    public void createForm( String user_id, String course, String organizer, String location,
             String start_date, String end_date, int sum_date, int inter_id ){
         this.form_id = getLastFormId() + 1;
         this.status_id = 0;
-        this.username = username;
+        this.user_id = user_id;
         this.course = course;
         this.organizer = organizer;
         this.location = location;
@@ -29,17 +29,20 @@ public class Form {
         this.inter_id = inter_id;
     }
     
-    public void insertForm(){
+    public Boolean insertForm(){
+        Boolean updateResult = false;
         DataConnector connector = new DataConnector();
-        String sql = "INSERT INTO form (form_id, username, status_id, course, organizer, location, "
+        String sql = "INSERT INTO form (form_id, user_id, status_id, course, organizer, location, "
                 + "start_date, end_date, sum_date, inter_id) VALUES ('"
-                + this.form_id + "','" + this.username + "','0','"
+                + this.form_id + "','" + this.user_id + "','0','"
                 + this.course + "','" + this.organizer + "','" + this.location + "','" 
                 + this.start_date + "','" + this.end_date + "','" + this.sum_date + "','" + this.inter_id + "');";
-        if(connector.update(sql) == 0) {
+        if(connector.update(sql) == 1) {
             System.out.println("Form insert sussecc");
+            updateResult = true;
         }
         connector.closeConnection();
+        return updateResult;
     }
     
     public void callForm(int form_id){
@@ -50,7 +53,7 @@ public class Form {
             rs.next();
             this.form_id = form_id;
             this.status_id = rs.getInt("status_id");
-            this.username = rs.getString("username");
+            this.user_id = rs.getString("user_id");
             this.form_date = rs.getString("form_date");
             this.course = rs.getString("course");
             this.organizer = rs.getString("organizer");
@@ -59,6 +62,7 @@ public class Form {
             this.end_date = rs.getString("end_date");
             this.sum_date = rs.getInt("sum_date");
             this.inter_id = rs.getInt("inter_id");
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Form.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,6 +85,7 @@ public class Form {
             while(rs.next()){
                 lastID = rs.getInt(1);
             }
+            rs.close();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
@@ -133,11 +138,10 @@ public class Form {
         return end_date;
     }
 
-    //for admin use
-    public void setStatus_id_FromName(String status_name) {
+    //for admin use in "admin form result servlet"
+    public void setStatus_id(int status_id) {
         DataConnector connector = new DataConnector();
-        String statusId = connector.execute(("SELECT status_id FROM status WHERE status_name = '"+ status_name +  "';"), "status_id");
-        String sql = "UPDATE form SET status_id='"+ statusId +"' WHERE form_id='" + this.form_id + "';";
+        String sql = "UPDATE form SET status_id='"+ status_id +"' WHERE form_id='" + this.form_id + "';";
         if(connector.update(sql) == 0) {
             System.out.println("update Status successful");
         }

@@ -1,7 +1,7 @@
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.*" %> 
 <%@page import="Utility.DataConnector" %>
-<%@page import="java.sql.ResultSet" %>
+<%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html >
   <head>
@@ -28,11 +28,15 @@
                 	
 		
 <!--................................. CONTENT  FORM...................................................................-->  
-                    <%! User user = new User() ; %> 
+                    <%! User user = new User() ; %>
+                    <%! FormList formlister = new FormList(); %>
+                    <% ArrayList<String> formlist = new ArrayList<>(); %>
+                    <% formlist = formlister.getAllFormList(); %>
+                    <%-- connect.execute("SELECT * FROM form JOIN expense ON(form.form_id = expense.form_id);"); --%>
                     <% user = (User) session.getAttribute("sesUser"); %>
+                    <% request.setAttribute("pageFormList", formlist); %>
                     <h1>Admin Page</h1> 
-                    <h2>Welcome ${sessionScope.sesUser.getFirstname()} ${sessionScope.sesUser.getLastname()}</h2>
-                    <!--<input class="button" type="submit" value="Logout" name="logout" />--> <br>
+                    <h2>Welcome ${sessionScope.sesUser.getFirstname()} ${sessionScope.sesUser.getLastname()}</h2> <br>
                     <button type="submit" value="Logout" name="logout" id="login-button">Log Out</button><br><br>
         
                     
@@ -53,43 +57,47 @@
                     <th>Sum Expense</th>
                     <th>Sum Hour</th>
                     <th>Status</th>
-                    <th>confirm</th>
                 </tr>
             </thead>
-            <%-- error rs.next has close conn
-            must get rid callexpanse and use join in query--%>
-            <%! DataConnector connect = new DataConnector(); %>
-            <%! ResultSet rs = connect.execute("SELECT * FROM form"); %>
-            <%! Expense expense = new Expense(); %>
+            <%! int rowcounter = 0; %>
+            <% for (String word : formlist) { %>
+                <% if (rowcounter % 8 == 0) { %>
+                    <td><button type="submit" value="<%=word %>" name="seeform"><%=word %></button></td>
+                <% } else {%>
+                 <td><%=word %></td>
+                <% } rowcounter += 1; if(rowcounter % 8 == 0) { %>
+                    </tr> <tr>
+                <% } else if (rowcounter == formlist.size()) { %>
+                    </tr>
+                <% } %>
+                
+            <%  } %>
+            <%--
+            <% System.out.println("Connecting " + rs.isClosed()); %>            
+            <%! ResultSet rs = connect.execute("SELECT * FROM form JOIN expense ON(form.form_id = expense.form_id);"); %>
+            <% System.out.println("Connected " + rs.isClosed()); %>
             <%! int triger = 0; %>
             <tbody>
                 <% while(rs.next()) { %>
-                <tr>                    
-                    <% expense.callExpense(rs.getInt("form_id")); %>
-                    <td><button type="submit" value="<%= rs.getString("form_id") %>" name="seeform"><%= rs.getString("form_id") %></button</td>
+                <% System.out.println("print firstrow start with " + rs.getString(1)); %>
+                <tr>
+                    <td><button type="submit" value="<%= rs.getString("form_id") %>" name="seeform"><%= rs.getString("form_id") %></button></td>
                     <td> call and getFirstname</td>
                     <td><%= rs.getString("course") %></td>
-                    <td><%= rs.getString("start_date") %></td>
-                    <td><%= rs.getString("organizer") %></td>
-                    <td><%= rs.getString("location") %></td>
-                    <td><%= expense.getSum_expense() %></td>
-                    <%-- rs.getInt("status_id"); --%>
-                    <td><select name="status"  >
-                            <option selected="selected">pending</option>
-                            <option>approved</option>
-                            <option>rejected</option>
-                            <option>cancled</option>                            
-                        </select></td>                        
-                    <td><button type="submit" value="<%= rs.getInt("form_id")%>" name="confirm" id="login-button">Confirm</button><!--<input type="submit" value="confirm change" name="confirm" />-->
-                    </td>
+                    <td><%= rs.getString("start_date") %> - <%= rs.getString("end_date") %></td>
+                    <td><%= rs.getString("organizer") %> ,<br> <%= rs.getString("location") %></td>
+                    <td><%= rs.getString("sum_expense") %></td>
+                    <td>end_date - start_date</td>
+                    <td><%= rs.getString("status_id") %></td>                        
                 </tr>
                 <% } %>
-                
             </tbody>
+            <% rs.close(); %>         
+            <% System.out.println("Close Connection " + rs.isClosed()); %>
         </table>
+        --%>
         
         
-        [btn:look full form] formID username(requestBy) where duration cost status[v] [btn:confirm]
         
     </div>
       
@@ -103,7 +111,7 @@
         <script src="js/index.js"></script>
 
     
-    <% connect.closeConnection(); %>
+    
     </form>
   </body>
 </html>

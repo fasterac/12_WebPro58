@@ -60,7 +60,7 @@ public class DataConnector {
         return rs;
     }
     
-    public String execute(String sql, String colName){
+    public String executeString(String sql, String colName){
         //get only one value
         ResultSet rs = null;
         String returnerValue = "";
@@ -69,6 +69,7 @@ public class DataConnector {
             rs = stmt.executeQuery(sql);
             rs.next();
             returnerValue = rs.getString(colName);
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
         }        

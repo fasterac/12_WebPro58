@@ -26,7 +26,8 @@ public class UserFormServlet extends HttpServlet {
         Expense expense = new Expense();
         Knowledge knowledge = new Knowledge();
         Report report = new Report();
-        int inter = 0;
+        int inter = 0, updateSuccess = 4;
+        String updateFormFlag = "";
         
         HttpSession session = request.getSession();
         user = (User) session.getAttribute("sesUser");
@@ -35,29 +36,83 @@ public class UserFormServlet extends HttpServlet {
                 request.getParameter("start_date") != null || request.getParameter("end_date") != null || 
                 request.getParameter("reg_expense") != null || request.getParameter("inter_expense") != null || request.getParameter("acc_night") != null || 
                 request.getParameter("acc_each") != null || request.getParameter("acc_sum") != null || request.getParameter("allo_day") != null || 
-                request.getParameter("allo_each") != null || request.getParameter("allo_sum") != null || request.getParameter("traveling") != null || 
+                request.getParameter("allo_each") != null || request.getParameter("allo_sum") != null || request.getParameter("travelling") != null || 
                 request.getParameter("improvement") != null || request.getParameter("improvement_period") != null || request.getParameter("improvement_evident_period") != null  ){
             response.sendRedirect("ApprovalForm.jsp");
         }
         
-        else if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {inter = 1;}
+        if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {inter = 1;}
         form.createForm(user.getUsername(), request.getParameter("course"), request.getParameter("organizer"), 
                 request.getParameter("location"), request.getParameter("start_date"), request.getParameter("end_date"), 0, inter);
         
         expense.createExpense((form.getForm_id()), (double)(Double.parseDouble(request.getParameter("reg_expense"))), (double)(Double.parseDouble(request.getParameter("inter_expense"))),
                 (int)(Double.parseDouble(request.getParameter("acc_night"))), (double)(Double.parseDouble(request.getParameter("acc_each"))), (double)(Double.parseDouble(request.getParameter("acc_sum"))), 
                 (int)(Double.parseDouble(request.getParameter("allo_day"))), (double)(Double.parseDouble(request.getParameter("allo_each"))),
-                (double)(Double.parseDouble(request.getParameter("allo_sum"))), (double)(Double.parseDouble(request.getParameter("traveling"))));
+                (double)(Double.parseDouble(request.getParameter("allo_sum"))), (double)(Double.parseDouble(request.getParameter("travelling"))));
         
         knowledge.createKnowledge((form.getForm_id()), request.getParameter("improvement"), request.getParameter("improvement_period"), request.getParameter("improvement_evident_period"));
         
-        form.insertForm();
-        expense.insertExpense();
-        knowledge.insertKnowledge();
-        report.insertBlankReport((form.getForm_id()));
+        //check is update successful and insert all form
+        if(!form.insertForm()){
+            updateFormFlag.concat("Error to insert Form");
+            updateSuccess -= 1;            
+        }
+        if(!expense.insertExpense()){
+            if(updateSuccess < 4){
+                updateFormFlag.concat(", Expense");
+            }else{
+                updateFormFlag.concat("Error to insert Expense");
+            }
+            updateSuccess -= 1;
+        }
+        if(!knowledge.insertKnowledge()){
+            if(updateSuccess < 4){
+                updateFormFlag.concat(", Knowledge");
+            }else{
+                updateFormFlag.concat("Error to insert Knowledge");
+            }
+            updateSuccess -= 1;
+        }
+        if(!report.insertBlankReport((int)(form.getForm_id()))){
+            if(updateSuccess < 4){
+                updateFormFlag.concat(", Report");
+            }else{
+                updateFormFlag.concat("Error to insert Report");
+            }
+            updateSuccess -= 1;
+        }
+        if(updateSuccess == 4){
+            updateFormFlag = "Create Form Successful";
+        }
+        session.setAttribute("sesFormUpdate", updateFormFlag);
         
-        if (request.getParameter("knowsub") != null && !request.getParameter("knowsub").isEmpty()) {
-            if(request.getParameter("knowsub").equals("knowsub")){
+        //navigator button control
+        if (request.getParameter("submit") != null && !request.getParameter("submit").isEmpty()) {
+            if(request.getParameter("submit").equals("submit")){
+                response.sendRedirect("UserFormSuccessful.jsp");
+            }
+        }
+        else if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
+            if(request.getParameter("forwarder").equals("Home")){
+                response.sendRedirect("UserMainPage.jsp");
+            }
+            else if(request.getParameter("forwarder").equals("Logout")){
+                String loginErrorMassage = "You have been logout successfully.";
+                session.setAttribute("sesLoginMassage", loginErrorMassage);
+                response.sendRedirect("index.jsp");
+            }
+            else if(request.getParameter("forwarder").equals("CreateForm")){
+                History history = new History();
+                ArrayList<String> his = new ArrayList<>();
+                his = history.getHistory(user.getUsername(), "2016-10-01");
+                for (String word : his) {
+                    System.out.println(word);
+                }
+                System.out.println(his.size());
+                session.setAttribute("sesHistoryUser", his);
+                response.sendRedirect("ApprovalForm.jsp");
+            }
+            else if(request.getParameter("forwarder").equals("TrackApproval")){
                 response.sendRedirect("UserMainPage.jsp");
             }
         }
@@ -68,7 +123,7 @@ public class UserFormServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserFormServlet</title>");            
+            out.println("<title> Create Approval Form</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UserFormServlet at " + request.getContextPath() + "</h1>");
@@ -80,6 +135,7 @@ public class UserFormServlet extends HttpServlet {
             out.println("</html>");
         }
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

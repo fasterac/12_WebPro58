@@ -29,19 +29,18 @@ public class LoginProcessServlet extends HttpServlet {
         String password = request.getParameter("password");
         
         String role = "";
-        role = connector.execute(("SELECT * FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
+        role = connector.executeString(("SELECT role FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
         connector.closeConnection();
-        
         
         if (role.equals("admin")) {
             User user = new User();
-            user.callUser(username);
+            user.callUserFromUsername(username);
             session.setAttribute("sesUser", user);
             response.sendRedirect("AdminMainPage.jsp");
         }
         else if(role.equals("user")){
             User user = new User();
-            user.callUser(username);
+            user.callUserFromUsername(username);
             session.setAttribute("sesUser", user);
             response.sendRedirect("UserMainPage.jsp");
         }

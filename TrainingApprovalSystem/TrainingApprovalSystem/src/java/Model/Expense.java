@@ -7,7 +7,7 @@ import Utility.DataConnector;
 public class Expense {
 
     private double reg_expense = 0, inter_expense = 0,  acc_each = 0, acc_sum = 0, 
-             allo_each = 0, allo_sum = 0, traveling = 0, sum_expense = 0;
+             allo_each = 0, allo_sum = 0, travelling = 0, sum_expense = 0;
     private int allo_day = 0, acc_night = 0;
     private int expense_id, form_id;
 
@@ -16,7 +16,7 @@ public class Expense {
 
     public void createExpense(int form_id, double reg_expense, double inter_expense,
             int acc_night, double acc_each, double acc_sun,
-            int allo_day, double allo_each, double allo_sum, double traveling) {
+            int allo_day, double allo_each, double allo_sum, double travelling) {
         this.reg_expense = reg_expense;
         this.inter_expense = inter_expense;
         this.acc_night = acc_night;
@@ -25,24 +25,27 @@ public class Expense {
         this.allo_day = allo_day;
         this.allo_each = allo_each;
         this.allo_sum = allo_sum;
-        this.traveling = traveling;
+        this.travelling = travelling;
         this.sum_expense = calculateSumExpense();
         this.expense_id = getLastExpenseId()+ 1;
         this.form_id = form_id;
     }
 
-    public void insertExpense() {
+    public Boolean insertExpense() {
+        Boolean updateResult = false;
         DataConnector connector = new DataConnector();
         String sql =  "INSERT INTO expense (form_id, reg_expense, inter_expense, "
-                        + "acc_night, acc_each, acc_sum, allo_day, allo_each, allo_sum, traveling, sum_expense) VALUES('"
+                        + "acc_night, acc_each, acc_sum, allo_day, allo_each, allo_sum, travelling, sum_expense) VALUES('"
                 + this.form_id + "','" + this.reg_expense + "','" + this.inter_expense
                 + "','" + this.acc_night + "','" + this.acc_each + "','" + this.acc_sum
                 + "','" + this.allo_day + "','" + this.allo_each + "','" + this.allo_sum
-                + "','" + this.traveling + "','" + this.sum_expense + "');";
-        if(connector.update(sql) == 0) {
-            System.out.println("insert sussecc");
+                + "','" + this.travelling + "','" + this.sum_expense + "');";
+        if(connector.update(sql) == 1) {
+            System.out.println("insert Expense sussecc");
+            updateResult = true;
         }
         connector.closeConnection();
+        return updateResult;
     }
 
     public void callExpense(int form_id) {
@@ -62,8 +65,9 @@ public class Expense {
             this.allo_day = rs.getInt("allo_day");
             this.allo_each = rs.getDouble("allo_each");
             this.allo_sum = rs.getDouble("allo_sum");
-            this.traveling = rs.getDouble("traveling");            
+            this.travelling = rs.getDouble("travelling");            
             this.sum_expense = rs.getDouble("sum_expense");
+            rs.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -71,7 +75,7 @@ public class Expense {
     }
 
     private double calculateSumExpense() {
-        return this.reg_expense + this.acc_sum + this.allo_sum + this.traveling + this.inter_expense;
+        return this.reg_expense + this.acc_sum + this.allo_sum + this.travelling + this.inter_expense;
     }
     
     public int getLastExpenseId(){
@@ -83,6 +87,7 @@ public class Expense {
             while(rs.next()){
                 lastID = rs.getInt(1);
             }
+            rs.close();
         }catch(SQLException ex){
             ex.printStackTrace();
         }
@@ -118,8 +123,8 @@ public class Expense {
         return allo_sum;
     }
 
-    public double getTraveling() {
-        return traveling;
+    public double gettravelling() {
+        return travelling;
     }
 
     public int getAllo_day() {

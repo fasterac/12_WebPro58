@@ -3,6 +3,7 @@ package Model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Utility.DataConnector;
+import javax.swing.text.StyledEditorKit;
 
 public class Knowledge {
     private String improvement, imperiod, imevi;
@@ -19,15 +20,18 @@ public class Knowledge {
         this.form_id = form_id;
     }
     
-    public void insertKnowledge() {
+    public Boolean insertKnowledge() {
+        Boolean updateResult = false;
         DataConnector connector = new DataConnector();
         String sql = "INSERT INTO knowledge (form_id, improvement, improvement_period, "
                         + "improvement_evident_period) VALUES('"
                 + this.form_id + "','" + this.improvement + "','" + this.imperiod + "','" + this.imevi + "');";
-        if(connector.update(sql) == 0) {
-            System.out.println("Knowledge insert sussecc");
+        if(connector.update(sql) == 1) {
+            System.out.println("insert Knowledge sussecc");
+            updateResult = true;
         }
         connector.closeConnection();
+        return updateResult;
     }
     
     public void callKnowledge(int form_id) {
@@ -40,8 +44,9 @@ public class Knowledge {
             this.form_id = form_id;
             this.knowledge_id = rs.getInt("knowledge_id");
             this.improvement = rs.getString("improvement");
-            this.imperiod = rs.getString("imperiod");
-            this.imevi = rs.getString("imevi");
+            this.imperiod = rs.getString("improvement_period");
+            this.imevi = rs.getString("improvement_evident_period");
+            rs.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -57,6 +62,7 @@ public class Knowledge {
             while(rs.next()){
                 lastID = rs.getInt(1);
             }
+            rs.close();
         }catch(SQLException ex){
             ex.printStackTrace();
         }

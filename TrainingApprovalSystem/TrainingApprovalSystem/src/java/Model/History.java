@@ -39,6 +39,7 @@ public class History {
 //                System.out.println(formCounter + " " +rs.getString("course") + rs.getString("start_date") + expense.getSum_expense()+" "
 //                +report.getReport_date() + report.getLecture_date() );
             }
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
         }
