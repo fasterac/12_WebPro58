@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Utility.DataConnector;
+import utility.DataConnector;
 import javax.servlet.RequestDispatcher;
 import Model.*;
 import javax.servlet.http.HttpSession;
@@ -20,40 +20,29 @@ public class LoginProcessServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-
-
         
         DataConnector connector = new DataConnector();
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        String role = "";
-        role = connector.executeString(("SELECT role FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
+        String role = connector.executeString(("SELECT role FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
         connector.closeConnection();
         
-        if (role.equals("admin")) {
+        if(role.equals("admin") || role.equals("user")) {
             User user = new User();
             user.callUserFromUsername(username);
             session.setAttribute("sesUser", user);
-            response.sendRedirect("AdminMainPage.jsp");
-        }
-        else if(role.equals("user")){
-            User user = new User();
-            user.callUserFromUsername(username);
-            session.setAttribute("sesUser", user);
-            response.sendRedirect("UserMainPage.jsp");
-        }
-        else{
+            
+            if (role.equals("admin")) response.sendRedirect("AdminMainPage.jsp");
+            else if(role.equals("user")) response.sendRedirect("UserMainPage.jsp");
+            return;
+        } else {
             String loginErrorMassage = "Wrong Username or Password";
             session.setAttribute("sesLoginMassage", loginErrorMassage);
             response.sendRedirect("index.jsp");
+            return;
         }
-        
-        
-        try (PrintWriter out = response.getWriter()) {
-            
-        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

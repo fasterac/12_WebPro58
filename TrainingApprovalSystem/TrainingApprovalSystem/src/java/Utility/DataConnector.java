@@ -1,5 +1,5 @@
 
-package Utility;
+package utility;
 
 import java.sql.*;
 import java.util.logging.Level;
@@ -8,6 +8,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import javax.sql.DataSource;
 
@@ -17,15 +18,33 @@ public class DataConnector {
     Connection conn;
     ServletContext ctx;
     
+    private DataSource dataSource;
+    
     public DataConnector(){
         try {
-            this.conn = getDB12().getConnection();
-        } catch (NamingException ex) {
-            Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+            Context c = new InitialContext();
+            dataSource = (DataSource) c.lookup("java:comp/env/DB12");
+            conn = getConnection();
+        } catch (Exception ex) {
             Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+    
+    public Connection getConnection() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataConnector.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public static Connection getDBConnection(HttpServletRequest request) {
+        return (Connection) request.getAttribute("db.connection");
+    }
+    
+    public static void setDBConenction(HttpServletRequest request, Connection connection) {
+        request.setAttribute("db.connection", connection);
     }
     
     public int update(String sql){        
@@ -85,10 +104,5 @@ public class DataConnector {
             }
         }
     }
-
-
-    private DataSource getDB12() throws NamingException {
-        Context c = new InitialContext();
-        return (DataSource) c.lookup("java:comp/env/DB12");
-    }
+    
 }

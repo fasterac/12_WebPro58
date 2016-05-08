@@ -1,5 +1,6 @@
 package Controller;
 
+import Utility.HistoryUtility;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,13 +21,11 @@ public class UserProcessServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        String forwarder = ".";
+        String forwarder = request.getParameter("forwarder");
         String loggouter = ".";
         
-        forwarder = request.getParameter("forwarder");
-        
         User user = new User();
-        History history = new History();
+        HistoryUtility history = new HistoryUtility();
         ArrayList<String> his = new ArrayList<>();
         HttpSession session = request.getSession();
         user = (User) session.getAttribute("sesUser");
@@ -48,22 +47,9 @@ public class UserProcessServlet extends HttpServlet {
             String loginErrorMassage = "You have been logout successfully.";
             session.setAttribute("sesLoginMassage", loginErrorMassage);
             response.sendRedirect("index.jsp");
-        
-        
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UserProcessServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserProcessServlet at " + forwarder + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
-}
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

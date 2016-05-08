@@ -2,8 +2,7 @@ package Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import Utility.DataConnector;
+import utility.DataConnector;
 
 
 public class User {
@@ -63,6 +62,42 @@ public class User {
             ex.printStackTrace();
         }
         connector.closeConnection();
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
     
     public String getPosition(){

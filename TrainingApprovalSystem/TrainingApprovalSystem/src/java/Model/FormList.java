@@ -1,6 +1,7 @@
 package Model;
 
-import Utility.DataConnector;
+import Utility.HistoryUtility;
+import utility.DataConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class FormList {
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HistoryUtility.class.getName()).log(Level.SEVERE, null, ex);
         }
         connector.closeConnection();
         System.out.println(formList);

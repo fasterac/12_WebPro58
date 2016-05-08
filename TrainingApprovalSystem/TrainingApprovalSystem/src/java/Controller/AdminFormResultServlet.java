@@ -6,7 +6,6 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,56 +20,40 @@ public class AdminFormResultServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         
-        Form form = new Form();
-        Expense expense = new Expense();
-        Knowledge knowledge = new Knowledge();
-        Report report = new Report();
-        
-        form = (Form) session.getAttribute("sesForm");
-        expense = (Expense) session.getAttribute("sesExpense");
-        knowledge = (Knowledge) session.getAttribute("sesKnowledge");
-        report = (Report) session.getAttribute("sesReport");
-        
-        
         if(request.getParameter("forwarder") != null){
-            if(request.getParameter("forwarder").equals("Logout")){
-                String loginErrorMassage = "You have been logout successfully.";
-                session.setAttribute("sesLoginMassage", loginErrorMassage);
-                response.sendRedirect("index.jsp");
-            }
-            else if(request.getParameter("forwarder").equals("Back")){
-                response.sendRedirect("AdminMainPage.jsp");
-            }
-        }
-        if(request.getParameter("changeStatus") != null){
-            if(request.getParameter("changeStatus").equals("Approve")){
-                form.setStatus_id(1);
-                response.sendRedirect("AdminMainPage.jsp");
-            }
-            else if(request.getParameter("changeStatus").equals("Reject")){
-                form.setStatus_id(2);
-                response.sendRedirect("AdminMainPage.jsp");
-            }
-            else if(request.getParameter("changeStatus").equals("Cancle")){
-                form.setStatus_id(3);
-                response.sendRedirect("AdminMainPage.jsp");
+            switch(request.getParameter("forwarder")) {
+                case "Logout":
+                    session.setAttribute("sesLoginMassage", "You have been logout successfully.");
+                    response.sendRedirect("index.jsp");
+                    return;
+                case "Back":
+                    response.sendRedirect("AdminMainPage.jsp");
+                    return;
             }
         }
         
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AdminFormResultServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AdminFormResultServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        if(request.getParameter("changeStatus") != null) {
+            Form form = (Form) session.getAttribute("sesForm");
+            
+            switch(request.getParameter("changeStatus")) {
+                case "Approve":
+                    form.setStatus_id(1);
+                    return;
+                case "Reject":
+                    form.setStatus_id(2);
+                    return;
+                case "Cancle":
+                    form.setStatus_id(3);
+                    return;
+            }
+            
+            response.sendRedirect("AdminMainPage.jsp");
+            return;
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

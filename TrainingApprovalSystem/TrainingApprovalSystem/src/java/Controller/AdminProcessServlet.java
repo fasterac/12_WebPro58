@@ -1,8 +1,6 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Model.*;
-import Utility.DataConnector;
+import utility.DataConnector;
+import factory.ExpenseFactory;
+import factory.FormFactory;
+import java.sql.Connection;
 
 @WebServlet(name = "AdminProcessServlet.do", urlPatterns = {"/AdminProcessServlet"})
 public class AdminProcessServlet extends HttpServlet {
@@ -18,25 +19,32 @@ public class AdminProcessServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         HttpSession session = request.getSession();
+        
+        Connection connection = DataConnector.getDBConnection(request);
+        ExpenseFactory expenseFactory = new ExpenseFactory(connection);
+        FormFactory formFactory = new FormFactory(connection);
         
         if(request.getParameter("logout") != null){
             if(request.getParameter("logout").equals("Logout")){
                 String loginErrorMassage = "You have been logout successfully.";
                 session.setAttribute("sesLoginMassage", loginErrorMassage);
                 response.sendRedirect("index.jsp");
+                return;
             }
-        }
-        else if(request.getParameter("seeform") != null) {
+        } else if(request.getParameter("seeform") != null) {
             String formID = request.getParameter("seeform");
             session.setAttribute("sesFormNumber", formID);
-            Form form = new Form();
-            Expense expense = new Expense();
+            
+            Form form = formFactory.find(Integer.parseInt(formID));
+            Expense expense = expenseFactory.findByFormID(Integer.parseInt(formID));
             Knowledge knowledge = new Knowledge();
             Report report = new Report();
             
-            form.callForm(Integer.parseInt(formID));
-            expense.callExpense(Integer.parseInt(formID));
+//            form.callForm(Integer.parseInt(formID));
+//            expense.callExpense(Integer.parseInt(formID));
             knowledge.callKnowledge(Integer.parseInt(formID));
             report.callReport(Integer.parseInt(formID));
             
@@ -45,23 +53,10 @@ public class AdminProcessServlet extends HttpServlet {
             session.setAttribute("sesKnowledge", knowledge);
             session.setAttribute("sesReport", report);
             response.sendRedirect("FormResult.jsp");
+            return;
         }
-            
-        try (PrintWriter out = response.getWriter()) {
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AdminProcessServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AdminProcessServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    
-        
     }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

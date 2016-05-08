@@ -1,6 +1,6 @@
 package Model;
 
-import Utility.DataConnector;
+import utility.DataConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
