@@ -15,7 +15,7 @@ public class HistoryUtility {
         this.connection = connection;
     }
     
-    public ArrayList<String> getHistory(String username, String beforeDate){
+    public ArrayList<String> getHistory(int user_id, String beforeDate){
         try {
             int formCounter = 1;
             
@@ -23,8 +23,8 @@ public class HistoryUtility {
             
             Report report = new Report();
             
-            ResultSet result = connection.createStatement().executeQuery("SELECT form_id, course, start_date, end_date FROM form WHERE username ='" + username +
-                    "' AND form_date <'"+ beforeDate +"' AND form_date > '2015-10-01';");
+            ResultSet result = connection.createStatement().executeQuery("SELECT form_id, course, start_date, end_date FROM form WHERE user_id ='" + user_id +
+                    "' AND form_date <'" + beforeDate + "' AND form_date > '2015-10-01';");
             
             ArrayList<String> history = new ArrayList<>();
             

@@ -3,10 +3,10 @@ package Model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Utility.DataConnector;
-import javax.swing.text.StyledEditorKit;
 
 public class Knowledge {
-    private String improvement, imperiod, imevi;
+    
+    private String improvement, improvement_period, improvement_evident_period;
     private int knowledge_id, form_id;
 
     public Knowledge() {
@@ -14,8 +14,8 @@ public class Knowledge {
     
     public void createKnowledge(int form_id, String improvement, String imperiod, String imevi){
         this.improvement = improvement;
-        this.imperiod = imperiod;
-        this.imevi = imevi;
+        this.improvement_period = imperiod;
+        this.improvement_evident_period = imevi;
         this.knowledge_id = (getLastKnowledgeId()+ 1);
         this.form_id = form_id;
     }
@@ -25,7 +25,7 @@ public class Knowledge {
         DataConnector connector = new DataConnector();
         String sql = "INSERT INTO knowledge (form_id, improvement, improvement_period, "
                         + "improvement_evident_period) VALUES('"
-                + this.form_id + "','" + this.improvement + "','" + this.imperiod + "','" + this.imevi + "');";
+                + this.form_id + "','" + this.improvement + "','" + this.improvement_period + "','" + this.improvement_evident_period + "');";
         if(connector.update(sql) == 1) {
             System.out.println("insert Knowledge sussecc");
             updateResult = true;
@@ -44,8 +44,8 @@ public class Knowledge {
             this.form_id = form_id;
             this.knowledge_id = rs.getInt("knowledge_id");
             this.improvement = rs.getString("improvement");
-            this.imperiod = rs.getString("improvement_period");
-            this.imevi = rs.getString("improvement_evident_period");
+            this.improvement_period = rs.getString("improvement_period");
+            this.improvement_evident_period = rs.getString("improvement_evident_period");
             rs.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -74,12 +74,12 @@ public class Knowledge {
         return improvement;
     }
 
-    public String getImperiod() {
-        return imperiod;
+    public String getImprovementPeriod() {
+        return improvement_period;
     }
 
-    public String getImevi() {
-        return imevi;
+    public String getImprovementEvidentPeriod() {
+        return improvement_evident_period;
     }
 
     public int getKnowledge_id() {
@@ -89,7 +89,25 @@ public class Knowledge {
     public int getForm_id() {
         return form_id;
     }
-    
-    
+
+    public void setImprovement(String improvement) {
+        this.improvement = improvement;
+    }
+
+    public void setImprovementPeriod(String improvement_period) {
+        this.improvement_period = improvement_period;
+    }
+
+    public void setImprovementEvidentPeriod(String improvement_evident_period) {
+        this.improvement_evident_period = improvement_evident_period;
+    }
+
+    public void setKnowledge_id(int knowledge_id) {
+        this.knowledge_id = knowledge_id;
+    }
+
+    public void setForm_id(int form_id) {
+        this.form_id = form_id;
+    }
     
 }

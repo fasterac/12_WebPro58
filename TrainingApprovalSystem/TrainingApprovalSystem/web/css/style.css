@@ -262,7 +262,7 @@ div.box {
     
 }
 
-form button {
+form button, a button {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -280,11 +280,11 @@ form button {
 }
 
           
-form button:hover {
+form button:hover, a button:hover {
   background-color: #FF6666;
 }
 
-form button_mini {
+form button_mini, a button_mini {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -302,7 +302,7 @@ form button_mini {
 }
 
           
-form button_mini:hover {
+form button_mini:hover, a button_mini:hover {
   background-color: #FF6666;
 }
 

@@ -32,7 +32,7 @@ public class LoginProcessServlet extends HttpServlet {
         if(role.equals("admin") || role.equals("user")) {
             User user = new User();
             user.callUserFromUsername(username);
-            session.setAttribute("sesUser", user);
+            session.setAttribute("user", user);
             
             if (role.equals("admin")) response.sendRedirect("AdminMainPage.jsp");
             else if(role.equals("user")) response.sendRedirect("UserMainPage.jsp");

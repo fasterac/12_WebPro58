@@ -1,59 +1,60 @@
-package Controller;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controller.nencon;
 
-import Utility.HistoryUtility;
+import Model.Expense;
+import Model.Form;
+import Model.Knowledge;
+import Model.Report;
+import Utility.DataConnector;
+import factory.ExpenseFactory;
+import factory.FormFactory;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Model.*;
-import java.sql.Connection;
-import javax.servlet.RequestDispatcher;
-import java.util.ArrayList;
-import javax.servlet.http.HttpSession;
-import sun.security.pkcs11.wrapper.Functions;
-import Utility.DataConnector;
 
-@WebServlet(name = "UserProcess.do", urlPatterns = {"/UserProcessServlet"})
-public class UserProcessServlet extends HttpServlet {
+@WebServlet(name = "ViewResultFormServlet", urlPatterns = {"/viewresultform"})
+public class ViewResultFormServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
         Connection connection = DataConnector.getDBConnection(request);
         
-        String forwarder = request.getParameter("forwarder");
-        String loggouter = ".";
-        
-        User user = new User();
-        HistoryUtility history = new HistoryUtility(connection);
-        ArrayList<String> his = new ArrayList<>();
-        HttpSession session = request.getSession();
-        user = (User) session.getAttribute("sesUser");
-        
-        if(forwarder.equals("CreateForm")){
-            his = history.getHistory(user.getUser_id(), "2016-10-01");
-            for (String word : his) {
-                System.out.println(word);
-            }
-            System.out.println(his.size());
-            
-            
-            session.setAttribute("sesHistoryUser", his);
-            
-            response.sendRedirect("ApprovalForm.jsp");
-        }
-        
-        if(forwarder.equals("Logout")){
-            String loginErrorMassage = "You have been logout successfully.";
-            session.setAttribute("sesLoginMassage", loginErrorMassage);
-            response.sendRedirect("index.jsp");
-        }
-    }
+        int form_id = Integer.parseInt(request.getParameter("id"));
 
+        Form form = new FormFactory(connection).find(form_id);
+        Expense expense = new ExpenseFactory(connection).findByFormID(form_id);
+        Knowledge knowledge = new Knowledge();
+        Report report = new Report();
+
+        knowledge.callKnowledge(form_id);
+        report.callReport(form_id);
+
+        request.setAttribute("form", form);
+        request.setAttribute("expense", expense);
+        request.setAttribute("knowledge", knowledge);
+        request.setAttribute("report", report);
+        
+        request.getRequestDispatcher("/WEB-INF/formresult.jsp").forward(request, response);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

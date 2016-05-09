@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.nencon;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,49 +11,32 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import Model.*;
 
-@WebServlet(name = "AdminFormResultServlet", urlPatterns = {"/AdminFormResultServlet"})
-public class AdminFormResultServlet extends HttpServlet {
+/**
+ *
+ * @author meranote
+ */
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+public class LogoutServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
         
-        if(request.getParameter("forwarder") != null){
-            switch(request.getParameter("forwarder")) {
-                case "Logout":
-                    session.setAttribute("sesLoginMassage", "You have been logout successfully.");
-                    response.sendRedirect("index.jsp");
-                    return;
-                case "Back":
-                    response.sendRedirect("AdminMainPage.jsp");
-                    return;
-            }
-        }
+        request.getSession().setAttribute("user", null);
+        request.getSession().setAttribute("sesLoginMassage", "You have been logout successfully.");
         
-        if(request.getParameter("changeStatus") != null) {
-            Form form = (Form) session.getAttribute("sesForm");
-            
-            switch(request.getParameter("changeStatus")) {
-                case "Approve":
-                    form.setStatus_id(1);
-                    return;
-                case "Reject":
-                    form.setStatus_id(2);
-                    return;
-                case "Cancle":
-                    form.setStatus_id(3);
-                    return;
-            }
-            
-            response.sendRedirect("AdminMainPage.jsp");
-            return;
-        }
-        
+        response.sendRedirect("login.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

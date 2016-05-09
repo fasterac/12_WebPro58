@@ -6,6 +6,7 @@
 package factory;
 
 import Model.Form;
+import Model.User;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -49,7 +50,25 @@ public class FormFactory extends BaseFactory<Form> {
 
     @Override
     public ArrayList<Form> all() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            sql = "SELECT * FROM form "
+                    + "JOIN expense ON (form.form_id = expense.form_id) "
+                    + "JOIN user ON (user.user_id = form.user_id) "
+                    + "JOIN status ON (form.status_id = status.status_id) "
+                    + "ORDER BY form.form_id ASC;";
+            
+            statement = connection.prepareStatement(sql);
+            result = statement.executeQuery();
+            
+            ArrayList<Form> forms = new ArrayList<>();
+            while(result.next()) {
+                forms.add(abv1BuildObject(result));
+            }
+            return forms;
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -115,6 +134,39 @@ public class FormFactory extends BaseFactory<Form> {
         model.setEnd_date(result.getString("form.end_date"));
         model.setSum_date(result.getInt("form.sum_date"));
         model.setInter_id(result.getInt("form.inter_id"));
+
+        return model;
+    }
+    
+    Form abv1BuildObject(ResultSet result) throws SQLException {
+        Form model = new Form();
+        
+        model.setForm_id(result.getInt("form.form_id"));
+        model.setStatus_id(result.getInt("form.status_id"));
+        model.setUser_id(result.getInt("form.user_id"));
+        model.setForm_date(result.getString("form.form_date"));
+        model.setCourse(result.getString("form.course"));
+        model.setOrganizer(result.getString("form.organizer"));
+        model.setLocation(result.getString("form.location"));
+        model.setStart_date(result.getString("form.start_date"));
+        model.setEnd_date(result.getString("form.end_date"));
+        model.setSum_date(result.getInt("form.sum_date"));
+        model.setInter_id(result.getInt("form.inter_id"));
+        
+        model.setExpense(new ExpenseFactory(connection).buildObject(result));
+        
+        User user = new User();
+        user.setUser_id(result.getInt("user.user_id"));
+        user.setFirstname(result.getString("firstname"));
+        user.setLastname(result.getString("lastname"));
+        user.setUsername(result.getString("username"));
+        user.setPassword(result.getString("password"));
+        user.setRole(result.getString("role"));
+        user.setType(result.getString("type"));
+        
+        model.setUser(user);
+        
+        model.setStatus(Form.Status.valueOf(result.getInt("form.status_id")));
 
         return model;
     }

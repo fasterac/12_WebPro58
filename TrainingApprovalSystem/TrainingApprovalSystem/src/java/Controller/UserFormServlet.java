@@ -137,7 +137,7 @@ public class UserFormServlet extends HttpServlet {
             else if(request.getParameter("forwarder").equals("CreateForm")){
                 HistoryUtility history = new HistoryUtility(connection);
                 ArrayList<String> his = new ArrayList<>();
-                his = history.getHistory(user.getUsername(), "2016-10-01");
+                his = history.getHistory(user.getUser_id(), "2016-10-01");
                 for (String word : his) {
                     System.out.println(word);
                 }

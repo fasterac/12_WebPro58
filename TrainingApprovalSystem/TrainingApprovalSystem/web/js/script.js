@@ -50,9 +50,3 @@ function addTable() {
     myTableDiv.appendChild(table);
    
 }
-
-function load() {
-   
-    console.log("Page load finished");
-
-}

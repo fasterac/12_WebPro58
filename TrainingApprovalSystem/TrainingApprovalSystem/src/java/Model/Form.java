@@ -2,8 +2,44 @@ package Model;
 
 public class Form {
     
+    public enum Status {
+        PENDING(0),
+        APPROVED(1),
+        REJECTED(2),
+        CANCEL(3);
+        
+        private int id;
+        
+        Status(int id) {
+            this.id = id;
+        }
+        
+        public static Status valueOf(int id) {
+            switch(id) {
+                case 0: return PENDING;
+                case 1: return APPROVED;
+                case 2: return REJECTED;
+                case 3: return CANCEL;
+                default: throw new RuntimeException("Out of range (or no match number)");
+            }
+        }
+        
+        public int getValue() {
+            return id;
+        }
+    }
+    
     private int form_id, status_id, inter_id, user_id, sum_date = 0;
     private String form_date, course, organizer = "", location = "", start_date = "CURRENT_TIMESTAMP", end_date = "";
+    
+    // Will replace status_id
+    private Status status;
+    
+    // Will replace user_id
+    private User user;
+    
+    // Add Expense
+    private Expense expense;
     
     public int getForm_id() {
         return form_id;
@@ -91,6 +127,30 @@ public class Form {
 
     public void setStatus_id(int status_id) {
         this.status_id = status_id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
     
 }
