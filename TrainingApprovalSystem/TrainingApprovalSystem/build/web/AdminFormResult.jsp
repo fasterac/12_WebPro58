@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Training Approval System - View all form</title>
     </head>
     <form action="AdminFormResultServlet" method="POST">
         

@@ -7,15 +7,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Form {
-    private int form_id, status_id, inter_id, sum_date = 0;
-    private String user_id, form_date, course, organizer = "", location = "", start_date = "CURRENT_TIMESTAMP", end_date = "";
+    private int user_id, form_id, status_id, inter_id, sum_date = 0;
+    private String form_date, course, organizer = "", location = "", start_date = "CURRENT_TIMESTAMP", end_date = "";
     private Connection conn;
 
     public Form() {
         
     }
     
-    public void createForm( String user_id, String course, String organizer, String location,
+    public void createForm(int user_id, String course, String organizer, String location,
             String start_date, String end_date, int sum_date, int inter_id ){
         this.form_id = getLastFormId() + 1;
         this.status_id = 0;
@@ -53,7 +53,7 @@ public class Form {
             rs.next();
             this.form_id = form_id;
             this.status_id = rs.getInt("status_id");
-            this.user_id = rs.getString("user_id");
+            this.user_id = rs.getInt("user_id");
             this.form_date = rs.getString("form_date");
             this.course = rs.getString("course");
             this.organizer = rs.getString("organizer");
@@ -93,9 +93,17 @@ public class Form {
         return lastID;
     }
     
-    private String getTimeStamp(){
-        String timestamp = "";
-        return timestamp;
+    //use when form didn't insert successful in user form servlet
+    public Boolean deleteForm(int form_id){
+        Boolean updateResult = false;
+        DataConnector connector = new DataConnector();
+        String sql = "DELETE FROM form WHERE form_id ='" + form_id + "';";
+        if(connector.update(sql) == 1) {
+            System.out.println("delete form " + form_id + "successful");
+            updateResult = true;
+        }
+        connector.closeConnection();
+        return updateResult;
     }
     
     public int getForm_id() {

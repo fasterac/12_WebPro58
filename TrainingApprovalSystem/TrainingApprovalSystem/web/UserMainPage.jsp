@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>user_main_page</title>
+<title>Training Approval System - Home</title>
 <link href='http://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'/>
 <link href="css/welcome.css" rel="stylesheet" type="text/css" />
 

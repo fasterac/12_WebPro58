@@ -20,6 +20,7 @@ public class UserFormServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         
         User user = new User();
         Form form = new Form();
@@ -27,7 +28,7 @@ public class UserFormServlet extends HttpServlet {
         Knowledge knowledge = new Knowledge();
         Report report = new Report();
         int inter = 0, updateSuccess = 4;
-        String updateFormFlag = "";
+        String updateFormFlag = "", redirectPage = "UserMainPage.jsp" ;
         
         HttpSession session = request.getSession();
         user = (User) session.getAttribute("sesUser");
@@ -38,11 +39,11 @@ public class UserFormServlet extends HttpServlet {
                 request.getParameter("acc_each") != null || request.getParameter("acc_sum") != null || request.getParameter("allo_day") != null || 
                 request.getParameter("allo_each") != null || request.getParameter("allo_sum") != null || request.getParameter("travelling") != null || 
                 request.getParameter("improvement") != null || request.getParameter("improvement_period") != null || request.getParameter("improvement_evident_period") != null  ){
-            response.sendRedirect("ApprovalForm.jsp");
+            redirectPage = "ApprovalForm.jsp";
         }
         
         if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {inter = 1;}
-        form.createForm(user.getUsername(), request.getParameter("course"), request.getParameter("organizer"), 
+        form.createForm(user.getUser_id(), request.getParameter("course"), request.getParameter("organizer"), 
                 request.getParameter("location"), request.getParameter("start_date"), request.getParameter("end_date"), 0, inter);
         
         expense.createExpense((form.getForm_id()), (double)(Double.parseDouble(request.getParameter("reg_expense"))), (double)(Double.parseDouble(request.getParameter("inter_expense"))),
@@ -89,34 +90,35 @@ public class UserFormServlet extends HttpServlet {
         //navigator button control
         if (request.getParameter("submit") != null && !request.getParameter("submit").isEmpty()) {
             if(request.getParameter("submit").equals("submit")){
-                response.sendRedirect("UserFormSuccessful.jsp");
+                redirectPage = "UserFormSuccessful.jsp";
             }
         }
         else if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
             if(request.getParameter("forwarder").equals("Home")){
-                response.sendRedirect("UserMainPage.jsp");
+                redirectPage = "UserMainPage.jsp";
             }
             else if(request.getParameter("forwarder").equals("Logout")){
                 String loginErrorMassage = "You have been logout successfully.";
                 session.setAttribute("sesLoginMassage", loginErrorMassage);
-                response.sendRedirect("index.jsp");
+                redirectPage = "index.jsp";
             }
             else if(request.getParameter("forwarder").equals("CreateForm")){
                 History history = new History();
                 ArrayList<String> his = new ArrayList<>();
-                his = history.getHistory(user.getUsername(), "2016-10-01");
+                his = history.getHistory(user.getUser_id(), "2016-10-01");
                 for (String word : his) {
                     System.out.println(word);
                 }
                 System.out.println(his.size());
                 session.setAttribute("sesHistoryUser", his);
-                response.sendRedirect("ApprovalForm.jsp");
+                redirectPage = "ApprovalForm.jsp";
             }
             else if(request.getParameter("forwarder").equals("TrackApproval")){
-                response.sendRedirect("UserMainPage.jsp");
+                redirectPage = "TrackApproval.jsp";
             }
         }
-
+        
+        response.sendRedirect(redirectPage);
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */

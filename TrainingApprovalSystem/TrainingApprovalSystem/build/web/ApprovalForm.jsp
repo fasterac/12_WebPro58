@@ -7,7 +7,7 @@
 <html >
     <head>
         <meta charset="UTF-8">
-        <title>form</title>
+        <title>Training Approval System - Create Form</title>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="java/javascript.js"></script>
@@ -90,16 +90,16 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <c:forEach var="word" items="${sessionScope.sesHistoryUser}">
-                                        <td>${word}</td>
-                                        <% count = count + 1; %>
-                                        <% if (count == history.size()) { %> 
-                                    </tr>
-                                    <% } else if (count % 6 == 0) {%>
+                        <tr>
+                        <c:forEach var="word" items="${sessionScope.sesHistoryUser}">
+                            <td>${word}</td>
+                            <% count = count + 1; %>
+                            <% if (count == history.size()) { %> 
+                                </tr>
+                            <% } else if (count % 6 == 0) {%>
                                 </tr> <tr>
-                                <% }%>
-                            </c:forEach>
+                        <% }%>
+                        </c:forEach>
                     </tbody>
                 </table>
 

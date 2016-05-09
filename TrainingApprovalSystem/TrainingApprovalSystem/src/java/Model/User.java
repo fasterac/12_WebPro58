@@ -91,6 +91,10 @@ public class User {
     public String getType() {
         return type;
     }
+
+    public int getUser_id() {
+        return user_id;
+    }
     
     
     

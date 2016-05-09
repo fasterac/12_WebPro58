@@ -16,13 +16,13 @@ public class History {
     
     
     
-    public ArrayList<String> getHistory(String username, String beforeDate){
+    public ArrayList<String> getHistory(int user_id, String beforeDate){
         DataConnector connector = new DataConnector();
         ArrayList<String> history = new ArrayList<>();
         Expense expense = new Expense();
         Report report = new Report();
         int formCounter = 0;
-        ResultSet rs = connector.execute("SELECT form_id, course, start_date, end_date FROM form WHERE username ='" + username 
+        ResultSet rs = connector.execute("SELECT form_id, course, start_date, end_date FROM form WHERE user_id ='" + user_id 
                 + "' AND form_date <'"+ beforeDate +"' AND form_date > '2015-10-01';");
 
         try {
