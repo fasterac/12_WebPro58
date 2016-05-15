@@ -5,54 +5,42 @@
  */
 package Controller;
 
-import Model.User;
-import Utility.DataConnector;
-import Utility.HistoryUtility;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import Model.*;
+import Utility.DataConnector;
+import factory.FormFactory;
 
-@WebServlet(name = "UserFormSuccessful", urlPatterns = {"/UserFormSuccessful"})
-public class UserFormSuccessful extends HttpServlet {
+@WebServlet(name = "AdminFormUpdateServlet", urlPatterns = {"/updateformresult"})
+public class AdminFormUpdateServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        FormFactory formFactory = new FormFactory(DataConnector.getDBConnection(request));
         
-        //navigator button control
-        if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
-            if(request.getParameter("forwarder").equals("Home")){
-                response.sendRedirect("usermainpage.jsp");
-            }
-            else if(request.getParameter("forwarder").equals("Logout")){
-                String loginErrorMassage = "You have been logout successfully.";
-                session.setAttribute("sesLoginMassage", loginErrorMassage);
-                response.sendRedirect("index.jsp");
-            }
-            else if(request.getParameter("forwarder").equals("CreateForm")){
-                ArrayList<String> his = new ArrayList<>();
-                his = new HistoryUtility(DataConnector.getDBConnection(request)).getHistory(user.getUser_id(), "2016-10-01");
-                for (String word : his) {
-                    System.out.println(word);
-                }
-                System.out.println(his.size());
-                session.setAttribute("sesHistoryUser", his);
-                response.sendRedirect("approvalform.jsp");
-            }
-            else if(request.getParameter("forwarder").equals("TrackApproval")){
-                response.sendRedirect("trackapproval.jsp");
-            }
+        int form_id = Integer.parseInt(request.getParameter("form_id"));
+        Form form = formFactory.find(form_id);
+
+        switch(Form.Status.valueOf(request.getParameter("changeStatus").toUpperCase())) {
+            case APPROVED:
+                formFactory.updateStatus(form, 1);
+                return;
+            case REJECTED:
+                formFactory.updateStatus(form, 2);
+                return;
+            case CANCEL:
+                formFactory.updateStatus(form, 3);
+                return;
         }
-        
+
+        response.sendRedirect("adminmainpage.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

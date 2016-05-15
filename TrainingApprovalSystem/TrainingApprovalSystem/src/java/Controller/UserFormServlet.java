@@ -1,17 +1,19 @@
 package Controller;
 
+import Utility.HistoryUtility;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.*;
+import Utility.DataConnector;
+import factory.ExpenseFactory;
+import factory.FormFactory;
+import java.sql.Connection;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Arrays;
-import javax.servlet.RequestDispatcher;
 
 
 @WebServlet(name = "UserFormServlet.do", urlPatterns = {"/UserFormServlet"})
@@ -22,16 +24,20 @@ public class UserFormServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         
-        User user = new User();
-        Form form = new Form();
-        Expense expense = new Expense();
+        Connection connection = DataConnector.getDBConnection(request);
+        
+        ExpenseFactory expenseFactory = new ExpenseFactory(connection);
+        FormFactory formFactory = new FormFactory(connection);
+        
+//        Form form = new Form();
+//        Expense expense = new Expense();
         Knowledge knowledge = new Knowledge();
         Report report = new Report();
         int inter = 0, updateSuccess = 4;
-        String updateFormFlag = "", redirectPage = "UserMainPage.jsp" ;
+        String updateFormFlag = "";
         
         HttpSession session = request.getSession();
-        user = (User) session.getAttribute("sesUser");
+        User user = (User) session.getAttribute("sesUser");
         
         if(request.getParameter("course") != null || request.getParameter("organizer") != null || request.getParameter("location") != null || 
                 request.getParameter("start_date") != null || request.getParameter("end_date") != null || 
@@ -39,105 +45,107 @@ public class UserFormServlet extends HttpServlet {
                 request.getParameter("acc_each") != null || request.getParameter("acc_sum") != null || request.getParameter("allo_day") != null || 
                 request.getParameter("allo_each") != null || request.getParameter("allo_sum") != null || request.getParameter("travelling") != null || 
                 request.getParameter("improvement") != null || request.getParameter("improvement_period") != null || request.getParameter("improvement_evident_period") != null  ){
-            redirectPage = "ApprovalForm.jsp";
+            response.sendRedirect("approvalform.jsp");
+            return;
         }
         
-        if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {inter = 1;}
-        form.createForm(user.getUser_id(), request.getParameter("course"), request.getParameter("organizer"), 
-                request.getParameter("location"), request.getParameter("start_date"), request.getParameter("end_date"), 0, inter);
+        if (request.getParameter("inter") != null && !request.getParameter("inter").isEmpty()) {
+            inter = 1;
+        }
         
-        expense.createExpense((form.getForm_id()), (double)(Double.parseDouble(request.getParameter("reg_expense"))), (double)(Double.parseDouble(request.getParameter("inter_expense"))),
-                (int)(Double.parseDouble(request.getParameter("acc_night"))), (double)(Double.parseDouble(request.getParameter("acc_each"))), (double)(Double.parseDouble(request.getParameter("acc_sum"))), 
-                (int)(Double.parseDouble(request.getParameter("allo_day"))), (double)(Double.parseDouble(request.getParameter("allo_each"))),
-                (double)(Double.parseDouble(request.getParameter("allo_sum"))), (double)(Double.parseDouble(request.getParameter("travelling"))));
+        Form form = new Form();
+        
+        form.setUser_id(user.getUser_id());
+        form.setCourse(request.getParameter("course"));
+        form.setOrganizer(request.getParameter("organizer"));
+        form.setLocation(request.getParameter("location"));
+        form.setStart_date(request.getParameter("start_date"));
+        form.setEnd_date(request.getParameter("end_date"));
+        form.setSum_date(0);
+        form.setInter_id(inter);
+        
+        Expense expense = new Expense();
+        
+        expense.setForm_id(form.getForm_id());
+        expense.setReg_expense(Double.parseDouble(request.getParameter("reg_expense")));
+        expense.setInter_expense(Double.parseDouble(request.getParameter("inter_expense")));
+        expense.setAcc_night(Integer.parseInt(request.getParameter("acc_night")));
+        expense.setAcc_each(Double.parseDouble(request.getParameter("acc_each")));
+        expense.setAcc_sum(Double.parseDouble(request.getParameter("acc_sum")));
+        expense.setAllo_day(Integer.parseInt(request.getParameter("allo_day")));
+        expense.setAllo_each(Double.parseDouble(request.getParameter("allo_each")));
+        expense.setAllo_sum(Double.parseDouble(request.getParameter("allo_sum")));
+        expense.setTravelling(Double.parseDouble(request.getParameter("travelling")));
         
         knowledge.createKnowledge((form.getForm_id()), request.getParameter("improvement"), request.getParameter("improvement_period"), request.getParameter("improvement_evident_period"));
         
         //check is update successful and insert all form
-        if(!form.insertForm()){
+        if((form = formFactory.create(form)) == null){
             updateFormFlag.concat("Error to insert Form");
             updateSuccess -= 1;            
         }
-        if(!expense.insertExpense()){
+        
+        if((expense = expenseFactory.create(expense)) == null){
             if(updateSuccess < 4){
                 updateFormFlag.concat(", Expense");
-            }else{
+            } else {
                 updateFormFlag.concat("Error to insert Expense");
             }
             updateSuccess -= 1;
         }
+        
         if(!knowledge.insertKnowledge()){
             if(updateSuccess < 4){
                 updateFormFlag.concat(", Knowledge");
-            }else{
+            } else {
                 updateFormFlag.concat("Error to insert Knowledge");
             }
             updateSuccess -= 1;
         }
+        
         if(!report.insertBlankReport((int)(form.getForm_id()))){
             if(updateSuccess < 4){
                 updateFormFlag.concat(", Report");
-            }else{
+            } else {
                 updateFormFlag.concat("Error to insert Report");
             }
             updateSuccess -= 1;
         }
+        
         if(updateSuccess == 4){
             updateFormFlag = "Create Form Successful";
         }
+        
         session.setAttribute("sesFormUpdate", updateFormFlag);
         
         //navigator button control
         if (request.getParameter("submit") != null && !request.getParameter("submit").isEmpty()) {
             if(request.getParameter("submit").equals("submit")){
-                redirectPage = "UserFormSuccessful.jsp";
+                response.sendRedirect("UserFormSuccessful.jsp");
+                return;
             }
-        }
-        else if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
+        } else if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
             if(request.getParameter("forwarder").equals("Home")){
-                redirectPage = "UserMainPage.jsp";
+                response.sendRedirect("UserMainPage.jsp");
+                return;
             }
             else if(request.getParameter("forwarder").equals("Logout")){
                 String loginErrorMassage = "You have been logout successfully.";
                 session.setAttribute("sesLoginMassage", loginErrorMassage);
-                redirectPage = "index.jsp";
+
+                response.sendRedirect("index.jsp");
+                return;
             }
             else if(request.getParameter("forwarder").equals("CreateForm")){
-                History history = new History();
-                ArrayList<String> his = new ArrayList<>();
-                his = history.getHistory(user.getUser_id(), "2016-10-01");
-                for (String word : his) {
-                    System.out.println(word);
-                }
-                System.out.println(his.size());
-                session.setAttribute("sesHistoryUser", his);
-                redirectPage = "ApprovalForm.jsp";
+                response.sendRedirect("approvalform.jsp");
+                return;
             }
             else if(request.getParameter("forwarder").equals("TrackApproval")){
-                redirectPage = "TrackApproval.jsp";
+                response.sendRedirect("usermainpage.jsp");
+                return;
             }
         }
-        
-        response.sendRedirect(redirectPage);
-        
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title> Create Approval Form</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserFormServlet at " + request.getContextPath() + "</h1>");
-            out.println("<h2>Create Form Successful</h2>");
-            out.println("<form action=\"UserFormServlet\" method=\"POST\">"
-                    + "<button name=\"knowsub\" values=\"knowsub\" type=\"submit\"></button>"
-                    + "</form>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -6,8 +6,13 @@
 package Controller;
 
 import Model.*;
+import Utility.DataConnector;
+import Utility.HistoryUtility;
+import factory.ExpenseFactory;
+import factory.FormFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,19 +30,24 @@ public class UserTrackApproval extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         
+        Connection connection = DataConnector.getDBConnection(request);
+        
+        FormFactory formFactory = new FormFactory(connection);
+        ExpenseFactory expenseFactory = new ExpenseFactory(connection);
+        
         User user = new User();
         user = (User) session.getAttribute("sesUser");
         
         if(request.getParameter("seeform") != null) {
             String formID = request.getParameter("seeform");
             session.setAttribute("sesFormNumber", formID);
-            Form form = new Form();
-            Expense expense = new Expense();
+            Form form = formFactory.find(Integer.parseInt(formID));
+            Expense expense = expenseFactory.find(Integer.parseInt(formID));
             Knowledge knowledge = new Knowledge();
             Report report = new Report();
             
-            form.callForm(Integer.parseInt(formID));
-            expense.callExpense(Integer.parseInt(formID));
+//            form.callForm(Integer.parseInt(formID));
+//            expense.callExpense(Integer.parseInt(formID));
             knowledge.callKnowledge(Integer.parseInt(formID));
             report.callReport(Integer.parseInt(formID));
             
@@ -59,15 +69,12 @@ public class UserTrackApproval extends HttpServlet {
                 response.sendRedirect("index.jsp");
             }
             else if(request.getParameter("forwarder").equals("CreateForm")){
-                History history = new History();
+                HistoryUtility history = new HistoryUtility(connection);
                 ArrayList<String> his = new ArrayList<>();
                 his = history.getHistory(user.getUser_id(), "2016-10-01");
-                for (String word : his) {
-                    System.out.println(word);
-                }
                 System.out.println(his.size());
                 session.setAttribute("sesHistoryUser", his);
-                response.sendRedirect("ApprovalForm.jsp");
+                response.sendRedirect("approvalform.jsp");
             }
             else if(request.getParameter("forwarder").equals("TrackApproval")){
                 response.sendRedirect("TrackApproval.jsp");
