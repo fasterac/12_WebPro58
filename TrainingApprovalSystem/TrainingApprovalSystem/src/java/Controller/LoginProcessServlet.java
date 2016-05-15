@@ -1,15 +1,14 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Utility.DataConnector;
-import javax.servlet.RequestDispatcher;
 import Model.*;
+import factory.UserFactory;
 import javax.servlet.http.HttpSession;
 
 
@@ -21,40 +20,26 @@ public class LoginProcessServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
-
-
         
         DataConnector connector = new DataConnector();
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        String role = "";
-        role = connector.executeString(("SELECT role FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
+        String role = connector.executeString(("SELECT role FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
         connector.closeConnection();
         
-        if (role.equals("admin")) {
-            User user = new User();
-            user.callUserFromUsername(username);
-            session.setAttribute("sesUser", user);
-            response.sendRedirect("AdminMainPage.jsp");
-        }
-        else if(role.equals("user")){
-            User user = new User();
-            user.callUserFromUsername(username);
-            session.setAttribute("sesUser", user);
-            response.sendRedirect("UserMainPage.jsp");
-        }
-        else{
+        if(role.equals("admin") || role.equals("user")) {
+            User user = new UserFactory(DataConnector.getDBConnection(request)).findByUsername(username);
+            session.setAttribute("user", user);
+            
+            if (role.equals("admin")) response.sendRedirect("adminmainpage.jsp");
+            else if(role.equals("user")) response.sendRedirect("usermainpage.jsp");
+        } else {
             String loginErrorMassage = "Wrong Username or Password";
             session.setAttribute("sesLoginMassage", loginErrorMassage);
             response.sendRedirect("index.jsp");
         }
-        
-        
-        try (PrintWriter out = response.getWriter()) {
-            
-        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

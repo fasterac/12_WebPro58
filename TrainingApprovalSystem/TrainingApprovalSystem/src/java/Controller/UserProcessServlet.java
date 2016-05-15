@@ -1,5 +1,6 @@
 package Controller;
 
+import Utility.HistoryUtility;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -8,10 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.*;
+import java.sql.Connection;
 import javax.servlet.RequestDispatcher;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import sun.security.pkcs11.wrapper.Functions;
+import Utility.DataConnector;
 
 @WebServlet(name = "UserProcess.do", urlPatterns = {"/UserProcessServlet"})
 public class UserProcessServlet extends HttpServlet {
@@ -21,16 +24,20 @@ public class UserProcessServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         
+        Connection connection = DataConnector.getDBConnection(request);
+        
+        String forwarder = request.getParameter("forwarder");
+        String loggouter = ".";
+        
         User user = new User();
-        History history = new History();
+        HistoryUtility history = new HistoryUtility(connection);
         ArrayList<String> his = new ArrayList<>();
         HttpSession session = request.getSession();
-        user = (User) session.getAttribute("sesUser");
-        
+
         //navigator button control
         if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
             if(request.getParameter("forwarder").equals("Home")){
-                response.sendRedirect("UserMainPage.jsp");
+                response.sendRedirect("usermainpage.jsp");
             }
             else if(request.getParameter("forwarder").equals("Logout")){
                 String loginErrorMassage = "You have been logout successfully.";
@@ -41,44 +48,11 @@ public class UserProcessServlet extends HttpServlet {
                 his = history.getHistory(user.getUser_id(), "2016-10-01");
                 System.out.println(his.size());
                 session.setAttribute("sesHistoryUser", his);
-                response.sendRedirect("ApprovalForm.jsp");
+                response.sendRedirect("approvalform.jsp");
             }
             else if(request.getParameter("forwarder").equals("TrackApproval")){
-                response.sendRedirect("TrackApproval.jsp");
+                response.sendRedirect("trackapproval.jsp");
             }
-        }
-        
-//        if(forwarder.equals("CreateForm")){
-//            his = history.getHistory(user.getUser_id(), "2016-10-01");
-//            for (String word : his) {
-//                System.out.println(word);
-//            }
-//            System.out.println(his.size());
-//            
-//            
-//            session.setAttribute("sesHistoryUser", his);
-//            
-//            response.sendRedirect("ApprovalForm.jsp");
-//        }
-//        
-//        if(forwarder.equals("Logout")){
-//            String loginErrorMassage = "You have been logout successfully.";
-//            session.setAttribute("sesLoginMassage", loginErrorMassage);
-//            response.sendRedirect("index.jsp");
-//        }
-        
-        
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UserProcessServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserProcessServlet at </h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 

@@ -3,56 +3,57 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.nencon;
 
-import Model.User;
+import Model.Expense;
+import Model.Form;
+import Model.Knowledge;
+import Model.Report;
 import Utility.DataConnector;
-import Utility.HistoryUtility;
+import factory.ExpenseFactory;
+import factory.FormFactory;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "UserFormSuccessful", urlPatterns = {"/UserFormSuccessful"})
-public class UserFormSuccessful extends HttpServlet {
+@WebServlet(name = "ViewResultFormServlet", urlPatterns = {"/viewresultform"})
+public class ViewResultFormServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
         
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        Connection connection = DataConnector.getDBConnection(request);
         
-        //navigator button control
-        if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
-            if(request.getParameter("forwarder").equals("Home")){
-                response.sendRedirect("usermainpage.jsp");
-            }
-            else if(request.getParameter("forwarder").equals("Logout")){
-                String loginErrorMassage = "You have been logout successfully.";
-                session.setAttribute("sesLoginMassage", loginErrorMassage);
-                response.sendRedirect("index.jsp");
-            }
-            else if(request.getParameter("forwarder").equals("CreateForm")){
-                ArrayList<String> his = new ArrayList<>();
-                his = new HistoryUtility(DataConnector.getDBConnection(request)).getHistory(user.getUser_id(), "2016-10-01");
-                for (String word : his) {
-                    System.out.println(word);
-                }
-                System.out.println(his.size());
-                session.setAttribute("sesHistoryUser", his);
-                response.sendRedirect("approvalform.jsp");
-            }
-            else if(request.getParameter("forwarder").equals("TrackApproval")){
-                response.sendRedirect("trackapproval.jsp");
-            }
-        }
+        int form_id = Integer.parseInt(request.getParameter("id"));
+
+        Form form = new FormFactory(connection).find(form_id);
+        Expense expense = new ExpenseFactory(connection).findByFormID(form_id);
+        Knowledge knowledge = new Knowledge();
+        Report report = new Report();
+
+        knowledge.callKnowledge(form_id);
+        report.callReport(form_id);
+
+        request.setAttribute("form", form);
+        request.setAttribute("expense", expense);
+        request.setAttribute("knowledge", knowledge);
+        request.setAttribute("report", report);
         
+        request.getRequestDispatcher("/WEB-INF/formresult.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
