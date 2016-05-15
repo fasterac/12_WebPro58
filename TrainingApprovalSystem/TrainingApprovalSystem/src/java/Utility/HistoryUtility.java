@@ -37,8 +37,6 @@ public class HistoryUtility {
                 history.add(expenseFactory.findByFormID(result.getInt("form_id")).getSum_expense()+"");
                 history.add(checknull(report.getReport_date()));
                 history.add(checknull(report.getLecture_date()));
-//                System.out.println(formCounter + " " +rs.getString("course") + rs.getString("start_date") + expense.getSum_expense()+" "
-//                +report.getReport_date() + report.getLecture_date() );
             }
             
             return history;

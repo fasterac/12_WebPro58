@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package factory;
 
 import Model.Form;
@@ -15,10 +10,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-/**
- *
- * @author meranote
- */
 public class FormFactory extends BaseFactory<Form> {
 
     public FormFactory(Connection connection) {
@@ -53,8 +44,9 @@ public class FormFactory extends BaseFactory<Form> {
         try {
             sql = "SELECT * FROM form "
                     + "JOIN expense ON (form.form_id = expense.form_id) "
-                    + "JOIN user ON (user.user_id = form.user_id) "
-                    + "JOIN status ON (form.status_id = status.status_id) "
+                    + "LEFT JOIN user ON (user.user_id = form.user_id) "
+                    + "LEFT JOIN teacher ON (user.user_id = teacher.teacher_id) "
+                    + "LEFT JOIN status ON (form.status_id = status.status_id) "
                     + "ORDER BY form.form_id ASC;";
             
             statement = connection.prepareStatement(sql);
@@ -62,7 +54,7 @@ public class FormFactory extends BaseFactory<Form> {
             
             ArrayList<Form> forms = new ArrayList<>();
             while(result.next()) {
-                forms.add(abv1BuildObject(result));
+                forms.add(buildObject(result));
             }
             return forms;
         } catch(Exception ex) {
@@ -74,7 +66,12 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public Form find(int id) {
         try {
-            sql = "SELECT * FROM form WHERE form_id = ?";
+            sql = "SELECT * FROM form "
+                    + "LEFT JOIN expense ON (form.form_id = expense.form_id) "
+                    + "LEFT JOIN user ON (user.user_id = form.user_id) "
+                    + "LEFT JOIN teacher ON (user.user_id = teacher.teacher_id) "
+                    + "LEFT JOIN status ON (form.status_id = status.status_id) "
+                    + "WHERE form.form_id = ?;";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             
@@ -134,37 +131,9 @@ public class FormFactory extends BaseFactory<Form> {
         model.setEnd_date(result.getString("form.end_date"));
         model.setSum_date(result.getInt("form.sum_date"));
         model.setInter_id(result.getInt("form.inter_id"));
-
-        return model;
-    }
-    
-    Form abv1BuildObject(ResultSet result) throws SQLException {
-        Form model = new Form();
-        
-        model.setForm_id(result.getInt("form.form_id"));
-        model.setStatus_id(result.getInt("form.status_id"));
-        model.setUser_id(result.getInt("form.user_id"));
-        model.setForm_date(result.getString("form.form_date"));
-        model.setCourse(result.getString("form.course"));
-        model.setOrganizer(result.getString("form.organizer"));
-        model.setLocation(result.getString("form.location"));
-        model.setStart_date(result.getString("form.start_date"));
-        model.setEnd_date(result.getString("form.end_date"));
-        model.setSum_date(result.getInt("form.sum_date"));
-        model.setInter_id(result.getInt("form.inter_id"));
         
         model.setExpense(new ExpenseFactory(connection).buildObject(result));
-        
-        User user = new User();
-        user.setUser_id(result.getInt("user.user_id"));
-        user.setFirstname(result.getString("firstname"));
-        user.setLastname(result.getString("lastname"));
-        user.setUsername(result.getString("username"));
-        user.setPassword(result.getString("password"));
-        user.setRole(result.getString("role"));
-        user.setType(result.getString("type"));
-        
-        model.setUser(user);
+        model.setUser(new UserFactory(connection).buildObject(result));
         
         model.setStatus(Form.Status.valueOf(result.getInt("form.status_id")));
 

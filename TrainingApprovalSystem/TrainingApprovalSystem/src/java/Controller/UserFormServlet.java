@@ -144,11 +144,11 @@ public class UserFormServlet extends HttpServlet {
                 System.out.println(his.size());
                 
                 session.setAttribute("sesHistoryUser", his);
-                response.sendRedirect("ApprovalForm.jsp");
+                response.sendRedirect("approvalform.jsp");
                 return;
             }
             else if(request.getParameter("forwarder").equals("TrackApproval")){
-                response.sendRedirect("UserMainPage.jsp");
+                response.sendRedirect("usermainpage.jsp");
                 return;
             }
         }

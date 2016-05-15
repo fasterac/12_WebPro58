@@ -12,11 +12,20 @@
 </head>
 <body>
     <form action="UserProcessServlet" method="POST">
-      <%! User user = new User() ; %> 
-      <% user = (User) session.getAttribute("sesUser"); %>
 <div class="wrapper">
-  
-    <jsp:include page="Header.jsp"></jsp:include>
+    
+    <div class="logo-menu-container">
+       
+    <div class="logo">ระบบขอไปอบรมและนำเสนอผลงาน</div>
+    <div class="menu">
+        <ul>
+            <li><input type="submit" value="Home" name="forwarder" /></li>
+            <li><input type="submit" value="Logout" name="forwarder" /> </li>
+            <li><input type="submit" value="CreateForm" name="forwarder" /></li>
+            <li><input type="submit" value="TrackApproval" name="forwarder" /></li>
+      </ul>
+    </div>
+  </div>
   
   <div class="clear"></div>
   <div class="page">
@@ -42,8 +51,8 @@
       <div class="right-column-content">
         <div class="right-column-content-heading">
 <!--................................................Edit Content..................................................................................-->            
-          <h1>คุณ <%= user.getFirstname()%> <%= user.getLastname() %></h1><br>
-          <h2>ผู้ใช้: <%= user.getRole()%></h2>
+        <h1>คุณ ${sessionScope.user.firstname} ${sessionScope.user.lastname}</h1><br>
+        <h2>ผู้ใช้: ${sessionScope.user.role}</h2>
 <!--................................................Edit Content..................................................................................--> 
         </div>
         <div class="right-column-content-img-left"> <img src="images/user.jpg" alt="banner" /> </div>

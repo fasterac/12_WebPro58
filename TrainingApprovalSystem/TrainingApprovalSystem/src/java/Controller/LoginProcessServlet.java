@@ -1,15 +1,14 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Utility.DataConnector;
-import javax.servlet.RequestDispatcher;
 import Model.*;
+import factory.UserFactory;
 import javax.servlet.http.HttpSession;
 
 
@@ -30,18 +29,15 @@ public class LoginProcessServlet extends HttpServlet {
         connector.closeConnection();
         
         if(role.equals("admin") || role.equals("user")) {
-            User user = new User();
-            user.callUserFromUsername(username);
+            User user = new UserFactory(DataConnector.getDBConnection(request)).findByUsername(username);
             session.setAttribute("user", user);
             
-            if (role.equals("admin")) response.sendRedirect("AdminMainPage.jsp");
-            else if(role.equals("user")) response.sendRedirect("UserMainPage.jsp");
-            return;
+            if (role.equals("admin")) response.sendRedirect("adminmainpage.jsp");
+            else if(role.equals("user")) response.sendRedirect("usermainpage.jsp");
         } else {
             String loginErrorMassage = "Wrong Username or Password";
             session.setAttribute("sesLoginMassage", loginErrorMassage);
             response.sendRedirect("index.jsp");
-            return;
         }
     }
 

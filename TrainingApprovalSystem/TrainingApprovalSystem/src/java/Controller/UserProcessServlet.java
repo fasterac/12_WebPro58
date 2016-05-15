@@ -32,19 +32,9 @@ public class UserProcessServlet extends HttpServlet {
         HistoryUtility history = new HistoryUtility(connection);
         ArrayList<String> his = new ArrayList<>();
         HttpSession session = request.getSession();
-        user = (User) session.getAttribute("sesUser");
         
         if(forwarder.equals("CreateForm")){
-            his = history.getHistory(user.getUser_id(), "2016-10-01");
-            for (String word : his) {
-                System.out.println(word);
-            }
-            System.out.println(his.size());
-            
-            
-            session.setAttribute("sesHistoryUser", his);
-            
-            response.sendRedirect("ApprovalForm.jsp");
+            response.sendRedirect("approvalform.jsp");
         }
         
         if(forwarder.equals("Logout")){

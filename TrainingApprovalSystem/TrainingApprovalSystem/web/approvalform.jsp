@@ -1,8 +1,15 @@
+<%@page import="Utility.DataConnector"%>
+<%@page import="Utility.HistoryUtility"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Model.*" %> 
 <%@page import="javax.servlet.http.HttpServletRequest" %> 
 <%@page import="java.util.ArrayList" %> 
+<% 
+    User user = (User) session.getAttribute("user");
+    ArrayList<String> history = new HistoryUtility(DataConnector.getDBConnection(request)).getHistory(user.getUser_id(), "2016-10-01");
+    pageContext.setAttribute("history", history);
+%>
 <!DOCTYPE html>
 <html >
     <head>
@@ -20,15 +27,21 @@
         <form action="UserFormServlet" method="POST">
             
             <div class="wrapper">
-                <jsp:include page="Header.jsp"></jsp:include>
+                <div class="logo-menu-container">
+       
+                    <div class="logo">ระบบขอไปอบรมและนำเสนอผลงาน</div>
+                    <div class="menu">
+                        <ul>
+                            <li><input type="submit" value="Home" name="forwarder" /></li>
+                            <li><input type="submit" value="Logout" name="forwarder" /> </li>
+                            <li><input type="submit" value="CreateForm" name="forwarder" /></li>
+                            <li><input type="submit" value="TrackApproval" name="forwarder" /></li>
+                      </ul>
+                    </div>
+                </div>
                 
-                
-
                 <div class="box">
-                    <%! User user = new User(); %> 
-                    <% user = (User) session.getAttribute("sesUser"); %>
-                    <%! ArrayList<String> history = new ArrayList<>(); %> 
-                    <% history = (ArrayList<String>) session.getAttribute("sesHistoryUser");%>
+                    
 
 
                     <!--................................. CONTENT  FORM...................................................................-->  
@@ -39,8 +52,8 @@
 
                     <fieldset>
                         <legend>รายละเอียด</legend>
-                        ชื่อ :<input class="textsmall" type="text" value="<%= user.getFirstname()%>" > <br>
-                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.sesUser.getLastname()}"> <br>
+                        ชื่อ :<input class="textsmall" type="text" value="${sessionScope.user.firstname}" > <br>
+                        นามสกุล :<input class="textsmall" type="text" value="${sessionScope.user.lastname}"> <br>
                         ตำแหน่ง :<input class="textsmall" type="text" value=""> <br><br>
                         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร :<input class="textbox" type="text" size="70" name="course"><br><br>
                         จัดโดย :<input class="textsmall" type="text" name="organizer"> <br>
@@ -91,7 +104,7 @@
 
                             <tbody>
                                 <tr>
-                                    <c:forEach var="word" items="${sessionScope.sesHistoryUser}">
+                                    <c:forEach var="word" items="${pageScope.history}">
                                         <td>${word}</td>
                                         <% count = count + 1; %>
                                         <% if (count == history.size()) { %> 
