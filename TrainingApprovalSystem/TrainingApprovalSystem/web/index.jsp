@@ -5,7 +5,7 @@
 <html >
   <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Training Approval System - Login</title>
         <link rel="stylesheet" href="css/login_input.css">
         
   </head>

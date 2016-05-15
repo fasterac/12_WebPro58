@@ -22,6 +22,7 @@ public class UserFormServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         
         Connection connection = DataConnector.getDBConnection(request);
         
@@ -44,7 +45,7 @@ public class UserFormServlet extends HttpServlet {
                 request.getParameter("acc_each") != null || request.getParameter("acc_sum") != null || request.getParameter("allo_day") != null || 
                 request.getParameter("allo_each") != null || request.getParameter("allo_sum") != null || request.getParameter("travelling") != null || 
                 request.getParameter("improvement") != null || request.getParameter("improvement_period") != null || request.getParameter("improvement_evident_period") != null  ){
-            response.sendRedirect("ApprovalForm.jsp");
+            response.sendRedirect("approvalform.jsp");
             return;
         }
         
@@ -131,19 +132,11 @@ public class UserFormServlet extends HttpServlet {
             else if(request.getParameter("forwarder").equals("Logout")){
                 String loginErrorMassage = "You have been logout successfully.";
                 session.setAttribute("sesLoginMassage", loginErrorMassage);
+
                 response.sendRedirect("index.jsp");
                 return;
             }
             else if(request.getParameter("forwarder").equals("CreateForm")){
-                HistoryUtility history = new HistoryUtility(connection);
-                ArrayList<String> his = new ArrayList<>();
-                his = history.getHistory(user.getUser_id(), "2016-10-01");
-                for (String word : his) {
-                    System.out.println(word);
-                }
-                System.out.println(his.size());
-                
-                session.setAttribute("sesHistoryUser", his);
                 response.sendRedirect("approvalform.jsp");
                 return;
             }

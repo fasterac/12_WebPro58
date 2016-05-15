@@ -7,7 +7,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <a href="adminmainpage.jsp"><button type="submit">Back to Home</button></a>
+        <a href="AdminMainPage.jsp"><button type="submit">Back to Home</button></a>
         <a href="logout"><button type="submit">Logout</button></a><br>
         
         <form action="updateformresult" method="POST">
