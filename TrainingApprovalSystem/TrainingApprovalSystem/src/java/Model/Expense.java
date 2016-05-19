@@ -1,106 +1,64 @@
-package Model;
+package model;
 
-public class Expense {
+public class Expense extends BaseModel {
 
-    private double reg_expense = 0, inter_expense = 0,  acc_each = 0, acc_sum = 0, 
-             allo_each = 0, allo_sum = 0, travelling = 0, sum_expense = 0;
-    private int allo_day = 0, acc_night = 0;
-    private int expense_id, form_id;
-
-    public double getSum_expense() {
-        return sum_expense;
-    }
-
-    public double getReg_expense() {
-        return reg_expense;
-    }
-
-    public double getInter_expense() {
-        return inter_expense;
-    }
-
-    public double getAcc_each() {
-        return acc_each;
-    }
-
-    public double getAcc_sum() {
-        return acc_sum;
-    }
-
-    public double getAllo_each() {
-        return allo_each;
-    }
-
-    public double getAllo_sum() {
-        return allo_sum;
-    }
-
-    public double gettravelling() {
-        return travelling;
-    }
-
-    public int getAllo_day() {
-        return allo_day;
-    }
-
-    public int getAcc_night() {
-        return acc_night;
-    }
-
-    public int getExpense_id() {
-        return expense_id;
-    }
+    private int form_id, room_night_amount, day_amount;
+    private double register_cost, room_night_each, day_cost_each, travel_cost;
 
     public int getForm_id() {
         return form_id;
     }
 
-    public void setReg_expense(double reg_expense) {
-        this.reg_expense = reg_expense;
-    }
-
-    public void setInter_expense(double inter_expense) {
-        this.inter_expense = inter_expense;
-    }
-
-    public void setAcc_each(double acc_each) {
-        this.acc_each = acc_each;
-    }
-
-    public void setAcc_sum(double acc_sum) {
-        this.acc_sum = acc_sum;
-    }
-
-    public void setAllo_each(double allo_each) {
-        this.allo_each = allo_each;
-    }
-
-    public void setAllo_sum(double allo_sum) {
-        this.allo_sum = allo_sum;
-    }
-
-    public void setTravelling(double travelling) {
-        this.travelling = travelling;
-    }
-
-    public void setSum_expense(double sum_expense) {
-        this.sum_expense = sum_expense;
-    }
-
-    public void setAllo_day(int allo_day) {
-        this.allo_day = allo_day;
-    }
-
-    public void setAcc_night(int acc_night) {
-        this.acc_night = acc_night;
-    }
-
-    public void setExpense_id(int expense_id) {
-        this.expense_id = expense_id;
-    }
-
     public void setForm_id(int form_id) {
         this.form_id = form_id;
+    }
+
+    public int getRoom_night_amount() {
+        return room_night_amount;
+    }
+
+    public void setRoom_night_amount(int room_night_amount) {
+        this.room_night_amount = room_night_amount;
+    }
+
+    public int getDay_amount() {
+        return day_amount;
+    }
+
+    public void setDay_amount(int day_amount) {
+        this.day_amount = day_amount;
+    }
+
+    public double getRegister_cost() {
+        return register_cost;
+    }
+
+    public void setRegister_cost(double register_cost) {
+        this.register_cost = register_cost;
+    }
+
+    public double getRoom_night_each() {
+        return room_night_each;
+    }
+
+    public void setRoom_night_each(double room_night_each) {
+        this.room_night_each = room_night_each;
+    }
+
+    public double getDay_cost_each() {
+        return day_cost_each;
+    }
+
+    public void setDay_cost_each(double day_cost_each) {
+        this.day_cost_each = day_cost_each;
+    }
+
+    public double getTravel_cost() {
+        return travel_cost;
+    }
+
+    public void setTravel_cost(double travel_cost) {
+        this.travel_cost = travel_cost;
     }
 
 }

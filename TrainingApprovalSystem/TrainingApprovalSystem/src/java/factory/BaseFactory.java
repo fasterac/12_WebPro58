@@ -30,7 +30,7 @@ abstract class BaseFactory<T> {
     public abstract ArrayList<T> all();
     public abstract T find(int id);
     public abstract T update(T model);
-    public abstract T remove(int id);
+    public abstract void remove(int id);
     
     abstract T buildObject(ResultSet result) throws SQLException;
     

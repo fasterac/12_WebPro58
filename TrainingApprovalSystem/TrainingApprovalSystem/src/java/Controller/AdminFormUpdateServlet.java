@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,8 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Model.*;
-import Utility.DataConnector;
+import model.*;
+import utility.DataConnector;
 import factory.FormFactory;
 
 @WebServlet(name = "AdminFormUpdateServlet", urlPatterns = {"/updateformresult"})
@@ -28,17 +28,7 @@ public class AdminFormUpdateServlet extends HttpServlet {
         int form_id = Integer.parseInt(request.getParameter("form_id"));
         Form form = formFactory.find(form_id);
 
-        switch(Form.Status.valueOf(request.getParameter("changeStatus").toUpperCase())) {
-            case APPROVED:
-                formFactory.updateStatus(form, 1);
-                return;
-            case REJECTED:
-                formFactory.updateStatus(form, 2);
-                return;
-            case CANCEL:
-                formFactory.updateStatus(form, 3);
-                return;
-        }
+        formFactory.updateStatus(form, Form.Status.valueOf(request.getParameter("changeStatus").toUpperCase()));
 
         response.sendRedirect("adminmainpage.jsp");
     }

@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/TrainingApprovalSystem">
-  <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="DB12" password="ust4Ht3Q" type="javax.sql.DataSource" url="jdbc:mysql://database.it.kmitl.ac.th:3306/it_12?zeroDateTimeBehavior=convertToNull" username="it_12"/>
+
+    <!--<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"-->
+              <!--maxTotal="20" maxIdle="10" maxWaitMillis="-1" name="DB12"-->
+              <!--password="ust4Ht3Q" type="javax.sql.DataSource"-->
+              <!--url="jdbc:mysql://database.it.kmitl.ac.th:3306/it_12?zeroDateTimeBehavior=convertToNull"-->
+              <!--username="it_12"/>-->
+
+    <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver"
+              maxTotal="20" maxIdle="10" maxWaitMillis="10000" name="DB12"
+              password="mysql" type="javax.sql.DataSource"
+              url="jdbc:mysql://localhost:3306/it_12?zeroDateTimeBehavior=convertToNull"
+              username="root"/>
+
 </Context>
