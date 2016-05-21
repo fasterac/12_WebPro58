@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="factory.FormFactory"%>
-<%@page import="Utility.DataConnector" %>
+<%@page import="utility.DataConnector" %>
 <%@page import="java.util.ArrayList" %>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

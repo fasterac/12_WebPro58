@@ -1,13 +1,13 @@
-<%@page import="Utility.DataConnector"%>
-<%@page import="Utility.HistoryUtility"%>
+<%@page import="utility.DataConnector"%>
+<%@page import="utility.HistoryUtility"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="Model.*" %> 
+<%@page import="model.*" %>
 <%@page import="javax.servlet.http.HttpServletRequest" %> 
 <%@page import="java.util.ArrayList" %> 
 <% 
     User user = (User) session.getAttribute("user");
-    ArrayList<String> history = new HistoryUtility(DataConnector.getDBConnection(request)).getHistory(user.getUser_id(), "2016-10-01");
+    ArrayList<String> history = new HistoryUtility(DataConnector.getDBConnection(request)).getHistory(user.getId(), "2016-10-01");
     pageContext.setAttribute("history", history);
 %>
 <!DOCTYPE html>

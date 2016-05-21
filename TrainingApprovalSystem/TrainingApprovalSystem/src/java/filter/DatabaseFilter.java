@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package filter;
 
-import Utility.DataConnector;
+import utility.DataConnector;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -35,8 +30,9 @@ public class DatabaseFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
 
         Connection connection = dataConnector.getConnection();
-        DataConnector.setDBConenction(req, connection);;
+        DataConnector.setDBConenction(req, connection);
 
+        // Keep to throw later
         Throwable t = null;
         try {
             chain.doFilter(request, response);
@@ -46,7 +42,7 @@ public class DatabaseFilter implements Filter {
 
         try {
             if(connection != null) connection.close();
-        } catch (SQLException ex) { }
+        } catch (SQLException ignored) { }
 
         if(t != null) {
             try {

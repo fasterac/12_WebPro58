@@ -1,4 +1,4 @@
-package Controller;
+package controller.authorization;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -6,39 +6,29 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Utility.DataConnector;
-import Model.*;
-import factory.UserFactory;
-import javax.servlet.http.HttpSession;
 
+import utility.Authorization;
+import utility.DataConnector;
 
-@WebServlet(name = "/CheckLogin.do", urlPatterns = {"/CheckLogin.do"})
-public class LoginProcessServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login.do"})
+public class LoginServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
-        
-        DataConnector connector = new DataConnector();
-        
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        String role = connector.executeString(("SELECT role FROM user WHERE username = '" + username + "' AND password = '" + password +"';") , "role");
-        connector.closeConnection();
-        
-        if(role.equals("admin") || role.equals("user")) {
-            User user = new UserFactory(DataConnector.getDBConnection(request)).findByUsername(username);
-            session.setAttribute("user", user);
-            
-            if (role.equals("admin")) response.sendRedirect("adminmainpage.jsp");
-            else if(role.equals("user")) response.sendRedirect("usermainpage.jsp");
-        } else {
-            String loginErrorMassage = "Wrong Username or Password";
-            session.setAttribute("sesLoginMassage", loginErrorMassage);
+
+        Authorization authorization = new Authorization(DataConnector.getDBConnection(request), request.getSession());
+
+        String username = request.getParameter("username"),
+                password = request.getParameter("password");
+
+        if(authorization.doLogin(username, password)) {
             response.sendRedirect("index.jsp");
+        } else {
+//            String loginErrorMassage = "Wrong Username or Password";
+//            request.getSession().setAttribute("sesLoginMassage", loginErrorMassage);
+            response.sendRedirect("login.jsp");
         }
     }
 

@@ -1,13 +1,14 @@
 package factory;
 
-import Model.Form;
-import Model.User;
+import model.Expense;
+import model.Form;
+import model.Improvement;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class FormFactory extends BaseFactory<Form> {
@@ -19,20 +20,39 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public Form create(Form model) {
         try {
-            sql = "INSERT INTO form VALUES (0, ?, 0, '', ?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO form VALUES (0, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, model.getUser_id());
-            statement.setString(2, model.getCourse());
-            statement.setString(3, model.getOrganizer());
-            statement.setString(4, model.getLocation());
-            statement.setDate(5, (Date) new SimpleDateFormat("yyyy-MM-dd").parse(model.getStart_date()));
-            statement.setDate(6, (Date) new SimpleDateFormat("yyyy-MM-dd").parse(model.getEnd_date()));
-            statement.setInt(7, model.getSum_date());
-            statement.setInt(8, model.getInter_id());
+            statement.setInt(1, model.getUser().getId());
+            statement.setString(2, model.getCourse_name());
+            statement.setString(3, model.getOrganizer_name());
+            statement.setString(4, model.getLocation_name());
+            statement.setDate(5, (Date) model.getStart_date());
+            statement.setDate(6, (Date) model.getEnd_date());
+            statement.setString(7, String.valueOf(model.getStatus()));
+            statement.setString(8, String.valueOf(model.getLocation_type()));
             
-            model.setForm_id(statement.executeUpdate());
+            statement.executeUpdate();
+
+            result = statement.getGeneratedKeys();
+            if(result.next()) {
+                model.setId(result.getInt(1));
+            }
+
+            if(model.getExpense() != null) {
+                Expense expense = model.getExpense();
+                expense.setForm_id(model.getId());
+
+                model.setExpense(new ExpenseFactory(connection).create(expense));
+            }
+
+            if(model.getImprovement() != null) {
+                Improvement improvement = model.getImprovement();
+                improvement.setForm_id(model.getId());
+
+                model.setImprovement(new ImprovementFactory(connection).create(improvement));
+            }
             
-            return find(model.getForm_id());
+            return model;
         } catch(Exception ex) {
             ex.printStackTrace();
         }
@@ -42,12 +62,12 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public ArrayList<Form> all() {
         try {
-            sql = "SELECT * FROM form "
-                    + "JOIN expense ON (form.form_id = expense.form_id) "
-                    + "LEFT JOIN user ON (user.user_id = form.user_id) "
-                    + "LEFT JOIN teacher ON (user.user_id = teacher.teacher_id) "
-                    + "LEFT JOIN status ON (form.status_id = status.status_id) "
-                    + "ORDER BY form.form_id ASC;";
+            sql = "SELECT * FROM form " +
+                    "LEFT JOIN expense ON (form.id = expense.form_id) " +
+                    "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
+                    "LEFT JOIN report ON (form.id = report.form_id) " +
+                    "LEFT JOIN user ON (user.id = form.user_id) " +
+                    "LEFT JOIN teacher ON (user.id = teacher.id)";
             
             statement = connection.prepareStatement(sql);
             result = statement.executeQuery();
@@ -66,12 +86,13 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public Form find(int id) {
         try {
-            sql = "SELECT * FROM form "
-                    + "LEFT JOIN expense ON (form.form_id = expense.form_id) "
-                    + "LEFT JOIN user ON (user.user_id = form.user_id) "
-                    + "LEFT JOIN teacher ON (user.user_id = teacher.teacher_id) "
-                    + "LEFT JOIN status ON (form.status_id = status.status_id) "
-                    + "WHERE form.form_id = ?;";
+            sql = "SELECT * FROM form " +
+                    "LEFT JOIN expense ON (form.id = expense.form_id) " +
+                    "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
+                    "LEFT JOIN report ON (form.id = report.form_id) " +
+                    "LEFT JOIN user ON (user.id = form.user_id) " +
+                    "LEFT JOIN teacher ON (user.id = teacher.id)"
+                    + "WHERE form.id = ?;";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             
@@ -89,21 +110,21 @@ public class FormFactory extends BaseFactory<Form> {
 
     @Override
     public Form update(Form model) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    public Form updateStatus(Form model, int status_id) {
+    public Form updateStatus(Form model, Form.Status status) {
         try {
-            sql = "UPDATE form SET status_id = ? WHERE form_id = ?";
+            sql = "UPDATE form SET status = ? WHERE id = ?";
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, status_id);
-            statement.setInt(2, model.getForm_id());
+            statement.setString(1, String.valueOf(status));
+            statement.setInt(2, model.getId());
             
             if(statement.executeUpdate() > 0) {
-                model.setStatus_id(status_id);
+                model.setStatus(status);
                 return model;
             } else {
-                throw new RuntimeException("Something worng update form at form_id = " + model.getForm_id());
+                throw new RuntimeException("Something wrong update form at form_id = " + model.getId());
             }
         } catch(SQLException ex) {
             ex.printStackTrace();
@@ -112,30 +133,36 @@ public class FormFactory extends BaseFactory<Form> {
     }
 
     @Override
-    public Form remove(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void remove(int id) {
+        try {
+            sql = "DELETE FROM form WHERE id = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     Form buildObject(ResultSet result) throws SQLException {
         Form model = new Form();
         
-        model.setForm_id(result.getInt("form.form_id"));
-        model.setStatus_id(result.getInt("form.status_id"));
-        model.setUser_id(result.getInt("form.user_id"));
-        model.setForm_date(result.getString("form.form_date"));
-        model.setCourse(result.getString("form.course"));
-        model.setOrganizer(result.getString("form.organizer"));
-        model.setLocation(result.getString("form.location"));
-        model.setStart_date(result.getString("form.start_date"));
-        model.setEnd_date(result.getString("form.end_date"));
-        model.setSum_date(result.getInt("form.sum_date"));
-        model.setInter_id(result.getInt("form.inter_id"));
-        
+        model.setId(result.getInt("form.id"));
+        model.setForm_date(result.getDate("form.form_date"));
+        model.setCourse_name(result.getString("form.course_name"));
+        model.setOrganizer_name(result.getString("form.organizer_name"));
+        model.setLocation_name(result.getString("form.location_name"));
+        model.setStart_date(result.getDate("form.start_date"));
+        model.setEnd_date(result.getDate("form.end_date"));
+        model.setStatus(Form.Status.valueOf(result.getString("form.status")));
+        model.setLocation_type(Form.Location.valueOf(result.getString("form.location_type")));
+
         model.setExpense(new ExpenseFactory(connection).buildObject(result));
+        model.setImprovement(new ImprovementFactory(connection).buildObject(result));
+//        model.setReport(new ReportFaction(connection).buildObject(result));
         model.setUser(new UserFactory(connection).buildObject(result));
-        
-        model.setStatus(Form.Status.valueOf(result.getInt("form.status_id")));
 
         return model;
     }

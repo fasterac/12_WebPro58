@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="Model.*" %> 
+<%@page import="model.*" %>
 <%@page import="javax.servlet.http.HttpServletRequest" %> 
 <%@page import="java.util.ArrayList" %> 
 <!DOCTYPE html>

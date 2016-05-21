@@ -1,59 +1,60 @@
-//package controller;
+///*
+// * To change this license header, choose License Headers in Project Properties.
+// * To change this template file, choose Tools | Templates
+// * and open the template in the editor.
+// */
+//package controller.nencon;
 //
-//import utility.HistoryUtility;
+//import model.Expense;
+//import model.Form;
+//import model.Knowledge;
+//import model.Report;
+//import utility.DataConnector;
+//import factory.ExpenseFactory;
+//import factory.FormFactory;
 //import java.io.IOException;
+//import java.sql.Connection;
 //import javax.servlet.ServletException;
 //import javax.servlet.annotation.WebServlet;
 //import javax.servlet.http.HttpServlet;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
-//import model.*;
-//import java.sql.Connection;
-//import java.util.ArrayList;
-//import javax.servlet.http.HttpSession;
 //
-//import utility.DataConnector;
+//@WebServlet(name = "ViewResultFormServlet", urlPatterns = {"/viewresultform"})
+//public class ViewResultFormServlet extends HttpServlet {
 //
-//@WebServlet(name = "UserProcess.do", urlPatterns = {"/UserProcessServlet"})
-//public class UserProcessServlet extends HttpServlet {
-//
+//    /**
+//     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+//     * methods.
+//     *
+//     * @param request servlet request
+//     * @param response servlet response
+//     * @throws ServletException if a servlet-specific error occurs
+//     * @throws IOException if an I/O error occurs
+//     */
 //    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 //            throws ServletException, IOException {
 //        response.setContentType("text/html;charset=UTF-8");
-//        request.setCharacterEncoding("UTF-8");
 //
 //        Connection connection = DataConnector.getDBConnection(request);
 //
-//        String forwarder = request.getParameter("forwarder");
-//        String loggouter = ".";
+//        int form_id = Integer.parseInt(request.getParameter("id"));
 //
-//        User user = new User();
-//        HistoryUtility history = new HistoryUtility(connection);
-//        ArrayList<String> his = new ArrayList<>();
-//        HttpSession session = request.getSession();
+//        Form form = new FormFactory(connection).find(form_id);
+//        Expense expense = new ExpenseFactory(connection).findByFormID(form_id);
+//        Knowledge knowledge = new Knowledge();
+//        Report report = new Report();
 //
-//        //navigator button control
-//        if (request.getParameter("forwarder") != null && !request.getParameter("forwarder").isEmpty()) {
-//            if(request.getParameter("forwarder").equals("Home")){
-//                response.sendRedirect("usermainpage.jsp");
-//            }
-//            else if(request.getParameter("forwarder").equals("Logout")){
-//                String loginErrorMassage = "You have been logout successfully.";
-//                session.setAttribute("sesLoginMassage", loginErrorMassage);
-//                response.sendRedirect("index.jsp");
-//            }
-//            else if(request.getParameter("forwarder").equals("CreateForm")){
-//                his = history.getHistory(user.getId(), "2016-10-01");
-//                System.out.println(his.size());
-//                session.setAttribute("sesHistoryUser", his);
-//                response.sendRedirect("approvalform.jsp");
-//            }
-//            else if(request.getParameter("forwarder").equals("TrackApproval")){
-//                response.sendRedirect("trackapproval.jsp");
-//            }
-//        }
+//        knowledge.callKnowledge(form_id);
+//        report.callReport(form_id);
+//
+//        request.setAttribute("form", form);
+//        request.setAttribute("expense", expense);
+//        request.setAttribute("knowledge", knowledge);
+//        request.setAttribute("report", report);
+//
+//        request.getRequestDispatcher("/WEB-INF/formresult.jsp").forward(request, response);
 //    }
-//
 //
 //    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 //    /**
