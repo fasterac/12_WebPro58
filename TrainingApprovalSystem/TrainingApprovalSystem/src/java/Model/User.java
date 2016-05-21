@@ -1,9 +1,21 @@
 package model;
 
 public class User extends BaseModel {
+
+    public enum Role {
+        ADMIN,
+        USER
+    }
+
+    public enum Type {
+        TEACHER,
+        STAFF
+    }
     
     private int id;
-    private String username, password, pname_th, fname_th, lname_th, pname_en, fname_en, lname_en, email, mobile, role, type;
+    private String username, password, pname_th, fname_th, lname_th, pname_en, fname_en, lname_en, email, mobile;
+    private Role role;
+    private Type type;
 
     public int getId() {
         return id;
@@ -93,19 +105,19 @@ public class User extends BaseModel {
         this.mobile = mobile;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 

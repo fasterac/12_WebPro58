@@ -101,8 +101,8 @@ public class UserFactory extends BaseFactory<User> {
         model.setLname_en(result.getString("user.lname_en"));
         model.setEmail(result.getString("user.email"));
         model.setMobile(result.getString("user.mobile"));
-        model.setRole(result.getString("user.role"));
-        model.setType(result.getString("user.type"));
+        model.setRole(User.Role.valueOf(result.getString("user.role")));
+        model.setType(User.Type.valueOf(result.getString("user.type")));
 
         return model;
     }
