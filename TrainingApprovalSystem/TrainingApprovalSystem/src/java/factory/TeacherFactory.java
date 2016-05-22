@@ -58,6 +58,24 @@ public class TeacherFactory extends BaseFactory<Teacher> {
         return null;
     }
 
+    public Teacher findByUserID(int user_id) {
+        try {
+            sql = "SELECT * FROM teacher " +
+                    "JOIN user ON (teacher.user_id = user.id) " +
+                    "WHERE user.id = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, user_id);
+
+            result = statement.executeQuery();
+            if(result.next()) {
+                return buildObject(result);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public Teacher update(Teacher model) {
         throw new UnsupportedOperationException("Not supported yet.");

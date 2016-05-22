@@ -20,16 +20,15 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public Form create(Form model) {
         try {
-            sql = "INSERT INTO form VALUES (0, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO form VALUES (0, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, 'PENDING', ?)";
             statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, model.getUser().getId());
             statement.setString(2, model.getCourse_name());
             statement.setString(3, model.getOrganizer_name());
             statement.setString(4, model.getLocation_name());
-            statement.setDate(5, (Date) model.getStart_date());
-            statement.setDate(6, (Date) model.getEnd_date());
-            statement.setString(7, String.valueOf(model.getStatus()));
-            statement.setString(8, String.valueOf(model.getLocation_type()));
+            statement.setDate(5, new Date(model.getStart_date().getTime()));
+            statement.setDate(6, new Date(model.getStart_date().getTime()));
+            statement.setBoolean(7, model.isUse_expense());
             
             statement.executeUpdate();
 
@@ -157,7 +156,7 @@ public class FormFactory extends BaseFactory<Form> {
         model.setStart_date(result.getDate("form.start_date"));
         model.setEnd_date(result.getDate("form.end_date"));
         model.setStatus(Form.Status.valueOf(result.getString("form.status")));
-        model.setLocation_type(Form.Location.valueOf(result.getString("form.location_type")));
+        model.setUse_expense(result.getBoolean("form.use_expense"));
 
         model.setExpense(new ExpenseFactory(connection).buildObject(result));
         model.setImprovement(new ImprovementFactory(connection).buildObject(result));

@@ -21,7 +21,7 @@ public class Form extends BaseModel {
     private Date form_date, start_date, end_date;
     private String course_name, organizer_name, location_name;
     private Status status;
-    private Location location_type;
+    private boolean use_expense;
 
     // Dependencies
     private Expense expense;
@@ -100,12 +100,12 @@ public class Form extends BaseModel {
         this.status = status;
     }
 
-    public Location getLocation_type() {
-        return location_type;
+    public boolean isUse_expense() {
+        return use_expense;
     }
 
-    public void setLocation_type(Location location_type) {
-        this.location_type = location_type;
+    public void setUse_expense(boolean use_expense) {
+        this.use_expense = use_expense;
     }
 
     public Expense getExpense() {

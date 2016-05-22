@@ -3,7 +3,7 @@
 
 <h1>User Panel, Welcome ${sessionScope['auth.user'].pname_th}${sessionScope['auth.user'].fname_th}</h1>
 
-<a href="javascript:;">ยื่นคำร้อง</a><br />
+<a href="newform.jsp">ยื่นคำร้อง</a><br />
 <a href="javascript:;">ดูคำร้อง</a><br />
 <br />
 
