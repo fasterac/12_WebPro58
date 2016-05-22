@@ -18,8 +18,9 @@ public class Form extends BaseModel {
     
     private int id;
     private User user;
+    private Staff staff;
     private Date form_date, start_date, end_date;
-    private String course_name, organizer_name, location_name;
+    private String course_name, organizer_name, location_name, course_file_path;
     private Status status;
     private boolean use_expense;
 
@@ -130,6 +131,22 @@ public class Form extends BaseModel {
 
     public void setImprovement(Improvement improvement) {
         this.improvement = improvement;
+    }
+
+    public String getCourse_file_path() {
+        return course_file_path;
+    }
+
+    public void setCourse_file_path(String course_file_path) {
+        this.course_file_path = course_file_path;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
 }

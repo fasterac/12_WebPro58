@@ -26,8 +26,6 @@ public class LoginServlet extends HttpServlet {
         if(authorization.doLogin(username, password)) {
             response.sendRedirect("index.jsp");
         } else {
-//            String loginErrorMassage = "Wrong Username or Password";
-//            request.getSession().setAttribute("sesLoginMassage", loginErrorMassage);
             response.sendRedirect("login.jsp");
         }
     }

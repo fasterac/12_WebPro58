@@ -20,7 +20,7 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public Form create(Form model) {
         try {
-            sql = "INSERT INTO form VALUES (0, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, 'PENDING', ?)";
+            sql = "INSERT INTO form VALUES (0, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, 'PENDING', ?, NULL)";
             statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, model.getUser().getId());
             statement.setString(2, model.getCourse_name());
@@ -35,6 +35,13 @@ public class FormFactory extends BaseFactory<Form> {
             result = statement.getGeneratedKeys();
             if(result.next()) {
                 model.setId(result.getInt(1));
+
+                sql = "INSERT INTO course_detail VALUES (?, ?)";
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1, model.getId());
+                statement.setString(2, model.getCourse_file_path());
+
+                statement.executeUpdate();
             }
 
             if(model.getExpense() != null) {
@@ -62,6 +69,7 @@ public class FormFactory extends BaseFactory<Form> {
     public ArrayList<Form> all() {
         try {
             sql = "SELECT * FROM form " +
+                    "LEFT JOIN course_detail ON (form.id = course_detail.form_id) " +
                     "LEFT JOIN expense ON (form.id = expense.form_id) " +
                     "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
                     "LEFT JOIN report ON (form.id = report.form_id) " +
@@ -85,6 +93,7 @@ public class FormFactory extends BaseFactory<Form> {
     public ArrayList<Form> findAllByUserID(int user_id) {
         try {
             sql = "SELECT * FROM form " +
+                    "LEFT JOIN course_detail ON (form.id = course_detail.form_id) " +
                     "LEFT JOIN expense ON (form.id = expense.form_id) " +
                     "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
                     "LEFT JOIN report ON (form.id = report.form_id) " +
@@ -111,6 +120,7 @@ public class FormFactory extends BaseFactory<Form> {
     public Form find(int id) {
         try {
             sql = "SELECT * FROM form " +
+                    "LEFT JOIN course_detail ON (form.id = course_detail.form_id) " +
                     "LEFT JOIN expense ON (form.id = expense.form_id) " +
                     "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
                     "LEFT JOIN report ON (form.id = report.form_id) " +
@@ -139,10 +149,11 @@ public class FormFactory extends BaseFactory<Form> {
     
     public Form updateStatus(Form model, Form.Status status) {
         try {
-            sql = "UPDATE form SET status = ? WHERE id = ?";
+            sql = "UPDATE form SET status = ?, staff_id = ? WHERE id = ?";
             statement = connection.prepareStatement(sql);
             statement.setString(1, String.valueOf(status));
-            statement.setInt(2, model.getId());
+            statement.setInt(2, model.getStaff().getId());
+            statement.setInt(3, model.getId());
             
             if(statement.executeUpdate() > 0) {
                 model.setStatus(status);
@@ -182,6 +193,8 @@ public class FormFactory extends BaseFactory<Form> {
         model.setEnd_date(result.getDate("form.end_date"));
         model.setStatus(Form.Status.valueOf(result.getString("form.status")));
         model.setUse_expense(result.getBoolean("form.use_expense"));
+
+        model.setCourse_file_path(result.getString("course_detail.file_path"));
 
         model.setExpense(new ExpenseFactory(connection).buildObject(result));
         model.setImprovement(new ImprovementFactory(connection).buildObject(result));
