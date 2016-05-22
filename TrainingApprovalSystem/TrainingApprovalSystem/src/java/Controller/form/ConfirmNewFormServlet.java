@@ -6,14 +6,14 @@ import model.Form;
 import model.Improvement;
 import utility.Authorization;
 import utility.DataConnector;
+import utility.FileUploadHelper;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +36,13 @@ public class ConfirmNewFormServlet extends HttpServlet {
             response.sendRedirect("newform.jsp");
             return;
         }
+
+        FileUploadHelper fileUploadHelper = new FileUploadHelper(request);
+        fileUploadHelper.moveFileToCourseFile(fileUploadHelper.getTempFile((String) session.getAttribute("form.course_file_name")));
+
+        form.setCourse_file_path((String) session.getAttribute("form.course_file_name"));
+
+        session.setAttribute("form.course_file_name", null);
 
         if((form = new FormFactory(connection).create(form)) != null) {
             request.setAttribute("form.new", form);

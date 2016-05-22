@@ -1,6 +1,7 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="utility.DataConnector" %>
 <%@ page import="factory.FormFactory" %>
+<%@ page import="utility.FileUploadHelper" %>
 <%@ include file="/WEB-INF/importlib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -8,6 +9,8 @@
     Connection connection = DataConnector.getDBConnection(request);
     pageContext.setAttribute("form",
             new FormFactory(connection).find(Integer.parseInt(request.getParameter("form_id"))));
+    pageContext.setAttribute("fileUploadHelper",
+            new FileUploadHelper(request));
 %>
 
 <!DOCTYPE html>
@@ -32,6 +35,7 @@
         สถานที่จัด : ${form.location_name}<br />
         วันที่เริ่ม : ${String.format("%tF", form.start_date)}<br />
         วันที่สิ้นสุด : ${String.format("%tF", form.end_date)}<br />
+        รายละเอียดการอบรม (.zip หรือ .pdf) : <a href="${fileUploadHelper.getCourseFileURL(form.course_file_path)}" target="_blank">${form.course_file_path}</a>
 
         <hr />
 

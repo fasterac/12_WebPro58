@@ -2,6 +2,7 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="utility.DataConnector" %>
 <%@ page import="utility.Authorization" %>
+<%@ page import="utility.FileUploadHelper" %>
 <%@ include file="/WEB-INF/importlib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -26,7 +27,7 @@
             <h2>${sessionScope['form.error']}</h2>
         </c:if>
 
-        <form action="checknewform.do" method="POST">
+        <form action="checknewform.do" method="POST" enctype="multipart/form-data">
             <h2>รายละเอียด</h2>
             ชื่อ : <input type="text" value="${teacher.pname_th} ${teacher.fname_th}" disabled><br />
             นามสกุล : <input type="text" value="${teacher.lname_th}" disabled><br />
@@ -36,6 +37,7 @@
             สถานที่จัด : <input type="text" name="location_name" value="${sessionScope['form.param']['location_name']}"><br />
             วันที่เริ่ม : <input type="text" name="start_date" value="${sessionScope['form.param']['start_date']}"><br />
             วันที่สิ้นสุด : <input type="text" name="end_date" value="${sessionScope['form.param']['end_date']}"><br />
+            รายละเอียดการอบรม (.zip หรือ .pdf) : <input type="file" name="course_file" />
 
             <hr />
 
@@ -80,4 +82,11 @@
 <%
     session.setAttribute("form.error", null);
     session.setAttribute("form.param", null);
+    session.setAttribute("form.new", null);
+
+    if(session.getAttribute("form.course_file_name") != null) {
+        FileUploadHelper fileUploadHelper = new FileUploadHelper(request);
+        fileUploadHelper.removeFile(fileUploadHelper.getTempFile((String) session.getAttribute("form.course_file_name")));
+        session.setAttribute("form.course_file_name", null);
+    }
 %>

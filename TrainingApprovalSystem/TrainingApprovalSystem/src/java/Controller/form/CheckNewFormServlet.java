@@ -5,13 +5,13 @@ import model.Form;
 import model.Improvement;
 import utility.Authorization;
 import utility.DataConnector;
+import utility.FileUploadHelper;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.text.ParseException;
@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name = "CheckNewFormServlet", urlPatterns = {"/checknewform.do"})
+@MultipartConfig
 public class CheckNewFormServlet extends HttpServlet {
 
     private static final String[] notEmptyParams =
@@ -33,7 +34,7 @@ public class CheckNewFormServlet extends HttpServlet {
         Connection connection = DataConnector.getDBConnection(request);
 
         HashMap<String, String> params = new HashMap<>();
-        
+
         for(Map.Entry<String, String[]> param : request.getParameterMap().entrySet()) {
             params.put(param.getKey(), param.getValue()[0]);
         }
@@ -59,6 +60,17 @@ public class CheckNewFormServlet extends HttpServlet {
             }
             useExpense = true;
         }
+
+        if(request.getPart("course_file") == null) {
+            session.setAttribute("form.error", "FORM_COURSE_DETAIL_EMPTY");
+            response.sendRedirect("newform.jsp");
+            return;
+        }
+
+        FileUploadHelper fileUploadHelper = new FileUploadHelper(request);
+        File file = fileUploadHelper.uploadToTemp(request.getPart("course_file"));
+
+        session.setAttribute("form.course_file_name", file.getName());
 
         Form form = new Form();
         form.setUser(new Authorization(connection, session).getCurrentUser());
