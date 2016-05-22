@@ -82,6 +82,31 @@ public class FormFactory extends BaseFactory<Form> {
         return null;
     }
 
+    public ArrayList<Form> findAllByUserID(int user_id) {
+        try {
+            sql = "SELECT * FROM form " +
+                    "LEFT JOIN expense ON (form.id = expense.form_id) " +
+                    "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
+                    "LEFT JOIN report ON (form.id = report.form_id) " +
+                    "LEFT JOIN user ON (user.id = form.user_id) " +
+                    "LEFT JOIN teacher ON (user.id = teacher.id) " +
+                    "WHERE form.user_id = ?";
+
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, user_id);
+            result = statement.executeQuery();
+
+            ArrayList<Form> forms = new ArrayList<>();
+            while(result.next()) {
+                forms.add(buildObject(result));
+            }
+            return forms;
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public Form find(int id) {
         try {
@@ -160,7 +185,9 @@ public class FormFactory extends BaseFactory<Form> {
 
         model.setExpense(new ExpenseFactory(connection).buildObject(result));
         model.setImprovement(new ImprovementFactory(connection).buildObject(result));
-//        model.setReport(new ReportFaction(connection).buildObject(result));
+        if(result.getString("report.form_id") != null && !result.getString("report.form_id").equals("")) {
+            model.setReport(new ReportFactory(connection).buildObject(result));
+        }
         model.setUser(new UserFactory(connection).buildObject(result));
 
         return model;
