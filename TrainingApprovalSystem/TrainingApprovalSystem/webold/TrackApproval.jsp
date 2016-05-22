@@ -1,5 +1,5 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="Model.*"%>
+<%@page import="model.*"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page session="true" language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
             <% user = (User) session.getAttribute("sesUser"); %>
             <%! FormList formlister = new FormList(); %>
             <% ArrayList<String> formlist = new ArrayList<>(); %>
-            <% formlist = formlister.getUserFormList(user.getUser_id()); %>
+            <% formlist = formlister.getUserFormList(user.getId()); %>
             
             <!-- temp header -->
             <button type="submit" name="forwarder" value="Home">Home</button>
