@@ -1,14 +1,14 @@
-<%@ page import="factory.TeacherFactory" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="utility.DataConnector" %>
 <%@ page import="utility.Authorization" %>
+<%@ page import="factory.UserFactory" %>
 <%@ include file="/WEB-INF/importlib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     Connection connection = DataConnector.getDBConnection(request);
-    pageContext.setAttribute("teacher",
-            new TeacherFactory(connection).findByUserID(new Authorization(connection, session).getCurrentUser().getId()));
+    pageContext.setAttribute("user",
+            new UserFactory(connection).find(new Authorization(connection, session).getCurrentUser().getId()));
 %>
 
 <!DOCTYPE html>
@@ -23,9 +23,8 @@
         <h1>แบบฟอร์มขออนุมัติ</h1>
 
         <h2>รายละเอียด</h2>
-        ชื่อ : ${teacher.pname_th} ${teacher.fname_th}<br />
-        นามสกุล : ${teacher.lname_th}<br />
-        ตำแหน่ง : ${teacher.position != null || teacher.position.trim() != '' ? 'ยังไม่ระบุ' : teacher.position}<br />
+        ชื่อ : ${user.pname_th} ${user.fname_th}<br />
+        นามสกุล : ${user.lname_th}<br />
         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร : ${sessionScope['form.new'].course_name}<br />
         จัดโดย : ${sessionScope['form.new'].organizer_name}<br />
         สถานที่จัด : ${sessionScope['form.new'].location_name}<br />

@@ -1,14 +1,8 @@
 package factory;
 
-import model.Expense;
-import model.Form;
-import model.Improvement;
+import model.*;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class FormFactory extends BaseFactory<Form> {
@@ -68,13 +62,13 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public ArrayList<Form> all() {
         try {
-            sql = "SELECT * FROM form " +
-                    "LEFT JOIN course_detail ON (form.id = course_detail.form_id) " +
-                    "LEFT JOIN expense ON (form.id = expense.form_id) " +
-                    "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
-                    "LEFT JOIN report ON (form.id = report.form_id) " +
-                    "LEFT JOIN user ON (user.id = form.user_id) " +
-                    "LEFT JOIN teacher ON (user.id = teacher.id)";
+            sql = "SELECT * FROM form\n" +
+                    "  LEFT JOIN course_detail ON (form.id = course_detail.form_id)\n" +
+                    "  LEFT JOIN expense ON (form.id = expense.form_id)\n" +
+                    "  LEFT JOIN improvement ON (form.id = improvement.form_id)\n" +
+                    "  LEFT JOIN report ON (form.id = report.form_id)\n" +
+                    "  LEFT JOIN user user ON (user.id = form.user_id)\n" +
+                    "  LEFT JOIN user approver ON (approver.id = form.approver_id)";
             
             statement = connection.prepareStatement(sql);
             result = statement.executeQuery();
@@ -92,14 +86,14 @@ public class FormFactory extends BaseFactory<Form> {
 
     public ArrayList<Form> findAllByUserID(int user_id) {
         try {
-            sql = "SELECT * FROM form " +
-                    "LEFT JOIN course_detail ON (form.id = course_detail.form_id) " +
-                    "LEFT JOIN expense ON (form.id = expense.form_id) " +
-                    "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
-                    "LEFT JOIN report ON (form.id = report.form_id) " +
-                    "LEFT JOIN user ON (user.id = form.user_id) " +
-                    "LEFT JOIN teacher ON (user.id = teacher.id) " +
-                    "WHERE form.user_id = ?";
+            sql = "SELECT * FROM form\n" +
+                    "  LEFT JOIN course_detail ON (form.id = course_detail.form_id)\n" +
+                    "  LEFT JOIN expense ON (form.id = expense.form_id)\n" +
+                    "  LEFT JOIN improvement ON (form.id = improvement.form_id)\n" +
+                    "  LEFT JOIN report ON (form.id = report.form_id)\n" +
+                    "  LEFT JOIN user user ON (user.id = form.user_id)\n" +
+                    "  LEFT JOIN user approver ON (approver.id = form.approver_id)\n" +
+                    "  WHERE form.user_id = ?";
 
             statement = connection.prepareStatement(sql);
             statement.setInt(1, user_id);
@@ -119,14 +113,14 @@ public class FormFactory extends BaseFactory<Form> {
     @Override
     public Form find(int id) {
         try {
-            sql = "SELECT * FROM form " +
-                    "LEFT JOIN course_detail ON (form.id = course_detail.form_id) " +
-                    "LEFT JOIN expense ON (form.id = expense.form_id) " +
-                    "LEFT JOIN improvement ON (form.id = improvement.form_id) " +
-                    "LEFT JOIN report ON (form.id = report.form_id) " +
-                    "LEFT JOIN user ON (user.id = form.user_id) " +
-                    "LEFT JOIN teacher ON (user.id = teacher.id)"
-                    + "WHERE form.id = ?;";
+            sql = "SELECT * FROM form\n" +
+                    "  LEFT JOIN course_detail ON (form.id = course_detail.form_id)\n" +
+                    "  LEFT JOIN expense ON (form.id = expense.form_id)\n" +
+                    "  LEFT JOIN improvement ON (form.id = improvement.form_id)\n" +
+                    "  LEFT JOIN report ON (form.id = report.form_id)\n" +
+                    "  LEFT JOIN user user ON (user.id = form.user_id)\n" +
+                    "  LEFT JOIN user approver ON (approver.id = form.approver_id)\n" +
+                    "  WHERE form.id = ?;";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             
@@ -147,12 +141,13 @@ public class FormFactory extends BaseFactory<Form> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    public Form updateStatus(Form model, Form.Status status) {
+    public Form updateStatus(Form model, User user, Form.Status status) {
         try {
-            sql = "UPDATE form SET status = ?, staff_id = ? WHERE id = ?";
+            sql = "UPDATE form SET status = ?, approver_id = ? WHERE id = ?";
             statement = connection.prepareStatement(sql);
             statement.setString(1, String.valueOf(status));
-            statement.setInt(2, model.getStaff().getId());
+            if(user != null) statement.setInt(2, user.getId());
+            else statement.setNull(2, Types.INTEGER);
             statement.setInt(3, model.getId());
             
             if(statement.executeUpdate() > 0) {
@@ -201,7 +196,12 @@ public class FormFactory extends BaseFactory<Form> {
         if(result.getString("report.form_id") != null && !result.getString("report.form_id").equals("")) {
             model.setReport(new ReportFactory(connection).buildObject(result));
         }
-        model.setUser(new UserFactory(connection).buildObject(result));
+
+        UserFactory userFactory = new UserFactory(connection);
+        model.setUser(userFactory.buildObject(result));
+        if(result.getInt("approver_id") > 0) {
+            model.setApprover(userFactory.buildObject(result, "approver"));
+        }
 
         return model;
     }

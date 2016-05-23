@@ -9,8 +9,7 @@
     Connection connection = DataConnector.getDBConnection(request);
     pageContext.setAttribute("form",
             new FormFactory(connection).find(Integer.parseInt(request.getParameter("form_id"))));
-    pageContext.setAttribute("fileUploadHelper",
-            new FileUploadHelper(request));
+    pageContext.setAttribute("fileUploadHelper", new FileUploadHelper(request));
 %>
 
 <!DOCTYPE html>
@@ -30,6 +29,9 @@
 
         <h2>รายละเอียด</h2>
         สถานะฟอร์ม : ${form.status}<br />
+        <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
+            ผู้ยื่นฟอร์ม : <a href="viewuser.jsp?user_id=${form.user.id}">${form.user.pname_th}${form.user.fname_th} ${form.user.lname_th}</a><br />
+        </c:if>
         อบรม / สัมนา หลักสูตร : ${form.course_name}<br />
         จัดโดย : ${form.organizer_name}<br />
         สถานที่จัด : ${form.location_name}<br />
@@ -88,7 +90,14 @@
 
         <a href="showallsendform.jsp">ย้อนกลับ</a>
         <c:if test="${form.status == 'PENDING'}">
-            <a href="confirmcancelform.do?form_id=${form.id}">ยกเลิกการยื่นฟอร์ม</a>
+            <c:if test="${sessionScope['auth.user'].id == form.user.id}">
+                <a href="confirmcancelform.do?form_id=${form.id}">ยกเลิกการยื่นฟอร์ม</a>
+            </c:if>
+
+            <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
+                <a href="confirmapproveform.do?form_id=${form.id}">อนุมัติฟอร์ม</a>
+                <a href="confirmrejectform.do?form_id=${form.id}">ปฎิเสธฟอร์ม</a>
+            </c:if>
         </c:if>
     </body>
 

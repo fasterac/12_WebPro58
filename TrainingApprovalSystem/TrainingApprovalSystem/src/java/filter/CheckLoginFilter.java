@@ -37,6 +37,7 @@ public class CheckLoginFilter implements Filter {
         Authorization authorization = new Authorization(DataConnector.getDBConnection(request), request.getSession());
 
         if(!authorization.isLogin() && !uri.endsWith("login.jsp") && !uri.endsWith("login.do")) {
+            request.getSession().setAttribute("login.info", "NO_LOGIN");
             response.sendRedirect("login.jsp");
             return;
         }

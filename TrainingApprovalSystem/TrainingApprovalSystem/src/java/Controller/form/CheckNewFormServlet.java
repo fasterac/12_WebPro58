@@ -61,7 +61,7 @@ public class CheckNewFormServlet extends HttpServlet {
             useExpense = true;
         }
 
-        if(request.getPart("course_file") == null) {
+        if(request.getPart("course_file").getSize() <= 0) {
             session.setAttribute("form.error", "FORM_COURSE_DETAIL_EMPTY");
             response.sendRedirect("newform.jsp");
             return;
