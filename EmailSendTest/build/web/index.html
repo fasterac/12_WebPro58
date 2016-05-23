@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="EmailServlet" method="POST">
+            <h1> Email Sender </h1>
+            From: <input type="text" name="from" value="it.kmitl.system" size="40" disabled="disabled" /><br>
+            To: <input type="text" name="to" size="40" /><br>
+            Subject: <input type="text" name="subject" value="" size="40" /><br>
+            Message text: <br>
+            <textarea name="message" rows="4" cols="40"></textarea>
+            <input type="submit" value="Send Email" name="submit" />
+            
+        </form>
+    </body>
+</html>
