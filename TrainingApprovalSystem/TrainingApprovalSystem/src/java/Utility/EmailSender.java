@@ -30,7 +30,7 @@ public class EmailSender {
             message.setFrom(new InternetAddress("gmail.com","IT KMITL"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
             message.setSubject(sub);
-            message.setText(tex);
+            message.setContent(tex, "text/html");
             Transport.send(message);
             System.out.println("Mail sent!");
             return true;
@@ -38,11 +38,6 @@ public class EmailSender {
             ex.printStackTrace();
             return false;
         }
-    }
-
-    public static void main(String[] args) {
-       EmailSender emailSender = new EmailSender();
-       emailSender.sendEmail("chaniwat.meranote@gmail.com", "test subject", "text work inside");
     }
     
 }

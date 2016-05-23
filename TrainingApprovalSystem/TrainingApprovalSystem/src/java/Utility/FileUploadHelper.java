@@ -1,7 +1,5 @@
 package utility;
 
-import com.sun.deploy.net.HttpRequest;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.File;
@@ -26,7 +24,7 @@ public class FileUploadHelper {
         this.request = request;
 
         appPath = request.getServletContext().getRealPath("");
-        savePath = appPath + "upload/";
+        savePath = appPath + "/upload/";
 
         File tempPath = new File(savePath + TEMP_PATH);
         if(!tempPath.exists()) {
