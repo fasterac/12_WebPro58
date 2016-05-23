@@ -1,4 +1,4 @@
-package Utility;
+package utility;
 
 import java.util.Properties;
 import javax.mail.*;
@@ -28,22 +28,21 @@ public class EmailSender {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("gmail.com","IT KMITL"));
-            String emailTo = mailTo;
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailTo));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
             message.setSubject(sub);
             message.setText(tex);
             Transport.send(message);
             System.out.println("Mail sent!");
             return true;
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
             return false;
         }
     }
 
-//    public static void main(String[] args) {
-//       EmailSender emailSender = new EmailSender();
-//       emailSender.sendEmail();
-//    }
+    public static void main(String[] args) {
+       EmailSender emailSender = new EmailSender();
+       emailSender.sendEmail("chaniwat.meranote@gmail.com", "test subject", "text work inside");
+    }
     
 }
