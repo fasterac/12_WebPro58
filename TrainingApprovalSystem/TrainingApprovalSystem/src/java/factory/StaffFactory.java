@@ -81,7 +81,7 @@ public class StaffFactory extends BaseFactory<Staff> {
 
         model.setWork_section(section);
 
-        new UserFactory(connection).setObject(model, result);
+        new UserFactory(connection).setObject(model, result, "user");
 
         return model;
     }

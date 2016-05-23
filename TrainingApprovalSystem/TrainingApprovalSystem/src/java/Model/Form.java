@@ -17,8 +17,7 @@ public class Form extends BaseModel {
     }
     
     private int id;
-    private User user;
-    private Staff staff;
+    private User user, approver;
     private Date form_date, start_date, end_date;
     private String course_name, organizer_name, location_name, course_file_path;
     private Status status;
@@ -141,12 +140,12 @@ public class Form extends BaseModel {
         this.course_file_path = course_file_path;
     }
 
-    public Staff getStaff() {
-        return staff;
+    public User getApprover() {
+        return approver;
     }
 
-    public void setStaff(Staff staff) {
-        this.staff = staff;
+    public void setApprover(User approver) {
+        this.approver = approver;
     }
 
 }

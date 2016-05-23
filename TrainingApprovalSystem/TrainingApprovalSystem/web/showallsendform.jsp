@@ -6,7 +6,11 @@
 
 <%
     User currentUser = new Authorization(DataConnector.getDBConnection(request), session).getCurrentUser();
-    pageContext.setAttribute("forms", new FormFactory(DataConnector.getDBConnection(request)).findAllByUserID(currentUser.getId()));
+    if(currentUser.getRole() == User.Role.USER) {
+        pageContext.setAttribute("forms", new FormFactory(DataConnector.getDBConnection(request)).findAllByUserID(currentUser.getId()));
+    } else {
+        pageContext.setAttribute("forms", new FormFactory(DataConnector.getDBConnection(request)).all());
+    }
 %>
 
 <!DOCTYPE html>
@@ -27,6 +31,9 @@
                 <th>วันที่อบรบ</th>
                 <th>วันที่ยื่นฟอร์ม</th>
                 <th>สถานะฟอร์ม</th>
+                <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
+                    <th>ผู้ยื่นฟอร์ม</th>
+                </c:if>
                 <th>ดูข้อมูล</th>
             </thead>
 
@@ -38,6 +45,9 @@
                         <td>${form.start_date}</td>
                         <td>${form.form_date}</td>
                         <td>${form.status}</td>
+                        <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
+                            <td>${form.user.pname_th}${form.user.fname_th} ${form.user.lname_th}</td>
+                        </c:if>
                         <td><a href="viewsendform.jsp?form_id=${form.id}">ดูฟอร์ม</a></td>
                     </tr>
                 </c:forEach>

@@ -23,9 +23,16 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username"),
                 password = request.getParameter("password");
 
+        if(username == null || password == null) {
+            request.getSession().setAttribute("login.error", "FORM_INPUT_EMPTY");
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
         if(authorization.doLogin(username, password)) {
             response.sendRedirect("index.jsp");
         } else {
+            request.getSession().setAttribute("login.error", "USER_NOT_MATCH");
             response.sendRedirect("login.jsp");
         }
     }

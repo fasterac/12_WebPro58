@@ -1,15 +1,15 @@
-<%@ page import="factory.TeacherFactory" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="utility.DataConnector" %>
 <%@ page import="utility.Authorization" %>
 <%@ page import="utility.FileUploadHelper" %>
+<%@ page import="factory.UserFactory" %>
 <%@ include file="/WEB-INF/importlib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     Connection connection = DataConnector.getDBConnection(request);
-    pageContext.setAttribute("teacher",
-        new TeacherFactory(connection).findByUserID(new Authorization(connection, session).getCurrentUser().getId()));
+    pageContext.setAttribute("user",
+            new UserFactory(connection).find(new Authorization(connection, session).getCurrentUser().getId()));
 %>
 
 <!DOCTYPE html>
@@ -29,9 +29,8 @@
 
         <form action="checknewform.do" method="POST" enctype="multipart/form-data">
             <h2>รายละเอียด</h2>
-            ชื่อ : <input type="text" value="${teacher.pname_th} ${teacher.fname_th}" disabled><br />
-            นามสกุล : <input type="text" value="${teacher.lname_th}" disabled><br />
-            ตำแหน่ง : <input type="text" value="${teacher.position != null || teacher.position.trim() != '' ? 'ยังไม่ระบุ' : teacher.position}" disabled><br />
+            ชื่อ : <input type="text" value="${user.pname_th} ${user.fname_th}" disabled><br />
+            นามสกุล : <input type="text" value="${user.lname_th}" disabled><br />
             มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร : <input type="text" name="course_name" value="${sessionScope['form.param']['course_name']}"><br />
             จัดโดย : <input type="text" name="organizer_name" value="${sessionScope['form.param']['organizer_name']}"><br />
             สถานที่จัด : <input type="text" name="location_name" value="${sessionScope['form.param']['location_name']}"><br />

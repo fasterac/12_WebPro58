@@ -94,7 +94,7 @@ public class TeacherFactory extends BaseFactory<Teacher> {
         model.setStatus(Work.Status.valueOf(result.getString("teacher.status")));
         model.setPosition(result.getString("teacher.position"));
 
-        new UserFactory(connection).setObject(model, result);
+        new UserFactory(connection).setObject(model, result, "user");
 
         return model;
     }
