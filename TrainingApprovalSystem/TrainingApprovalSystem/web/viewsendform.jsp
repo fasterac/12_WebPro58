@@ -87,7 +87,7 @@
                 ทำงานภายหลัง เข้ารับการอบรม/สัมมนาโดยหัวหน้างาน/ผู้อำนวยการส่วนสนับสนุนวิชาการ/ผู้ช่วยคณบดี/รองคณบดี เป็นต้น
             </small>
         </p>
-
+        <input type="submit" value="Print this form" onClick="window.print()"/>
         <a href="showallsendform.jsp">ย้อนกลับ</a>
         <c:if test="${form.status == 'PENDING'}">
             <c:if test="${sessionScope['auth.user'].id == form.user.id}">

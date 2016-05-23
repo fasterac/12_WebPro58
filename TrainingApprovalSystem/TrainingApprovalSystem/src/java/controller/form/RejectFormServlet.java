@@ -41,7 +41,7 @@ public class RejectFormServlet extends HttpServlet {
         String text = "ฟอร์มของคุณ รหัสฟอร์ม : <a href=\"viewsendform.jsp?form_id=" + form.getId() + "\">" + form.getId() + "</a> ไม่ได้รับการอนุมัติ";
 
         EmailSender emailSender = new EmailSender();
-        emailSender.sendEmail("chaniwat.meranote@gmail.com", "รายงานความคืบหน้าของการยื่นขอเข้าร่วมอบรม, รหัสฟอร์ม : " + form.getId(), text);
+        emailSender.sendEmail("boontariga10@hotmail.com", "รายงานความคืบหน้าของการยื่นขอเข้าร่วมอบรม, รหัสฟอร์ม : " + form.getId(), text);
 
         session.setAttribute("form.result", "REJECTED_COMPLETE");
         response.sendRedirect("viewsendform.jsp?form_id=" + request.getParameter("form_id"));
