@@ -24,7 +24,7 @@
         <h1>รายการฟอร์มที่ยื่น</h1>
 
         <a href="index.jsp">กลับหน้าแรก</a>
-        <table>
+        <table border="1">
             <thead>
                 <th>รหัสฟอร์ม</th>
                 <th>ชื่อคอสอบรบ</th>

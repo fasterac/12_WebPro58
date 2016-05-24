@@ -30,7 +30,7 @@
         <h2>รายละเอียด</h2>
         สถานะฟอร์ม : ${form.status}<br />
         <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
-            ผู้ยื่นฟอร์ม : <a href="viewuser.jsp?user_id=${form.user.id}">${form.user.pname_th}${form.user.fname_th} ${form.user.lname_th}</a><br />
+            ผู้ยื่นฟอร์ม : <a href="viewuser.jsp?user_id=${form.user.id}&from=${form.id}">${form.user.pname_th}${form.user.fname_th} ${form.user.lname_th}</a><br />
         </c:if>
         อบรม / สัมนา หลักสูตร : ${form.course_name}<br />
         จัดโดย : ${form.organizer_name}<br />

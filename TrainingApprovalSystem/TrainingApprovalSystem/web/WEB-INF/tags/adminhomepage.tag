@@ -5,7 +5,7 @@
 
 <a href="newform.jsp">ยื่นคำร้อง</a><br />
 <a href="showallsendform.jsp">ดูคำร้อง</a><br />
-<a href="javascript:;">ดูสมาชิก</a><br />
+<a href="showalluser.jsp">ดูสมาชิก</a><br />
 <br />
 
 <a href="logout.do">ออกจากระบบ</a>
