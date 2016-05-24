@@ -28,8 +28,8 @@
         มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร : ${sessionScope['form.new'].course_name}<br />
         จัดโดย : ${sessionScope['form.new'].organizer_name}<br />
         สถานที่จัด : ${sessionScope['form.new'].location_name}<br />
-        วันที่เริ่ม : ${String.format("%tF", sessionScope['form.new'].start_date)}<br />
-        วันที่สิ้นสุด : ${String.format("%tF", sessionScope['form.new'].end_date)}<br />
+        วันที่เริ่ม : ${String.format("%tF", sessionScope['form.new'].start_date)} <br />
+        วันที่สิ้นสุด : ${String.format("%tF", sessionScope['form.new'].end_date)} <br />
 
         <hr />
 

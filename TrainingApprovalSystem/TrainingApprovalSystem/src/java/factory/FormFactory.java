@@ -21,7 +21,7 @@ public class FormFactory extends BaseFactory<Form> {
             statement.setString(3, model.getOrganizer_name());
             statement.setString(4, model.getLocation_name());
             statement.setDate(5, new Date(model.getStart_date().getTime()));
-            statement.setDate(6, new Date(model.getStart_date().getTime()));
+            statement.setDate(6, new Date(model.getEnd_date().getTime()));
             statement.setBoolean(7, model.isUse_expense());
             
             statement.executeUpdate();

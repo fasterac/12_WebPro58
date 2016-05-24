@@ -34,10 +34,10 @@
             มีความประสงค์ ขออนุมัติเข้าร่วมอบรม / สัมนา หลักสูตร : <input type="text" name="course_name" value="${sessionScope['form.param']['course_name']}"><br />
             จัดโดย : <input type="text" name="organizer_name" value="${sessionScope['form.param']['organizer_name']}"><br />
             สถานที่จัด : <input type="text" name="location_name" value="${sessionScope['form.param']['location_name']}"><br />
-            วันที่เริ่ม : <input type="date" name="start_date" value="${sessionScope['form.param']['start_date']}"> 
-            <input type="time" name="start_date" value=""> ใส่ไว้เฉยๆ เดี๋ยวมีคนมารับ<br />
-            วันที่สิ้นสุด : <input type="date" name="end_date" value="${sessionScope['form.param']['end_date']}">
-            <input type="time" name="start_date" value=""> คือหน่วยมันเป็นเวลาอ่ะ<br />
+            วันที่เริ่ม : <input type="date" name="start_date" value="${sessionScope['form.param']['start_date']}"> ปี ค.ศ. เช่น 2016
+            <input type="time" name="start_time" value="12:00"> <br />
+            วันที่สิ้นสุด : <input type="date" name="end_date" value="${sessionScope['form.param']['end_date']}"> ปี ค.ศ. เช่น 2016
+            <input type="time" name="end_time" value="12:00"> <br />
             รายละเอียดการอบรม (.zip หรือ .pdf) : <input type="file" name="course_file" />
 
             <hr />
