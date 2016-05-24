@@ -16,7 +16,9 @@ class Auth extends Authenticator {
 
 public class EmailSender {
     
+    
     public Boolean sendEmail(String mailTo, String sub, String tex) {
+        
         Properties prop = new Properties();
         prop.put("mail.transport.protocol", "smtp");
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -25,12 +27,13 @@ public class EmailSender {
         prop.put("mail.smtp.starttls.enable", "true");        
         Session session = Session.getDefaultInstance(prop, new Auth());
         
+        
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("gmail.com","IT KMITL"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailTo));
             message.setSubject(sub);
-            message.setContent(tex, "text/html");
+            message.setContent(tex, "text/html;charset=UTF-8");
             Transport.send(message);
             System.out.println("Mail sent!");
             return true;
