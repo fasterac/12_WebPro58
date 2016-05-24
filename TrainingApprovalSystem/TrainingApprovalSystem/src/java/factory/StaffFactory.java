@@ -60,6 +60,25 @@ public class StaffFactory extends BaseFactory<Staff> {
         return null;
     }
 
+    public Object findByUserID(int user_id) {
+        try {
+            sql = "SELECT * FROM staff " +
+                    "JOIN user ON (staff.user_id = user.id)" +
+                    "JOIN work_section ON (staff.work_section_id = work_section.id) " +
+                    "WHERE user.id = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, user_id);
+
+            result = statement.executeQuery();
+            if(result.next()) {
+                return buildObject(result);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public Staff update(Staff model) {
         throw new UnsupportedOperationException("Not supported yet.");
