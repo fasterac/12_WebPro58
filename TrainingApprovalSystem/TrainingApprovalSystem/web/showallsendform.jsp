@@ -6,6 +6,7 @@
 
 <%
     User currentUser = new Authorization(DataConnector.getDBConnection(request), session).getCurrentUser();
+    pageContext.setAttribute("currentUser", currentUser);
     if(currentUser.getRole() == User.Role.USER) {
         pageContext.setAttribute("forms", new FormFactory(DataConnector.getDBConnection(request)).findAllByUserID(currentUser.getId()));
     } else {
@@ -24,12 +25,14 @@
         <h1>รายการฟอร์มที่ยื่น</h1>
 
         <a href="index.jsp">กลับหน้าแรก</a>
-        <c:if test="${forms == null}">
-            no form show here... you didnt sent form
+        <c:if test="${currentUser.role == 'USER'}">
+            <c:if test="${forms == null}">
+                no form show here... you didnt sent form
+            </c:if>
         </c:if>
         
         <c:if test="${forms != null}">
-            <table>
+            <table border="1">
                 <thead>
                     <th>รหัสฟอร์ม</th>
                     <th>ชื่อคอสอบรบ</th>
@@ -44,8 +47,6 @@
 
                 <tbody>
                     <c:forEach var="form" items="${forms}">
-
-
                         <tr>
                             <td>${form.id}</td>
                             <td>${form.course_name}</td>
