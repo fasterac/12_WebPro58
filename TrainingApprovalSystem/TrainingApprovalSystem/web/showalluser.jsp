@@ -34,7 +34,7 @@
                     <td>${user.pname_th}${user.fname_th} ${user.lname_th}</td>
                     <td>${user.email}</td>
                     <td>${user.mobile}</td>
-                    <td><a href="viewuser.jsp?user_id=${user.id}">ดูข้อมูลและประวัติการจอง</a></td>
+                    <td><a href="viewuser.jsp?user_id=${user.id}">ดูข้อมูลและประวัติการขออบรม</a></td>
                 </tr>
             </c:forEach>
         </tbody>

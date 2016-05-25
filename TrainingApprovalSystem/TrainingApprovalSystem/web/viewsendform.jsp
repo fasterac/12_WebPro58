@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="utility.DataConnector" %>
 <%@ page import="factory.FormFactory" %>
@@ -10,7 +11,10 @@
     pageContext.setAttribute("form",
             new FormFactory(connection).find(Integer.parseInt(request.getParameter("form_id"))));
     pageContext.setAttribute("fileUploadHelper", new FileUploadHelper(request));
+    
 %>
+<%  int userid = ((Form)pageContext.getAttribute("form")).getUser().getId(); 
+    pageContext.setAttribute("history", new FormFactory(DataConnector.getDBConnection(request)).findAllByUserID(userid));%>
 
 <!DOCTYPE html>
 <html>
@@ -70,6 +74,48 @@
                 } บาท <br />
 
         <hr />
+        <%-- calculate year ngobpraman --%>
+        <%! final Date date = new Date(); %>
+        <% if(new Date().getMonth() < 9){
+            date.setYear(new Date().getYear()-1); date.setMonth(9); date.setDate(01);
+        } %>
+        <% pageContext.setAttribute("thisyear", date); %> 
+        ในปีงบประมาณ <%= date.getYear() + 2443 %> ได้เข้าร่วมอบรม/สัมมนา ดังนี้<br>
+        <%! int formOrder = 0; %>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ที่</th>
+                    <th>หลักสูตร</th>
+                    <th>ระยะเวลาที่ไปอบรม</th>
+                    <th>ค่าใช้จ่าย</th>
+                    <th>วันที่ส่งรายงานสรุป</th>
+                    <th>วันที่จัดบรรยาย</th>
+                </tr>
+            </thead>     
+
+            <tbody>
+                <c:forEach var="his" items="${history}">
+                    <c:if test="${his.form_date > thisyear and his.id ne form.id and his.status eq 'APPROVED'}">
+                    <tr>
+                        <% formOrder += 1; %>
+                        <td><%= formOrder %></td>
+                        <td>${his.course_name}</td>
+                        <td>${his.start_date} - ${his.end_date}</td>
+                        <td>${((his.expense.room_night_amount == null ? 0 : his.expense.room_night_amount) *
+                        (his.expense.room_night_each == null ? 0 : his.expense.room_night_each)) +
+                        ((his.expense.day_amount == null ? 0 : his.expense.day_amount) *
+                        (his.expense.day_cost_each == null ? 0 : his.expense.day_cost_each)) + his.expense.register_cost +
+                        (his.expense.travel_cost == null ? 0 : his.expense.travel_cost) }</td>
+                        <td>-</td><!-- looking for condition -->
+                        <td>-</td>
+                    </tr>
+                    </c:if>
+                </c:forEach>
+            </tbody>
+        </table>
+
+        <hr />
 
         <h2>การปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม </h2>
         3. การนำความรู้ที่ได้จากการเข้าร่วมอบรม/สัมมนา มาใช้ในการปรับปรุงการทำงาน<br />
@@ -105,4 +151,5 @@
 
 <%
     session.setAttribute("form.result", null);
+    formOrder = 0;
 %>
