@@ -18,7 +18,7 @@ public class Form extends BaseModel {
     
     private int id;
     private User user, approver;
-    private Date form_date, start_date, end_date;
+    private Date form_date, start_date, end_date ;
     private String course_name, organizer_name, location_name, course_file_path;
     private Status status;
     private boolean use_expense;

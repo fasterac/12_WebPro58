@@ -20,11 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name = "CheckNewFormServlet", urlPatterns = {"/checknewform.do"})
-@MultipartConfig
+@MultipartConfig(maxFileSize = 999999999 , maxRequestSize= 999999999)
 public class CheckNewFormServlet extends HttpServlet {
 
     private static final String[] notEmptyParams =
-            {"course_name", "organizer_name", "location_name", "start_date", "end_date", "register_cost", "detail", "date_duration", "report_sent_duration"};
+            {"course_name", "organizer_name", "location_name", "start_date", "start_time", "end_date", "end_time", "register_cost", "detail", "date_duration", "report_sent_duration"};
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -76,10 +76,10 @@ public class CheckNewFormServlet extends HttpServlet {
         form.setUser(new Authorization(connection, session).getCurrentUser());
         form.setCourse_name(params.get("course_name"));
         form.setOrganizer_name(params.get("organizer_name"));
-        form.setLocation_name(params.get("location_name"));
+        form.setLocation_name(params.get("location_name"));       
         try {
-            form.setStart_date(new SimpleDateFormat("yyyy-MM-dd").parse(params.get("start_date")));
-            form.setEnd_date(new SimpleDateFormat("yyyy-MM-dd").parse(params.get("end_date")));
+            form.setStart_date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(params.get("start_date") + " " + request.getParameter("start_time") + ":00"));
+            form.setEnd_date(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(params.get("end_date") + " " + request.getParameter("end_time") + ":00"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
