@@ -27,72 +27,90 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8" />
-        <title>Training Approval System</title>
-    </head>
+    <myTagLib:headhtml />
 
     <body>
-        <h1>ข้อมูลสมาชิก</h1>
 
-        <c:if test="${param['from'] != null}">
-            <a href="viewsendform.jsp?form_id=${param['from']}">ย้อนกลับ</a>
-        </c:if>
-        <c:if test="${param['from'] == null}">
-            <a href="showalluser.jsp">ย้อนกลับ</a>
-        </c:if>
+        <myTagLib:navbar currentUser="${sessionScope['auth.user']}" />
 
-        <hr />
+        <div class="page-wrap">
 
-        ชื่อ - นามสกุล : ${user.pname_th}${user.fname_th} ${user.lname_th}<br />
-        ชื่อ - นามสกุล (ภาษาอังกฤษ)​ : ${user.pname_en}${user.fname_en} ${user.lname_en}<br />
-        อีเมลล์ : ${user.email}<br />
-        เบอร์โทรศัพท์ : ${user.mobile}<br />
-        ประเภท : ${user.type}<br />
-        <c:if test="${user.type == 'TEACHER'}">
-            ตำแหน่ง : ${teacher.position}<br />
-            สถานะ : ${teacher.status}<br />
-        </c:if>
-        <c:if test="${user.type == 'STAFF'}">
-            ฝ่าย : ${staff.work_section}<br />
-        </c:if>
-        ชื่อบัญชีผู้ใช้ : ${user.username}<br />
-        ประเภทบัญชีผู้ใช้ : ${user.type}<br />
+            <div class="container">
 
-        <hr />
+                <div class="page-header">
+                    <h1 style="display: inline-block;">ข้อมูลสมาชิก</h1>
+                    <br />
 
-        <h2>ประวัติการยื่นคำร้อง</h2>
+                    <c:if test="${param['from'] != null}">
+                        <a href="viewsendform.jsp?form_id=${param['from']}" class="btn btn-info">ย้อนกลับ</a>
+                    </c:if>
+                    <c:if test="${param['from'] == null}">
+                        <a href="showalluser.jsp" class="btn btn-info">ย้อนกลับ</a>
+                    </c:if>
+                </div>
 
-        <table border="1">
-            <thead>
-                <th>รหัสฟอร์ม</th>
-                <th>ชื่อคอสอบรบ</th>
-                <th>วันที่อบรบ</th>
-                <th>วันที่ยื่นฟอร์ม</th>
-                <th>สถานะฟอร์ม</th>
-                <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
-                    <th>ผู้ยื่นฟอร์ม</th>
+                ชื่อ - นามสกุล : ${user.pname_th}${user.fname_th} ${user.lname_th}<br />
+                ชื่อ - นามสกุล (ภาษาอังกฤษ)​ : ${user.pname_en}${user.fname_en} ${user.lname_en}<br />
+                อีเมลล์ : ${user.email}<br />
+                เบอร์โทรศัพท์ : ${user.mobile}<br />
+                ประเภท : ${user.type}<br />
+                <c:if test="${user.type == 'TEACHER'}">
+                    ตำแหน่ง : ${teacher.position}<br />
+                    สถานะ : ${teacher.status}<br />
                 </c:if>
-                <th>ดูข้อมูล</th>
-            </thead>
+                <c:if test="${user.type == 'STAFF'}">
+                    ฝ่าย : ${staff.work_section}<br />
+                </c:if>
+                ชื่อบัญชีผู้ใช้ : ${user.username}<br />
+                ประเภทบัญชีผู้ใช้ : ${user.type}<br />
 
-            <tbody>
-                <c:forEach var="form" items="${forms}">
-                    <tr>
-                        <td>${form.id}</td>
-                        <td>${form.course_name}</td>
-                        <td>${form.start_date}</td>
-                        <td>${form.form_date}</td>
-                        <td>${form.status}</td>
+                <hr />
+
+                <h2>ประวัติการยื่นคำร้อง</h2>
+
+                <table border="1" class="table table-bordered" id="showtable">
+                    <thead>
+                        <th>รหัสฟอร์ม</th>
+                        <th>ชื่อคอสอบรบ</th>
+                        <th>วันที่อบรบ</th>
+                        <th>วันที่ยื่นฟอร์ม</th>
+                        <th>สถานะฟอร์ม</th>
                         <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
-                            <td>${form.user.pname_th}${form.user.fname_th} ${form.user.lname_th}</td>
+                            <th>ผู้ยื่นฟอร์ม</th>
                         </c:if>
-                        <td><a href="viewsendform.jsp?form_id=${form.id}">ดูฟอร์ม</a></td>
-                    </tr>
-                </c:forEach>
-            </tbody>
+                        <th>ดูข้อมูล</th>
+                    </thead>
 
-        </table>
+                    <tbody>
+                        <c:forEach var="form" items="${forms}">
+                            <tr>
+                                <td>${form.id}</td>
+                                <td>${form.course_name}</td>
+                                <td>${form.start_date}</td>
+                                <td>${form.form_date}</td>
+                                <td>${form.status}</td>
+                                <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
+                                    <td>${form.user.pname_th}${form.user.fname_th} ${form.user.lname_th}</td>
+                                </c:if>
+                                <td><a href="viewsendform.jsp?form_id=${form.id}">ดูฟอร์ม</a></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        <myTagLib:footer />
+
+        <myTagLib:scriptlib />
+        <script>
+            $(document).ready(function() {
+                $('#showtable').DataTable();
+            });
+        </script>
     </body>
 
 </html>

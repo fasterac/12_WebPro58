@@ -21,14 +21,16 @@ public class Authorization {
     }
 
     public boolean doLogin(String username, String password) {
-        User user = new UserFactory(connection).findByUsername(username);
+        try {
+            User user = new UserFactory(connection).findByUsername(username);
 
-        if(user != null) {
-            if(user.getPassword().equals(password)) {
-                session.setAttribute("auth.user", user);
-                return true;
+            if(user != null) {
+                if(user.getPassword().equals(password)) {
+                    session.setAttribute("auth.user", user);
+                    return true;
+                }
             }
-        }
+        } catch (RuntimeException ignored) { }
         return false;
     }
 

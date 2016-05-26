@@ -3,17 +3,28 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <title>Training Approval System</title>
-    </head>
+    <myTagLib:headhtml />
 
     <body>
-        <h1>ยื่นฟอร์มสำเร็จ</h1>
 
-        รหัสฟอร์ม : ${requestScope['form.new'].id}<br />
-        <br />
+        <myTagLib:navbar currentUser="${sessionScope['auth.user']}" />
 
-        <a href="index.jsp">กลับหน้าแรก</a>
+        <div class="page-wrap">
+            <div class="container">
+                <div class="page-header">
+                    <h1>ยื่นฟอร์มสำเร็จ</h1>
+                </div>
+
+                รหัสฟอร์ม : ${requestScope['form.new'].id}<br />
+                <br />
+
+                <a href="index.jsp" class="btn btn-info">กลับหน้าแรก</a>
+            </div>
+        </div>
+
+        <myTagLib:footer />
+
+        <myTagLib:scriptlib />
     </body>
 
 </html>

@@ -1,10 +1,35 @@
 <%@include file="/WEB-INF/tags/importlib.tag" %>
 <%@tag description="User home page" pageEncoding="UTF-8" body-content="empty" %>
 
-<h1>User Panel, Welcome ${sessionScope['auth.user'].pname_th}${sessionScope['auth.user'].fname_th}</h1>
+<myTagLib:navbar currentUser="${sessionScope['auth.user']}" />
 
-<a href="newform.jsp">ยื่นคำร้อง</a><br />
-<a href="showallsendform.jsp">ดูคำร้อง</a><br />
-<br />
+<div class="page-wrap">
+    <div class="jumbotron">
+        <div class="container">
+            <img src="assets/images/user.png" alt="banner" />
+            <h1>ยินดีต้อนรับ!</h1>
+            <p>${sessionScope['auth.user'].role} : ${sessionScope['auth.user'].pname_th}${sessionScope['auth.user'].fname_th} ${sessionScope['auth.user'].lname_th}</p>
 
-<a href="logout.do">ออกจากระบบ</a>
+        </div>
+    </div>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-5">
+                <img src="assets/images/form.png" alt="banner" />
+                <h2>ยื่นคำร้อง</h2>
+                <p>กรอกรายละเอียดแบบฟอร์มเพื่อยื่นคำร้อง</p>
+                <p><a class="btn btn-default" href="newform.jsp" role="button">คลิก &raquo;</a></p>
+            </div>
+            <div class="col-md-5">
+                <img src="assets/images/check.png" alt="banner" /><br>
+                <h2>ดูคำร้อง</h2>
+                <p>ตรวจสอบและจัดการแบบฟอร์ม</p>
+                <p><a class="btn btn-default" href="showallsendform.jsp" role="button">คลิก &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+</div>
