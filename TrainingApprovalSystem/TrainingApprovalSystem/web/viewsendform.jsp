@@ -145,12 +145,9 @@
                     </small>
                 </p>
                 <button type="button" class="btn btn-default" onClick="window.print()">print this form</button>
+                <a href="confirmcancelform.do?form_id=${form.id}" class="btn btn-warning">ยกเลิกการยื่นฟอร์ม</a>
                 <a href="showallsendform.jsp" class="btn btn-info">ย้อนกลับ</a>
                 <c:if test="${form.status == 'PENDING'}">
-                    <c:if test="${sessionScope['auth.user'].id == form.user.id}">
-                        <a href="confirmcancelform.do?form_id=${form.id}" class="btn btn-warning">ยกเลิกการยื่นฟอร์ม</a>
-                    </c:if>
-
                     <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
                         <a href="confirmapproveform.do?form_id=${form.id}" class="btn btn-success">อนุมัติฟอร์ม</a>
                         <a href="confirmrejectform.do?form_id=${form.id}" class="btn btn-danger">ปฎิเสธฟอร์ม</a>

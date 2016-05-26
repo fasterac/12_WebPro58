@@ -86,8 +86,10 @@
                     </div>
 
                     <hr />
-
+                    
+                    <br />
                     <h2>ขออนุมัติสนับสนุนค่าใช้จ่าย</h2>
+                    <br />
                     <div class="form-group">
                         <label for="form-register_cost">1. ค่าลงทะเบียน</label>
                         <input type="text" class="form-control" name="register_cost" id="form-register_cost" value="${sessionScope['form.param']['register_cost']}">
@@ -122,8 +124,9 @@
                     </div>
 
                     <hr />
-
+                    <br />
                     <h2>การปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม</h2>
+                    <br />
                     <div class="form-group">
                         <label>3. การนำความรู้ที่ได้จากการเข้าร่วมอบรม/สัมมนา มาใช้ในการปรับปรุงการทำงาน</label>
                     </div>
@@ -140,7 +143,7 @@
                         <input type="number" class="form-control" name="report_sent_duration" id="form-report_sent_duration" value="${sessionScope['form.param']['report_sent_duration']}">
                     </div>
 
-                    <p>
+                    <p class="help-block">
                         หมายเหตุ* เอกสารหลักฐานอ้างอิง ตามข้อ 3.3<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;ส่วนวิชาการ เช่น เอกสารรายงานการปรับปรุงแผนการสอน/ปรับปรุงเนื้อหาการสอน/ปรับปรุงเอกสารการสอน
                         เนื้อหารายวิชาหรือหลักสูตรอบรมใหม่ที่เปิดผลมาจากการอบรม ฯลฯ<br />
