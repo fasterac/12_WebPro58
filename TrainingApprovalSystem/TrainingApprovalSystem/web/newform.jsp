@@ -81,7 +81,7 @@
                     </div>
                     <div class="form-group">
                         <label for="form-course_file">รายละเอียดการอบรม</label>
-                        <input type="file" name="form-course_file" id="form-course_file" />
+                        <input type="file" name="course_file" id="form-course_file" />
                         <p class="help-block">.zip หรือ .pdf เท่านั้น</p>
                     </div>
 
