@@ -12,6 +12,9 @@
 
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
 
+        <link rel="stylesheet" href="assets/css/login.css">
+        <link href="assets/css/style.css" rel="stylesheet">
+
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -20,77 +23,43 @@
         <![endif]-->
     </head>
 
-    <style>
-        body {
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background-color: #eee;
-        }
-
-        .form-signin {
-            max-width: 330px;
-            padding: 15px;
-            margin: 0 auto;
-        }
-        .form-signin .alert {
-            margin-bottom: 10px;
-        }
-        .form-signin .form-signin-heading {
-            margin-bottom: 10px;
-        }
-        .form-signin .form-control {
-            position: relative;
-            height: auto;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .form-signin .form-control:focus {
-            z-index: 2;
-        }
-        .form-signin input[type="text"] {
-            margin-bottom: -1px;
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-        .form-signin input[type="password"] {
-            margin-bottom: 10px;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-        }
-    </style>
-
     <body>
-        <form action="login.do" method="POST" class="form-signin">
-            <h2 class="form-signin-heading">เข้าสู่ระบบ</h2>
+        <div class="wrapper">
+            <section class="container">
+                <center><img src="assets/images/lock.png" alt="banner" /></center><br /><br />
 
-            <c:if test="${sessionScope['login.error'] != null}">
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    ${sessionScope['login.error']}
+                <div class="login">
+                    <h1>ระบบขอไปอบรมและนำเสนอผลงาน</h1>
+
+                    <c:if test="${sessionScope['login.error'] != null}">
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                ${sessionScope['login.error']}
+                        </div>
+                    </c:if>
+                    <c:if test="${sessionScope['login.info'] != null}">
+                        <div class="alert alert-info alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                ${sessionScope['login.info']}
+                        </div>
+                    </c:if>
+
+                    <form action="login.do" method="post" class="form-signin">
+                        <div class="form-group" id="username-group">
+                            <label for="username" class="sr-only">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="ชื่อผู้ใช้" />
+                        </div>
+
+                        <div class="form-group" id="password-group">
+                            <label for="password" class="sr-only">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="รหัสผ่าน" />
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                    </form>
                 </div>
-            </c:if>
-            <c:if test="${sessionScope['login.info'] != null}">
-                <div class="alert alert-info alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        ${sessionScope['login.info']}
-                </div>
-            </c:if>
-
-            <div id="username-group">
-                <label for="username" class="sr-only">Username</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="ชื่อผู้ใช้" />
-            </div>
-
-            <div id="password-group">
-                <label for="password" class="sr-only">Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="รหัสผ่าน" />
-            </div>
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-        </form>
+            </section>
+        </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -103,7 +72,7 @@
                     $("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">" +
                             "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +
                             "โปรดกรอกข้อมูลให้ครบ" +
-                    "</div>").insertAfter(".form-signin > h2");
+                    "</div>").insertAfter(".login > h1");
                     e.preventDefault();
 
                     if(emptyUser) {

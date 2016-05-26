@@ -4,10 +4,7 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8" />
-        <title>Training Approval System</title>
-    </head>
+    <myTagLib:headhtml />
 
     <body>
         <c:if test="${sessionScope['auth.user'].role == 'USER'}">
@@ -16,6 +13,10 @@
         <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
             <myTagLib:adminHomePage />
         </c:if>
+
+        <myTagLib:footer />
+
+        <myTagLib:scriptlib />
     </body>
 
 </html>
