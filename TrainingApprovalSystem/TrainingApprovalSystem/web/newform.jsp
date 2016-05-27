@@ -5,6 +5,7 @@
 <%@ page import="factory.UserFactory" %>
 <%@ include file="/WEB-INF/importlib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="assets/css/bg01.css">
 
 <%
     Connection connection = DataConnector.getDBConnection(request);
@@ -86,10 +87,8 @@
                     </div>
 
                     <hr />
-                    
-                    <br />
+
                     <h2>ขออนุมัติสนับสนุนค่าใช้จ่าย</h2>
-                    <br />
                     <div class="form-group">
                         <label for="form-register_cost">1. ค่าลงทะเบียน</label>
                         <input type="text" class="form-control" name="register_cost" id="form-register_cost" value="${sessionScope['form.param']['register_cost']}">
@@ -124,9 +123,8 @@
                     </div>
 
                     <hr />
-                    <br />
+
                     <h2>การปรับปรุงงาน/สร้างสรรค์งาน/สร้างนวัตกรรม</h2>
-                    <br />
                     <div class="form-group">
                         <label>3. การนำความรู้ที่ได้จากการเข้าร่วมอบรม/สัมมนา มาใช้ในการปรับปรุงการทำงาน</label>
                     </div>
@@ -143,7 +141,7 @@
                         <input type="number" class="form-control" name="report_sent_duration" id="form-report_sent_duration" value="${sessionScope['form.param']['report_sent_duration']}">
                     </div>
 
-                    <p class="help-block">
+                    <p>
                         หมายเหตุ* เอกสารหลักฐานอ้างอิง ตามข้อ 3.3<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;ส่วนวิชาการ เช่น เอกสารรายงานการปรับปรุงแผนการสอน/ปรับปรุงเนื้อหาการสอน/ปรับปรุงเอกสารการสอน
                         เนื้อหารายวิชาหรือหลักสูตรอบรมใหม่ที่เปิดผลมาจากการอบรม ฯลฯ<br />

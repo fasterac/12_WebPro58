@@ -2,6 +2,7 @@
 <%@ page import="factory.UserFactory" %>
 <%@ include file="/WEB-INF/importlib.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="assets/css/bg01.css">
 
 <%
     pageContext.setAttribute("users", new UserFactory(DataConnector.getDBConnection(request)).all());
@@ -24,11 +25,11 @@
                     <h1>รายชื่อผู้ใช้งาน</h1>
                 </div>
 
-                <table border="1" class="table table-bordered" id="showtable">
+                <table border="1" class="table table-bordered table-hover" id="showtable">
                     <thead>
                         <th>รหัสผู้ใช้</th>
                         <th>ชื่อ - นามสกุล</th>
-                        <th>อีเมลล์</th>
+                        <th>อีเมล</th>
                         <th>เบอร์โทรศัพท์</th>
                         <th>ดูข้อมูล</th>
                     </thead>

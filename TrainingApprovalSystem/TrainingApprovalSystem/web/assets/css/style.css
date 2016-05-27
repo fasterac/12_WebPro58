@@ -1,10 +1,11 @@
 @import url('../fonts/thsarabunnew.css');
 
 body {
+   
     font-family: 'THSarabunNew' !important;
     height: 100%;
     padding-bottom: 0;
-    background: url("../images/bg1.jpg") no-repeat center center fixed;
+   
     background-size: cover;
 }
 

@@ -2,7 +2,7 @@
 <%@tag description="Admin home page" pageEncoding="UTF-8" body-content="empty" %>
 
 <myTagLib:navbar currentUser="${sessionScope['auth.user']}" />
-
+ 
 <div class="page-wrap">
     <div class="jumbotron">
         <div class="container">
@@ -16,8 +16,11 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
-                <p><p>
+            <div class="col-md-5">
+                 <img src="assets/images/form.png" alt="banner" />
+                <h2>ยื่นคำร้อง</h2>
+                <p>กรอกรายละเอียดแบบฟอร์มเพื่อยื่นคำร้อง</p>
+                <p><a class="btn btn-default" href="newform.jsp" role="button">คลิก &raquo;</a></p>
             </div>
             <div class="col-md-5">
                 <img src="assets/images/check.png" alt="banner" /><br>
@@ -25,7 +28,7 @@
                 <p>ตรวจสอบและจัดการแบบฟอร์ม</p>
                 <p><a class="btn btn-default" href="showallsendform.jsp" role="button">คลิก &raquo;</a></p>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-2">
                 <img src="assets/images/member.png" alt="banner" />
                 <h2>สมาชิก</h2>
                 <p>ตรวจสอบรายชื่อสมาชิก</p>

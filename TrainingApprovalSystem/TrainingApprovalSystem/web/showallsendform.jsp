@@ -1,10 +1,11 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.Date"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Date" %>
 <%@ page import="factory.FormFactory" %>
 <%@ page import="utility.DataConnector" %>
 <%@ page import="utility.Authorization" %>
 <%@ include file="/WEB-INF/importlib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="assets/css/bg01.css">
 
 <%
     User currentUser = new Authorization(DataConnector.getDBConnection(request), session).getCurrentUser();
@@ -39,11 +40,11 @@
                 </c:if>
 
                 <c:if test="${forms != null}">
-                    <table border="1" class="table table-bordered" id="showtable">
+                    <table border="1" class="table table-bordered table-hover" id="showtable">
                         <thead>
                             <th>รหัสฟอร์ม</th>
-                            <th>ชื่อคอสอบรบ</th>
-                            <th>วันที่อบรบ</th>
+                            <th>ชื่อคอร์สอบรม</th>
+                            <th>วันที่อบรม</th>
                             <th>วันที่ยื่นฟอร์ม</th>
                             <th>สถานะฟอร์ม</th>
                             <c:if test="${sessionScope['auth.user'].role == 'ADMIN'}">
@@ -74,7 +75,7 @@
             </div>
 
         </div>
-<br><br><br><br><br><br><br><br><br><br>
+
         <myTagLib:footer />
 
         <myTagLib:scriptlib />

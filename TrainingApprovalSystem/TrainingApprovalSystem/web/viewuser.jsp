@@ -5,6 +5,7 @@
 <%@ page import="factory.StaffFactory" %>
 <%@ include file="/WEB-INF/importlib.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="assets/css/bg01.css">
 
 <%
     pageContext.setAttribute("user", new UserFactory(DataConnector.getDBConnection(request))

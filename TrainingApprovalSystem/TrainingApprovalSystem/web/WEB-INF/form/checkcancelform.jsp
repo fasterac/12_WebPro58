@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/importlib.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+ <link href="assets/css/style.css" rel="stylesheet">
 <!DOCTYPE html>
 <html>
 
